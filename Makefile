@@ -1,12 +1,12 @@
 
-default: test_example
+default: AcutestExample
 
-test_example.o: test_example.c
-	gcc -I./../libs/acutest/include -c test_example.c -o test_example.o
+AcutestExample.o: AcutestExample.c
+	gcc -I./../libs/acutest/include -c AcutestExample.c -o AcutestExample.o
 
-test_example: test_example.o
-	gcc test_example.o -o test_example
+AcutestExample: AcutestExample.o
+	gcc AcutestExample.o -o AcutestExample
 
 clean:
-	-rm -f test_example.o
-	-rm -f test_example
+	-rm -f AcutestExample.o
+	-rm -f AcutestExample
