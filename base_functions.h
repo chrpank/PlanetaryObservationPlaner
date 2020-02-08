@@ -1,4 +1,6 @@
-
+/**
+ * Christian Pankratz 2020.
+ */
 
 /**
  * Calculate days from a date.
