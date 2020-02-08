@@ -7,22 +7,18 @@
 int calculate_time_scale(int year, int month, int day, float ut, float *days) {
 
   if (year <= 1900 || year >= 2100) {
-    *days = 0;
     return 0;
   }
 
   if (month < 1 || month > 12) {
-    *days = 0;
     return 0;
   }
 
   if (day < 1 || day > 31) {
-    *days = 0;
     return 0;
   }
 
   if (ut < 0 || ut > 24) {
-    *days = 0;
     return 0;
   }
 
