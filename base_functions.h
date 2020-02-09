@@ -44,4 +44,4 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
  * param[in} d The days.
  * return not 0 if success, 0 otherwise.
  */
-int caculate_obliquity_ecliptic(float *ecl, const float d);
+int calculate_obliquity_ecliptic(float *ecl, const float d);

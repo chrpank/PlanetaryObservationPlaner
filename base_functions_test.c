@@ -248,7 +248,18 @@ void calculate_angle_reduction_test(void) {
   TEST_CHECK(calculate_angle_reduction(&angle) == 0);
 }
 
+void calculate_obliquity_ecliptic_test(void) {
+  float ecl1 = 0.0;
+  float ecl2 = 0.0;
+
+  TEST_CHECK(calculate_obliquity_ecliptic(&ecl1, 000.0) != 0);
+  TEST_CHECK(calculate_obliquity_ecliptic(&ecl2, 100.0) != 0);
+
+  TEST_CHECK(ecl1 != ecl2);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_angle_reduction_test},
+             {NULL, calculate_obliquity_ecliptic_test},
              {NULL, NULL}};
