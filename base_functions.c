@@ -163,3 +163,8 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
 
   return case_found;
 }
+
+int calculate_obliquity_ecliptic(float *ecl, const float d) {
+  *ecl = 23.4393 - 3.563E-7 * d;
+  return 1;
+}
