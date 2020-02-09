@@ -31,9 +31,17 @@ int calculate_angle_reduction(float *angle);
  * param[in/out] w The argument of perihelion.
  * param[in/out] a The semi-major axis.
  * param[in/out] e The eccentricity.
- * param[in/out] M The mean anomaly
+ * param[in/out] M The mean anomaly.
  * param[in} d The days.
  * return not 0 if success, 0 otherwise.
  */
 int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
                                float *a, float *e, float *M, const float d);
+
+/**
+ * Calculate the obliquity of the ecliptic.
+ * param[in/out] ecl The obliquity of the ecliptic.
+ * param[in} d The days.
+ * return not 0 if success, 0 otherwise.
+ */
+int caculate_obliquity_ecliptic(float *ecl, const float d);
