@@ -218,6 +218,37 @@ void calculate_orbital_elements_test(void) {
              value6 == 6.0);
 }
 
+void calculate_angle_reduction_test(void) {
+  float angle;
+
+  angle = -1000.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) != 0);
+  TEST_CHECK(angle >= 0.0 && angle <= 360.0);
+
+  angle = +1000.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) != 0);
+  TEST_CHECK(angle >= 0.0 && angle <= 360.0);
+
+  angle = 0.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) != 0);
+  TEST_CHECK(angle == 0.0);
+
+  angle = 180.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) != 0);
+  TEST_CHECK(angle == 180.0);
+
+  angle = 360.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) != 0);
+  TEST_CHECK(angle == 360.0);
+
+  angle = -1000000.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) == 0);
+
+  angle = +1000000.0;
+  TEST_CHECK(calculate_angle_reduction(&angle) == 0);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
+             {NULL, calculate_angle_reduction_test},
              {NULL, NULL}};
