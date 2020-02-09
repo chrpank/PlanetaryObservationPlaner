@@ -31,8 +31,40 @@ int calculate_time_scale(const int year, const int month, const int day,
   return 1;
 }
 
+int calculate_angle_reduction(float *angle) {
+  int reduction_successfull = 0;
+
+  if (*angle >= 0.0 && *angle <= 360.0) {
+    reduction_successfull = 1;
+  }
+
+  if (*angle < 0.0) {
+    for (int i = 0; i < 1000; i++) {
+      *angle = *angle + 360.0;
+      if (*angle > 0) {
+        reduction_successfull = 1;
+        break;
+      }
+    }
+  }
+
+  if (*angle > 360.0) {
+    for (int i = 0; i < 1000; i++) {
+      *angle = *angle - 360.0;
+      if (*angle < 360.0) {
+        reduction_successfull = 1;
+        break;
+      }
+    }
+  }
+
+  return reduction_successfull;
+}
+
 int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
                                float *a, float *e, float *M, const float d) {
+
+  int case_found = 0;
 
   if (!strcmp(o, "sun")) {
     *N = 0.0;
@@ -41,7 +73,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 1.000000;
     *e = 0.016709 - 1.151E-9 * d;
     *M = 356.0470 + 0.9856002585 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "moon")) {
@@ -51,7 +83,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 60.2666; // earth radii
     *e = 0.054900;
     *M = 115.3654 + 13.0649929509 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "mercury")) {
@@ -61,7 +93,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 0.387098;
     *e = 0.205635 + 5.59E-10 * d;
     *M = 168.6562 + 4.0923344368 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "venus")) {
@@ -71,7 +103,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 0.723330;
     *e = 0.006773 - 1.302E-9 * d;
     *M = 48.0052 + 1.6021302244 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "mars")) {
@@ -81,7 +113,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 1.523688;
     *e = 0.093405 + 2.516E-9 * d;
     *M = 18.6021 + 0.5240207766 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "jupiter")) {
@@ -91,7 +123,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 5.20256;
     *e = 0.048498 + 4.469E-9 * d;
     *M = 19.8950 + 0.0830853001 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "saturn")) {
@@ -101,7 +133,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 9.55475;
     *e = 0.055546 - 9.499E-9 * d;
     *M = 316.9670 + 0.0334442282 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "uranus")) {
@@ -111,7 +143,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 19.18171 - 1.55E-8 * d;
     *e = 0.047318 + 7.45E-9 * d;
     *M = 142.5905 + 0.011725806 * d;
-    return 1;
+    case_found = 1;
   }
 
   if (!strcmp(o, "neptune")) {
@@ -121,8 +153,13 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     *a = 30.05826 + 3.313E-8 * d;
     *e = 0.008606 + 2.15E-9 * d;
     *M = 260.2471 + 0.005995147 * d;
-    return 1;
+    case_found = 1;
   }
 
-  return 0;
+  calculate_angle_reduction(N);
+  calculate_angle_reduction(i);
+  calculate_angle_reduction(w);
+  calculate_angle_reduction(M);
+
+  return case_found;
 }
