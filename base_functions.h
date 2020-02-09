@@ -17,6 +17,13 @@ int calculate_time_scale(const int year, const int month, const int day,
                          const float ut, float *days);
 
 /**
+ * Calculate angle reduction.
+ * param[in] angle The angle.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_angle_reduction(float *angle);
+
+/**
  * Calculate orbital elements.
  * param[in} o The celestial object.
  * param[in/out] N The longitude of the ascending node.
