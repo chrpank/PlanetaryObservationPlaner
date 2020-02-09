@@ -34,6 +34,10 @@ int calculate_time_scale(const int year, const int month, const int day,
 int calculate_angle_reduction(float *angle) {
   int reduction_successfull = 0;
 
+  if (*angle >= 0.0 && *angle <= 360.0) {
+    reduction_successfull = 1;
+  }
+
   if (*angle < 0.0) {
     for (int i = 0; i < 1000; i++) {
       *angle = *angle + 360.0;
@@ -152,7 +156,10 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     case_found = 1;
   }
 
-  // TODO Reduce angle.
+  calculate_angle_reduction(N);
+  calculate_angle_reduction(i);
+  calculate_angle_reduction(w);
+  calculate_angle_reduction(M);
 
   return case_found;
 }

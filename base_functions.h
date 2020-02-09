@@ -18,7 +18,7 @@ int calculate_time_scale(const int year, const int month, const int day,
 
 /**
  * Calculate angle reduction.
- * param[in] angle The angle.
+ * param[in/out] angle The angle.
  * return not 0 if success, 0 otherwise.
  */
 int calculate_angle_reduction(float *angle);
