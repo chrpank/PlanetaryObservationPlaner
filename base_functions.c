@@ -34,7 +34,7 @@ int calculate_time_scale(const int year, const int month, const int day,
 int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
                                float *a, float *e, float *M, const float d) {
 
-  if (strcmp(o, "sun")) {
+  if (!strcmp(o, "sun")) {
     *N = 0.0;
     *i = 0.0;
     *w = 282.9404 + 4.70935E-5 * d;
@@ -44,7 +44,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "moon")) {
+  if (!strcmp(o, "moon")) {
     *N = 125.1228 - 0.0529538083 * d;
     *i = 5.1454;
     *w = 318.0634 + 0.1643573223 * d;
@@ -54,7 +54,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "mercury")) {
+  if (!strcmp(o, "mercury")) {
     *N = 48.3313 + 3.24587E-5 * d;
     *i = 7.0047 + 5.00E-8 * d;
     *w = 29.1241 + 1.01444E-5 * d;
@@ -64,7 +64,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "venus")) {
+  if (!strcmp(o, "venus")) {
     *N = 76.6799 + 2.46590E-5 * d;
     *i = 3.3946 + 2.75E-8 * d;
     *w = 54.8910 + 1.38374E-5 * d;
@@ -74,7 +74,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "mars")) {
+  if (!strcmp(o, "mars")) {
     *N = 49.5574 + 2.11081E-5 * d;
     *i = 1.8497 - 1.78E-8 * d;
     *w = 286.5016 + 2.92961E-5 * d;
@@ -84,7 +84,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "jupiter")) {
+  if (!strcmp(o, "jupiter")) {
     *N = 100.4542 + 2.76854E-5 * d;
     *i = 1.3030 - 1.557E-7 * d;
     *w = 273.8777 + 1.64505E-5 * d;
@@ -94,7 +94,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "saturn")) {
+  if (!strcmp(o, "saturn")) {
     *N = 113.6634 + 2.38980E-5 * d;
     *i = 2.4886 - 1.081E-7 * d;
     *w = 339.3939 + 2.97661E-5 * d;
@@ -104,7 +104,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "uranus")) {
+  if (!strcmp(o, "uranus")) {
     *N = 74.0005 + 1.3978E-5 * d;
     *i = 0.7733 + 1.9E-8 * d;
     *w = 96.6612 + 3.0565E-5 * d;
@@ -114,7 +114,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     return 1;
   }
 
-  if (strcmp(o, "neptune")) {
+  if (!strcmp(o, "neptune")) {
     *N = 131.7806 + 3.0173E-5 * d;
     *i = 1.7700 - 2.55E-7 * d;
     *w = 272.8461 - 6.027E-6 * d;
