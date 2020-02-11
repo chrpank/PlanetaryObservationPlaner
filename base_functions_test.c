@@ -258,8 +258,27 @@ void calculate_obliquity_ecliptic_test(void) {
   TEST_CHECK(ecl1 != ecl2);
 }
 
+void calculate_local_sidereal_time_test(void) {
+  int year = 1985;
+  int month = 7;
+  int day = 15;
+
+  float universal_time = 16.0 + 33 / 60.0 + 42.0 / (60.0 * 60.0);
+  float local_longitude = 13 + 6 / 60.0 + 22 / (60.0 * 60.0);
+
+  float local_sidereal_time;
+
+  TEST_CHECK(calculate_local_sidereal_time(year, month, day, universal_time,
+                                           local_longitude,
+                                           &local_sidereal_time) != 0);
+
+  TEST_CHECK(local_sidereal_time == 0.0);
+  TEST_MSG("local sidereal time: %f", local_sidereal_time);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_angle_reduction_test},
              {NULL, calculate_obliquity_ecliptic_test},
+             {NULL, calculate_local_sidereal_time_test},
              {NULL, NULL}};
