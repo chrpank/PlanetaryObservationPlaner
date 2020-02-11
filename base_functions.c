@@ -168,3 +168,48 @@ int calculate_obliquity_ecliptic(float *ecl, const float d) {
   *ecl = 23.4393 - 3.563E-7 * d;
   return 1;
 }
+
+int calculate_local_sidereal_time(const int year,              //
+                                  const int month,             //
+                                  const int day,               //
+                                  const float universal_time,  //
+                                  const float local_longitude, //
+                                  float *local_sidereal_time) {
+  float dummy_value;
+  float mean_anomaly_sun;
+  float argument_of_perihelion_sun;
+  float days;
+
+  if (!calculate_time_scale(year, month, day, 0.0, &days)) {
+    return 0;
+  }
+
+  if (!calculate_orbital_elements("sun",                       //
+                                  &dummy_value,                //
+                                  &dummy_value,                //
+                                  &argument_of_perihelion_sun, //
+                                  &dummy_value,                //
+                                  &dummy_value,                //
+                                  &mean_anomaly_sun,           //
+                                  days)) {
+    return 0;
+  }
+
+  float longitude_sun = mean_anomaly_sun + argument_of_perihelion_sun;
+  float greenwich_mean_sidereal_time_0 =
+      longitude_sun / 15.0 + 12.0 + (universal_time / 24.0) * 3.85 / 60.0;
+  float greenwich_mean_sidereal_time =
+      greenwich_mean_sidereal_time_0 + universal_time;
+  *local_sidereal_time = greenwich_mean_sidereal_time + local_longitude / 15.0;
+
+  if (*local_sidereal_time > 24.0) {
+    for (int i = 0; i < 1000; i++) {
+      *local_sidereal_time = *local_sidereal_time - 24.0;
+      if (*local_sidereal_time < 24.0) {
+        break;
+      }
+    }
+  }
+
+  return 1;
+}
