@@ -196,8 +196,9 @@ int calculate_local_sidereal_time(const int year,              //
   }
 
   float longitude_sun = mean_anomaly_sun + argument_of_perihelion_sun;
+  float correction = (universal_time / 24.0) * 3.85 / 60.0;
   float greenwich_mean_sidereal_time_0 =
-      longitude_sun / 15.0 + 12.0 + (universal_time / 24.0) * 3.85 / 60.0;
+      longitude_sun / 15.0 + 12.0 + correction;
   float greenwich_mean_sidereal_time =
       greenwich_mean_sidereal_time_0 + universal_time;
   *local_sidereal_time = greenwich_mean_sidereal_time + local_longitude / 15.0;
