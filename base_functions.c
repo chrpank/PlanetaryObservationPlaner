@@ -31,27 +31,27 @@ int calculate_time_scale(const int year, const int month, const int day,
   return 1;
 }
 
-int calculate_angle_reduction(float *angle) {
+int calculate_value_reduction(const float reduction_factor, float *value) {
   int reduction_successfull = 0;
 
-  if (*angle >= 0.0 && *angle <= 360.0) {
+  if (*value >= 0.0 && *value <= reduction_factor) {
     reduction_successfull = 1;
   }
 
-  if (*angle < 0.0) {
+  if (*value < 0.0) {
     for (int i = 0; i < 1000; i++) {
-      *angle = *angle + 360.0;
-      if (*angle > 0) {
+      *value = *value + reduction_factor;
+      if (*value > 0) {
         reduction_successfull = 1;
         break;
       }
     }
   }
 
-  if (*angle > 360.0) {
+  if (*value > reduction_factor) {
     for (int i = 0; i < 1000; i++) {
-      *angle = *angle - 360.0;
-      if (*angle < 360.0) {
+      *value = *value - reduction_factor;
+      if (*value < reduction_factor) {
         reduction_successfull = 1;
         break;
       }
@@ -156,10 +156,10 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
     case_found = 1;
   }
 
-  calculate_angle_reduction(N);
-  calculate_angle_reduction(i);
-  calculate_angle_reduction(w);
-  calculate_angle_reduction(M);
+  calculate_value_reduction(360.0, N);
+  calculate_value_reduction(360.0, i);
+  calculate_value_reduction(360.0, w);
+  calculate_value_reduction(360.0, M);
 
   return case_found;
 }
@@ -203,13 +203,8 @@ int calculate_local_sidereal_time(const int year,              //
       greenwich_mean_sidereal_time_0 + universal_time;
   *local_sidereal_time = greenwich_mean_sidereal_time + local_longitude / 15.0;
 
-  if (*local_sidereal_time > 24.0) {
-    for (int i = 0; i < 1000; i++) {
-      *local_sidereal_time = *local_sidereal_time - 24.0;
-      if (*local_sidereal_time < 24.0) {
-        break;
-      }
-    }
+  if (!calculate_value_reduction(24.0, local_sidereal_time)) {
+    return 0;
   }
 
   return 1;

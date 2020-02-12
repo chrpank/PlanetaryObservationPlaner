@@ -18,10 +18,11 @@ int calculate_time_scale(const int year, const int month, const int day,
 
 /**
  * Calculate angle reduction.
+ * param[in/out] reduction_factor The reduction factor.
  * param[in/out] angle The angle.
  * return not 0 if success, 0 otherwise.
  */
-int calculate_angle_reduction(float *angle);
+int calculate_value_reduction(const float reduction_factor, float *value);
 
 /**
  * Calculate orbital elements.
