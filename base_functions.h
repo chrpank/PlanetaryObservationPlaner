@@ -17,35 +17,41 @@ int calculate_time_scale(const int year, const int month, const int day,
                          const float ut, float *days);
 
 /**
- * Calculate angle reduction.
+ * Calculate value reduction.
  * param[in/out] reduction_factor The reduction factor.
- * param[in/out] angle The angle.
+ * param[in/out] value The angle.
  * return not 0 if success, 0 otherwise.
  */
 int calculate_value_reduction(const float reduction_factor, float *value);
 
 /**
  * Calculate orbital elements.
- * param[in} o The celestial object.
- * param[in/out] N The longitude of the ascending node.
- * param[in/out] i The inclination to the ecliptic.
- * param[in/out] w The argument of perihelion.
- * param[in/out] a The semi-major axis.
- * param[in/out] e The eccentricity.
- * param[in/out] M The mean anomaly.
- * param[in} d The days.
+ * param[in} celestial_object The celestial object.
+ * param[in/out] longitude_ascending_node The longitude of the ascending node.
+ * param[in/out] inclination_ecliptic The inclination to the ecliptic.
+ * param[in/out] argument_perihelion The argument of perihelion.
+ * param[in/out] semi_major_axis The semi-major axis.
+ * param[in/out] eccentricity The eccentricity.
+ * param[in/out] mean_anomaly The mean anomaly.
+ * param[in} days The days.
  * return not 0 if success, 0 otherwise.
  */
-int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
-                               float *a, float *e, float *M, const float d);
+int calculate_orbital_elements(const char *celestial_object,    //
+                               float *longitude_ascending_node, //
+                               float *inclination_ecliptic,     //
+                               float *argument_perihelion,      //
+                               float *semi_major_axis,          //
+                               float *eccentricity,             //
+                               float *mean_anomaly,             //
+                               const float days);
 
 /**
  * Calculate the obliquity of the ecliptic.
- * param[in/out] ecl The obliquity of the ecliptic.
- * param[in} d The days.
+ * param[in/out] obliquity_ecliptic The obliquity of the ecliptic.
+ * param[in} days The days.
  * return not 0 if success, 0 otherwise.
  */
-int calculate_obliquity_ecliptic(float *ecl, const float d);
+int calculate_obliquity_ecliptic(float *obliquity_ecliptic, const float days);
 
 /**
  * Calculate the local sidereal time.
