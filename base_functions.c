@@ -61,111 +61,117 @@ int calculate_value_reduction(const float reduction_factor, float *value) {
   return reduction_successfull;
 }
 
-int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
-                               float *a, float *e, float *M, const float d) {
+int calculate_orbital_elements(const char *celestial_object,    //
+                               float *longitude_ascending_node, //
+                               float *inclination_ecliptic,     //
+                               float *argument_perihelion,      //
+                               float *semi_major_axis,          //
+                               float *eccentricity,             //
+                               float *mean_anomaly,             //
+                               const float days) {
 
   int case_found = 0;
 
-  if (!strcmp(o, "sun")) {
-    *N = 0.0;
-    *i = 0.0;
-    *w = 282.9404 + 4.70935E-5 * d;
-    *a = 1.000000;
-    *e = 0.016709 - 1.151E-9 * d;
-    *M = 356.0470 + 0.9856002585 * d;
+  if (!strcmp(celestial_object, "sun")) {
+    *longitude_ascending_node = 0.0;
+    *inclination_ecliptic = 0.0;
+    *argument_perihelion = 282.9404 + 4.70935E-5 * days;
+    *semi_major_axis = 1.000000;
+    *eccentricity = 0.016709 - 1.151E-9 * days;
+    *mean_anomaly = 356.0470 + 0.9856002585 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "moon")) {
-    *N = 125.1228 - 0.0529538083 * d;
-    *i = 5.1454;
-    *w = 318.0634 + 0.1643573223 * d;
-    *a = 60.2666; // earth radii
-    *e = 0.054900;
-    *M = 115.3654 + 13.0649929509 * d;
+  if (!strcmp(celestial_object, "moon")) {
+    *longitude_ascending_node = 125.1228 - 0.0529538083 * days;
+    *inclination_ecliptic = 5.1454;
+    *argument_perihelion = 318.0634 + 0.1643573223 * days;
+    *semi_major_axis = 60.2666; // earth radii
+    *eccentricity = 0.054900;
+    *mean_anomaly = 115.3654 + 13.0649929509 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "mercury")) {
-    *N = 48.3313 + 3.24587E-5 * d;
-    *i = 7.0047 + 5.00E-8 * d;
-    *w = 29.1241 + 1.01444E-5 * d;
-    *a = 0.387098;
-    *e = 0.205635 + 5.59E-10 * d;
-    *M = 168.6562 + 4.0923344368 * d;
+  if (!strcmp(celestial_object, "mercury")) {
+    *longitude_ascending_node = 48.3313 + 3.24587E-5 * days;
+    *inclination_ecliptic = 7.0047 + 5.00E-8 * days;
+    *argument_perihelion = 29.1241 + 1.01444E-5 * days;
+    *semi_major_axis = 0.387098;
+    *eccentricity = 0.205635 + 5.59E-10 * days;
+    *mean_anomaly = 168.6562 + 4.0923344368 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "venus")) {
-    *N = 76.6799 + 2.46590E-5 * d;
-    *i = 3.3946 + 2.75E-8 * d;
-    *w = 54.8910 + 1.38374E-5 * d;
-    *a = 0.723330;
-    *e = 0.006773 - 1.302E-9 * d;
-    *M = 48.0052 + 1.6021302244 * d;
+  if (!strcmp(celestial_object, "venus")) {
+    *longitude_ascending_node = 76.6799 + 2.46590E-5 * days;
+    *inclination_ecliptic = 3.3946 + 2.75E-8 * days;
+    *argument_perihelion = 54.8910 + 1.38374E-5 * days;
+    *semi_major_axis = 0.723330;
+    *eccentricity = 0.006773 - 1.302E-9 * days;
+    *mean_anomaly = 48.0052 + 1.6021302244 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "mars")) {
-    *N = 49.5574 + 2.11081E-5 * d;
-    *i = 1.8497 - 1.78E-8 * d;
-    *w = 286.5016 + 2.92961E-5 * d;
-    *a = 1.523688;
-    *e = 0.093405 + 2.516E-9 * d;
-    *M = 18.6021 + 0.5240207766 * d;
+  if (!strcmp(celestial_object, "mars")) {
+    *longitude_ascending_node = 49.5574 + 2.11081E-5 * days;
+    *inclination_ecliptic = 1.8497 - 1.78E-8 * days;
+    *argument_perihelion = 286.5016 + 2.92961E-5 * days;
+    *semi_major_axis = 1.523688;
+    *eccentricity = 0.093405 + 2.516E-9 * days;
+    *mean_anomaly = 18.6021 + 0.5240207766 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "jupiter")) {
-    *N = 100.4542 + 2.76854E-5 * d;
-    *i = 1.3030 - 1.557E-7 * d;
-    *w = 273.8777 + 1.64505E-5 * d;
-    *a = 5.20256;
-    *e = 0.048498 + 4.469E-9 * d;
-    *M = 19.8950 + 0.0830853001 * d;
+  if (!strcmp(celestial_object, "jupiter")) {
+    *longitude_ascending_node = 100.4542 + 2.76854E-5 * days;
+    *inclination_ecliptic = 1.3030 - 1.557E-7 * days;
+    *argument_perihelion = 273.8777 + 1.64505E-5 * days;
+    *semi_major_axis = 5.20256;
+    *eccentricity = 0.048498 + 4.469E-9 * days;
+    *mean_anomaly = 19.8950 + 0.0830853001 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "saturn")) {
-    *N = 113.6634 + 2.38980E-5 * d;
-    *i = 2.4886 - 1.081E-7 * d;
-    *w = 339.3939 + 2.97661E-5 * d;
-    *a = 9.55475;
-    *e = 0.055546 - 9.499E-9 * d;
-    *M = 316.9670 + 0.0334442282 * d;
+  if (!strcmp(celestial_object, "saturn")) {
+    *longitude_ascending_node = 113.6634 + 2.38980E-5 * days;
+    *inclination_ecliptic = 2.4886 - 1.081E-7 * days;
+    *argument_perihelion = 339.3939 + 2.97661E-5 * days;
+    *semi_major_axis = 9.55475;
+    *eccentricity = 0.055546 - 9.499E-9 * days;
+    *mean_anomaly = 316.9670 + 0.0334442282 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "uranus")) {
-    *N = 74.0005 + 1.3978E-5 * d;
-    *i = 0.7733 + 1.9E-8 * d;
-    *w = 96.6612 + 3.0565E-5 * d;
-    *a = 19.18171 - 1.55E-8 * d;
-    *e = 0.047318 + 7.45E-9 * d;
-    *M = 142.5905 + 0.011725806 * d;
+  if (!strcmp(celestial_object, "uranus")) {
+    *longitude_ascending_node = 74.0005 + 1.3978E-5 * days;
+    *inclination_ecliptic = 0.7733 + 1.9E-8 * days;
+    *argument_perihelion = 96.6612 + 3.0565E-5 * days;
+    *semi_major_axis = 19.18171 - 1.55E-8 * days;
+    *eccentricity = 0.047318 + 7.45E-9 * days;
+    *mean_anomaly = 142.5905 + 0.011725806 * days;
     case_found = 1;
   }
 
-  if (!strcmp(o, "neptune")) {
-    *N = 131.7806 + 3.0173E-5 * d;
-    *i = 1.7700 - 2.55E-7 * d;
-    *w = 272.8461 - 6.027E-6 * d;
-    *a = 30.05826 + 3.313E-8 * d;
-    *e = 0.008606 + 2.15E-9 * d;
-    *M = 260.2471 + 0.005995147 * d;
+  if (!strcmp(celestial_object, "neptune")) {
+    *longitude_ascending_node = 131.7806 + 3.0173E-5 * days;
+    *inclination_ecliptic = 1.7700 - 2.55E-7 * days;
+    *argument_perihelion = 272.8461 - 6.027E-6 * days;
+    *semi_major_axis = 30.05826 + 3.313E-8 * days;
+    *eccentricity = 0.008606 + 2.15E-9 * days;
+    *mean_anomaly = 260.2471 + 0.005995147 * days;
     case_found = 1;
   }
 
-  calculate_value_reduction(360.0, N);
-  calculate_value_reduction(360.0, i);
-  calculate_value_reduction(360.0, w);
-  calculate_value_reduction(360.0, M);
+  calculate_value_reduction(360.0, longitude_ascending_node);
+  calculate_value_reduction(360.0, inclination_ecliptic);
+  calculate_value_reduction(360.0, argument_perihelion);
+  calculate_value_reduction(360.0, mean_anomaly);
 
   return case_found;
 }
 
-int calculate_obliquity_ecliptic(float *ecl, const float d) {
-  *ecl = 23.4393 - 3.563E-7 * d;
+int calculate_obliquity_ecliptic(float *obliquity_ecliptic, const float days) {
+  *obliquity_ecliptic = 23.4393 - 3.563E-7 * days;
   return 1;
 }
 
@@ -177,7 +183,7 @@ int calculate_local_sidereal_time(const int year,              //
                                   float *local_sidereal_time) {
   float dummy_value;
   float mean_anomaly_sun;
-  float argument_of_perihelion_sun;
+  float argument_perihelion_sun;
   float days;
 
   if (!calculate_time_scale(year, month, day, 0.0, &days)) {
@@ -187,7 +193,7 @@ int calculate_local_sidereal_time(const int year,              //
   if (!calculate_orbital_elements("sun",                       //
                                   &dummy_value,                //
                                   &dummy_value,                //
-                                  &argument_of_perihelion_sun, //
+                                  &argument_perihelion_sun, //
                                   &dummy_value,                //
                                   &dummy_value,                //
                                   &mean_anomaly_sun,           //
@@ -195,7 +201,7 @@ int calculate_local_sidereal_time(const int year,              //
     return 0;
   }
 
-  float longitude_sun = mean_anomaly_sun + argument_of_perihelion_sun;
+  float longitude_sun = mean_anomaly_sun + argument_perihelion_sun;
   float correction = (universal_time / 24.0) * 3.85 / 60.0;
   float greenwich_mean_sidereal_time_0 =
       longitude_sun / 15.0 + 12.0 + correction;
