@@ -2,6 +2,7 @@
  * Christian Pankratz 2020.
  */
 
+#include <math.h>
 #include <string.h>
 
 /**
@@ -69,3 +70,18 @@ int calculate_local_sidereal_time(const int year,              //
                                   const float universal_time,  //
                                   const float local_longitude, //
                                   float *local_sidereal_time);
+
+/**
+ * Calculate true anomaly and distance.
+ * param[in} mean_anomaly The mean anomaly.
+ * param[in} eccentricity The eccentricity.
+ * param[in} semi_major_axis The semi major axis.
+ * param[in/out] distance The distance.
+ * param[in/out] true_anomaly The true anomaly.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_true_anomaly(const float mean_anomaly,    //
+                           const float eccentricity,    //
+                           const float semi_major_axis, //
+                           float *distance,             //
+                           float *true_anomaly);
