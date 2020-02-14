@@ -285,7 +285,8 @@ void calculate_local_sidereal_time_test(void) {
 void calculate_true_anomaly_test(void) {
   float distance = 0.0;
   float true_anomaly = 1.0;
-  const float mean_anomaly = 0.0;
+
+  const float mean_anomaly = 180.0;
   const float eccentricity = 0.0;
   const float semi_major_axis = 1.0;
 
@@ -296,7 +297,7 @@ void calculate_true_anomaly_test(void) {
                                     &true_anomaly) != 0);
 
   TEST_CHECK(distance == 1.0);
-  TEST_CHECK(true_anomaly == 0.0);
+  TEST_CHECK(true_anomaly == 180.0);
 }
 
 TEST_LIST = {{NULL, calculate_time_scale_test},
