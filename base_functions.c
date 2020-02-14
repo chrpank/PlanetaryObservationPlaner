@@ -190,13 +190,13 @@ int calculate_local_sidereal_time(const int year,              //
     return 0;
   }
 
-  if (!calculate_orbital_elements("sun",                       //
-                                  &dummy_value,                //
-                                  &dummy_value,                //
+  if (!calculate_orbital_elements("sun",                    //
+                                  &dummy_value,             //
+                                  &dummy_value,             //
                                   &argument_perihelion_sun, //
-                                  &dummy_value,                //
-                                  &dummy_value,                //
-                                  &mean_anomaly_sun,           //
+                                  &dummy_value,             //
+                                  &dummy_value,             //
+                                  &mean_anomaly_sun,        //
                                   days)) {
     return 0;
   }
@@ -214,4 +214,46 @@ int calculate_local_sidereal_time(const int year,              //
   }
 
   return 1;
+}
+
+int calculate_true_anomaly(const float mean_anomaly,    //
+                           const float eccentricity,    //
+                           const float semi_major_axis, //
+                           float *distance,             //
+                           float *true_anomaly) {
+  float radians_to_degree = (180.0 / M_PI);
+  float degree_to_radians = 1.0 / radians_to_degree;
+  float eccentric_anomaly_0 =
+      mean_anomaly +
+      eccentricity * radians_to_degree * sin(mean_anomaly * degree_to_radians) *
+          (1.0 + eccentricity * cos(mean_anomaly * degree_to_radians));
+
+  float found_solution = 0;
+  float eccentric_anomaly = 0;
+  for (int index = 0; index < 1000; index++) {
+    eccentric_anomaly =
+        eccentric_anomaly_0 -
+        (eccentric_anomaly_0 -
+         eccentricity * radians_to_degree *
+             sin(eccentric_anomaly_0 * degree_to_radians) -
+         mean_anomaly) /
+            (1.0 - eccentricity * cos(eccentric_anomaly_0 * degree_to_radians));
+    eccentric_anomaly_0 = eccentric_anomaly;
+    if (fabs(eccentric_anomaly_0 - eccentric_anomaly) < 0.001) {
+      found_solution = 1;
+      break;
+    }
+  }
+
+  float true_anomaly_x =
+      semi_major_axis *
+      (cos(eccentric_anomaly * degree_to_radians) - eccentricity);
+  float true_anomaly_y =
+      semi_major_axis * (sqrt(1.0 - eccentricity * eccentricity) *
+                         sin(eccentric_anomaly * degree_to_radians));
+  *true_anomaly = atan2(true_anomaly_y, true_anomaly_x);
+  *distance =
+      sqrt(true_anomaly_x * true_anomaly_x + true_anomaly_y * true_anomaly_y);
+
+  return found_solution;
 }
