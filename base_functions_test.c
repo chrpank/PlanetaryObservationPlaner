@@ -282,9 +282,27 @@ void calculate_local_sidereal_time_test(void) {
   TEST_CHECK(fabs(local_sidereal_time - local_sidereal_time_goal) < 0.01f);
 }
 
+void calculate_true_anomaly_test(void) {
+  float distance = 0.0;
+  float true_anomaly = 1.0;
+  const float mean_anomaly = 0.0;
+  const float eccentricity = 0.0;
+  const float semi_major_axis = 1.0;
+
+  TEST_CHECK(calculate_true_anomaly(mean_anomaly,    //
+                                    eccentricity,    //
+                                    semi_major_axis, //
+                                    &distance,       //
+                                    &true_anomaly) != 0);
+
+  TEST_CHECK(distance == 1.0);
+  TEST_CHECK(true_anomaly == 0.0);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
              {NULL, calculate_obliquity_ecliptic_test},
              {NULL, calculate_local_sidereal_time_test},
+             {NULL, calculate_true_anomaly_test},
              {NULL, NULL}};
