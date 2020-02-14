@@ -251,7 +251,11 @@ int calculate_true_anomaly(const float mean_anomaly,    //
   float true_anomaly_y =
       semi_major_axis * (sqrt(1.0 - eccentricity * eccentricity) *
                          sin(eccentric_anomaly * degree_to_radians));
+
   *true_anomaly = atan2(true_anomaly_y, true_anomaly_x);
+  *true_anomaly *= radians_to_degree;
+  calculate_value_reduction(360.0, true_anomaly);
+
   *distance =
       sqrt(true_anomaly_x * true_anomaly_x + true_anomaly_y * true_anomaly_y);
 
