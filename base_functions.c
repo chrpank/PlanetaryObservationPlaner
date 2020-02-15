@@ -221,6 +221,13 @@ int calculate_true_anomaly(const float mean_anomaly,    //
                            const float semi_major_axis, //
                            float *distance,             //
                            float *true_anomaly) {
+  if (mean_anomaly > 360.0 || mean_anomaly < 0.0) {
+    return 0;
+  }
+  if (eccentricity > 1.0 || eccentricity < 0.0) {
+    return 0;
+  }
+
   float radians_to_degree = (180.0 / M_PI);
   float degree_to_radians = 1.0 / radians_to_degree;
   float eccentric_anomaly_0 =
