@@ -261,7 +261,9 @@ int calculate_true_anomaly(const float mean_anomaly,    //
 
   *true_anomaly = atan2(true_anomaly_y, true_anomaly_x);
   *true_anomaly *= radians_to_degree;
-  calculate_value_reduction(360.0, true_anomaly);
+  if (!calculate_value_reduction(360.0, true_anomaly)) {
+    return 0;
+  }
 
   *distance =
       sqrt(true_anomaly_x * true_anomaly_x + true_anomaly_y * true_anomaly_y);
