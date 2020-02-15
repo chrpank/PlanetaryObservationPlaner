@@ -298,6 +298,12 @@ void calculate_true_anomaly_test(void) {
 
   TEST_CHECK(distance == 1.0);
   TEST_CHECK(true_anomaly == 180.0);
+
+  float value;
+  TEST_CHECK(calculate_true_anomaly(+361.0, +0.0, +1.0, &value, &value) == 0);
+  TEST_CHECK(calculate_true_anomaly(-1.000, +0.0, +1.0, &value, &value) == 0);
+  TEST_CHECK(calculate_true_anomaly(+180.0, +1.1, +1.0, &value, &value) == 0);
+  TEST_CHECK(calculate_true_anomaly(+180.0, -0.1, +1.0, &value, &value) == 0);
 }
 
 TEST_LIST = {{NULL, calculate_time_scale_test},
