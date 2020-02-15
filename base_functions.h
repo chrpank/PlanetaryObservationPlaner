@@ -85,3 +85,28 @@ int calculate_true_anomaly(const float mean_anomaly,    //
                            const float semi_major_axis, //
                            float *distance,             //
                            float *true_anomaly);
+
+/**
+ * Calculate true position in space.
+ * param[in} distance The distance.
+ * param[in} longitude_ascending_node The longitude of the ascending node.
+ * param[in} true_anomaly The true anomaly.
+ * param[in] argument_perihelion The argument of the perihelion.
+ * param[in] inclination_ecliptic The inclination of the ecliptic.
+ * param[in/out] x_heliocentric The x position heliocentric geocentric for moon
+ * param[in/out] y_heliocentric The y position heliocentric geocentric for moon
+ * param[in/out] z_heliocentric The z position heliocentric geocentric for moon
+ * param[in/out] ecliptic_longitude The ecliptic longitude.
+ * param[in/out] ecliptic_latitude The ecliptic latitude.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_position_in_space(const float distance,                 //
+                                const float longitude_ascending_node, //
+                                const float true_anomaly,             //
+                                const float argument_perihelion,      //
+                                const float inclination_ecliptic,     //
+                                float *x_heliocentric,                //
+                                float *y_heliocentric,                //
+                                float *z_heliocentric,                //
+                                float *ecliptic_longitude,            //
+                                float *ecliptic_latitude);
