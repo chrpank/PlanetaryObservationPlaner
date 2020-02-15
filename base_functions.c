@@ -261,10 +261,51 @@ int calculate_true_anomaly(const float mean_anomaly,    //
 
   *true_anomaly = atan2(true_anomaly_y, true_anomaly_x);
   *true_anomaly *= radians_to_degree;
-  calculate_value_reduction(360.0, true_anomaly);
+  if (!calculate_value_reduction(360.0, true_anomaly)) {
+    return 0;
+  }
 
   *distance =
       sqrt(true_anomaly_x * true_anomaly_x + true_anomaly_y * true_anomaly_y);
 
   return found_solution;
+}
+
+int calculate_position_in_space(const float distance,                 //
+                                const float longitude_ascending_node, //
+                                const float true_anomaly,             //
+                                const float argument_perihelion,      //
+                                const float inclination_ecliptic,     //
+                                float *x_heliocentric,                //
+                                float *y_heliocentric,                //
+                                float *z_heliocentric,                //
+                                float *ecliptic_longitude,            //
+                                float *ecliptic_latitude) {
+  float degree_to_radians = (M_PI / 180.0);
+
+  *x_heliocentric = // geocentric for moon
+      distance *
+      (cos(longitude_ascending_node * degree_to_radians) *
+           cos((true_anomaly + argument_perihelion) * degree_to_radians) -
+       sin(longitude_ascending_node * degree_to_radians) *
+           sin((true_anomaly + argument_perihelion) * degree_to_radians) *
+           cos(inclination_ecliptic * degree_to_radians));
+  *y_heliocentric = // geocentric for moon
+      distance *
+      (sin(longitude_ascending_node * degree_to_radians) *
+           cos((true_anomaly + argument_perihelion) * degree_to_radians) +
+       cos(longitude_ascending_node * degree_to_radians) *
+           sin((true_anomaly + argument_perihelion) * degree_to_radians) *
+           cos(inclination_ecliptic * degree_to_radians));
+  *z_heliocentric = // geocentric for moon
+      distance *
+      (sin((true_anomaly + argument_perihelion) * degree_to_radians) *
+       sin(inclination_ecliptic * degree_to_radians));
+
+  *ecliptic_longitude = atan2(*y_heliocentric, *x_heliocentric);
+  *ecliptic_latitude =
+      atan2(*z_heliocentric, sqrt((*x_heliocentric) * (*x_heliocentric) +
+                                  (*y_heliocentric) * (*y_heliocentric)));
+
+  return 1;
 }

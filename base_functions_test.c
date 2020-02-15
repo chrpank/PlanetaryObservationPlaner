@@ -306,10 +306,40 @@ void calculate_true_anomaly_test(void) {
   TEST_CHECK(calculate_true_anomaly(+180.0, -0.1, +1.0, &value, &value) == 0);
 }
 
+void calculate_position_in_space_test(void) {
+  float x_value = 0.0;
+  float y_value = 0.0;
+  float z_value = 0.0;
+  float ecliptic_longitude = 0.0;
+  float ecliptic_latitude = 0.0;
+
+  TEST_CHECK(calculate_position_in_space(1.0,                 //
+                                         2.0,                 //
+                                         3.0,                 //
+                                         4.0,                 //
+                                         5.0,                 //
+                                         &x_value,            //
+                                         &y_value,            //
+                                         &z_value,            //
+                                         &ecliptic_longitude, //
+                                         &ecliptic_latitude) != 0);
+  TEST_CHECK(x_value != 0.0);
+  TEST_CHECK(y_value != 0.0);
+  TEST_CHECK(z_value != 0.0);
+  TEST_CHECK(ecliptic_longitude != 0.0);
+  TEST_CHECK(ecliptic_latitude != 0.0);
+
+  float distance = sqrt(x_value * x_value + //
+                        y_value * y_value + //
+                        z_value * z_value);
+  TEST_CHECK(fabs(distance - 1.0) < 0.001);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
              {NULL, calculate_obliquity_ecliptic_test},
              {NULL, calculate_local_sidereal_time_test},
              {NULL, calculate_true_anomaly_test},
+             {NULL, calculate_position_in_space_test},
              {NULL, NULL}};
