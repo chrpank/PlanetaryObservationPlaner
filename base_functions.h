@@ -110,3 +110,47 @@ int calculate_position_in_space(const float distance,                 //
                                 float *z_heliocentric,                //
                                 float *ecliptic_longitude,            //
                                 float *ecliptic_latitude);
+
+/**
+ * Calculate the pertubations of the moon.
+ * param[in} Ms The.
+ * param[in} Mm The.
+ * param[in} Nm The.
+ * param[in} ws The.
+ * param[in} wm The.
+ * param[in/out] moon_longitude The corrected ecliptic longitude.
+ * param[in/out] moon_latitude The corrected ecliptic latitude.
+ * param[in/out} moon_distance The corrected distance.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_pertubations_moon(const float Ms,        //
+                                const float Mm,        //
+                                const float Nm,        //
+                                const float ws,        //
+                                const float wm,        //
+                                float *moon_longitude, //
+                                float *moon_latitude,  //
+                                float *moon_distance);
+
+/**
+ * Calculate the pertubations of jupiter saturn and uranus.
+ * param[in} Mj The.
+ * param[in} Ms The.
+ * param[in} Mu The.
+ * param[in/out] jupiter_longitude The corrected longitude of jupiter.
+ * param[in/out] jupiter_latitude The corrected latitude of jupiter.
+ * param[in/out] saturn_longitude The corrected longitude of saturn.
+ * param[in/out] saturn_latitude The corrected latitude of saturn.
+ * param[in/out] uranus_longitude The corrected longitude of uranus.
+ * param[in/out] uranus_latitude The corrected latitude of uranus.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_pertubations_planets(const float Mj,           //
+                                   const float Ms,           //
+                                   const float Mu,           //
+                                   float *jupiter_longitude, //
+                                   float *jupiter_latitude,  //
+                                   float *saturn_longitude,  //
+                                   float *saturn_latitude,   //
+                                   float *uranus_longitude,  //
+                                   float *uranus_latitude);
