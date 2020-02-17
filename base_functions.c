@@ -310,88 +310,81 @@ int calculate_position_in_space(const float distance,                 //
   return 1;
 }
 
-int calculate_pertubations_moon(const float Ms,        //
-                                const float Mm,        //
-                                const float Nm,        //
-                                const float ws,        //
-                                const float wm,        //
-                                float *moon_longitude, //
-                                float *moon_latitude,  //
-                                float *moon_distance) {
-  float degree_to_radians = (M_PI / 180.0);
+int calculate_pertubations_moon(const float Ms, //
+                                const float Mm, //
+                                const float Nm, //
+                                const float ws, //
+                                const float wm, //
+                                float *lonecl,  //
+                                float *latecl,  //
+                                float *distance) {
+  float deg2rad = (M_PI / 180.0);
 
-  float Ls = Ms + ws;
-  float Lm = Mm + wm + Nm;
-  float D = Lm - Ls;
-  float F = Lm - Nm;
+  float Ls = Ms + ws;      // Mean Longitude of the Sun  (Ns=0)
+  float Lm = Mm + wm + Nm; // Mean longitude of the Moon
+  float D = Lm - Ls;       // Mean elongation of the Moon
+  float F = Lm - Nm;       // Argument of latitude for the Moon
 
-  *moon_longitude +=                                       //
-      -1.2740 * sin(degree_to_radians * (Mm - 2 * D))      //
-      + 0.658 * sin(degree_to_radians * (2 * D))           //
-      - 0.186 * sin(degree_to_radians * (Ms))              //
-      - 0.059 * sin(degree_to_radians * (2 * Mm - 2 * D))  //
-      - 0.057 * sin(degree_to_radians * (Mm - 2 * D + Ms)) //
-      + 0.053 * sin(degree_to_radians * (Mm + 2 * D))      //
-      + 0.046 * sin(degree_to_radians * (2 * D - Ms))      //
-      + 0.041 * sin(degree_to_radians * (Mm - Ms))         //
-      - 0.035 * sin(degree_to_radians * (D))               //
-      - 0.031 * sin(degree_to_radians * (Mm + Ms))         //
-      - 0.015 * sin(degree_to_radians * (2 * F - 2 * D))   //
-      + 0.011 * sin(degree_to_radians * (Mm - 4 * D));
+  *lonecl += -1.2740 * sin(deg2rad * (Mm - 2 * D))      //
+             + 0.658 * sin(deg2rad * (2 * D))           //
+             - 0.186 * sin(deg2rad * (Ms))              //
+             - 0.059 * sin(deg2rad * (2 * Mm - 2 * D))  //
+             - 0.057 * sin(deg2rad * (Mm - 2 * D + Ms)) //
+             + 0.053 * sin(deg2rad * (Mm + 2 * D))      //
+             + 0.046 * sin(deg2rad * (2 * D - Ms))      //
+             + 0.041 * sin(deg2rad * (Mm - Ms))         //
+             - 0.035 * sin(deg2rad * (D))               //
+             - 0.031 * sin(deg2rad * (Mm + Ms))         //
+             - 0.015 * sin(deg2rad * (2 * F - 2 * D))   //
+             + 0.011 * sin(deg2rad * (Mm - 4 * D));
 
-  *moon_latitude +=                                       //
-      -0.1730 * sin(degree_to_radians * (F - 2 * D))      //
-      - 0.055 * sin(degree_to_radians * (Mm - F - 2 * D)) //
-      - 0.046 * sin(degree_to_radians * (Mm + F - 2 * D)) //
-      + 0.033 * sin(degree_to_radians * (F + 2 * D))      //
-      + 0.017 * sin(degree_to_radians * (2 * Mm + F));
+  *latecl += -0.1730 * sin(deg2rad * (F - 2 * D))      //
+             - 0.055 * sin(deg2rad * (Mm - F - 2 * D)) //
+             - 0.046 * sin(deg2rad * (Mm + F - 2 * D)) //
+             + 0.033 * sin(deg2rad * (F + 2 * D))      //
+             + 0.017 * sin(deg2rad * (2 * Mm + F));
 
-  *moon_distance +=                                  //
-      -0.580 * cos(degree_to_radians * (Mm - 2 * D)) //
-      - 0.46 * cos(degree_to_radians * (2 * D));     //
+  *distance += -0.580 * cos(deg2rad * (Mm - 2 * D)) //
+               - 0.46 * cos(deg2rad * (2 * D));     //
 
   return 1;
 }
 
-int calculate_pertubations_planets(const float Mj,           //
-                                   const float Ms,           //
-                                   const float Mu,           //
-                                   float *jupiter_longitude, //
-                                   float *jupiter_latitude,  //
-                                   float *saturn_longitude,  //
-                                   float *saturn_latitude,   //
-                                   float *uranus_longitude,  //
-                                   float *uranus_latitude) {
-  float degree_to_radians = (M_PI / 180.0);
+int calculate_pertubations_planets(const float Mj,  //
+                                   const float Ms,  //
+                                   const float Mu,  //
+                                   float *lonecl_j, //
+                                   float *latecl_j, //
+                                   float *lonecl_s, //
+                                   float *latecl_s, //
+                                   float *lonecl_u, //
+                                   float *latecl_u) {
+  float deg2rad = (M_PI / 180.0);
 
-  *jupiter_longitude +=                                           //
-      -0.3320 * sin(degree_to_radians * (2 * Mj - 5 * Ms - 67.6)) //
-      - 0.056 * sin(degree_to_radians * (2 * Mj - 2 * Ms + 21))   //
-      + 0.042 * sin(degree_to_radians * (3 * Mj - 5 * Ms + 21))   //
-      - 0.036 * sin(degree_to_radians * (Mj - 2 * Ms))            //
-      + 0.022 * cos(degree_to_radians * (Mj - Ms))                //
-      + 0.023 * sin(degree_to_radians * (2 * Mj - 3 * Ms + 52))   //
-      - 0.016 * sin(degree_to_radians * (Mj - 5 * Ms - 69));
+  *lonecl_j += -0.3320 * sin(deg2rad * (2 * Mj - 5 * Ms - 67.6)) //
+               - 0.056 * sin(deg2rad * (2 * Mj - 2 * Ms + 21))   //
+               + 0.042 * sin(deg2rad * (3 * Mj - 5 * Ms + 21))   //
+               - 0.036 * sin(deg2rad * (Mj - 2 * Ms))            //
+               + 0.022 * cos(deg2rad * (Mj - Ms))                //
+               + 0.023 * sin(deg2rad * (2 * Mj - 3 * Ms + 52))   //
+               - 0.016 * sin(deg2rad * (Mj - 5 * Ms - 69));
 
-  *jupiter_latitude += 0;
+  *latecl_j += 0;
 
-  *saturn_longitude +=                                            //
-      +0.8120 * sin(degree_to_radians * (2 * Mj - 5 * Ms - 67.6)) //
-      - 0.229 * cos(degree_to_radians * (2 * Mj - 4 * Ms - 2))    //
-      + 0.119 * sin(degree_to_radians * (Mj - 2 * Ms - 3))        //
-      + 0.046 * sin(degree_to_radians * (2 * Mj - 6 * Ms - 69))   //
-      + 0.014 * sin(degree_to_radians * (Mj - 3 * Ms + 32));
+  *lonecl_s += +0.8120 * sin(deg2rad * (2 * Mj - 5 * Ms - 67.6)) //
+               - 0.229 * cos(deg2rad * (2 * Mj - 4 * Ms - 2))    //
+               + 0.119 * sin(deg2rad * (Mj - 2 * Ms - 3))        //
+               + 0.046 * sin(deg2rad * (2 * Mj - 6 * Ms - 69))   //
+               + 0.014 * sin(deg2rad * (Mj - 3 * Ms + 32));
 
-  *saturn_latitude +=                                          //
-      -0.0200 * cos(degree_to_radians * (2 * Mj - 4 * Ms - 2)) //
-      + 0.018 * sin(degree_to_radians * (2 * Mj - 6 * Ms - 49));
+  *latecl_s += -0.0200 * cos(deg2rad * (2 * Mj - 4 * Ms - 2)) //
+               + 0.018 * sin(deg2rad * (2 * Mj - 6 * Ms - 49));
 
-  *uranus_longitude +=                                      //
-      +0.0400 * sin(degree_to_radians * (Ms - 2 * Mu + 6))  //
-      + 0.035 * sin(degree_to_radians * (Ms - 3 * Mu + 33)) //
-      - 0.015 * sin(degree_to_radians * (Mj - Mu + 20));
+  *lonecl_u += +0.0400 * sin(deg2rad * (Ms - 2 * Mu + 6))  //
+               + 0.035 * sin(deg2rad * (Ms - 3 * Mu + 33)) //
+               - 0.015 * sin(deg2rad * (Mj - Mu + 20));
 
-  *uranus_latitude += 0;
+  *latecl_u += 0;
 
   return 1;
 }
