@@ -221,33 +221,33 @@ void calculate_orbital_elements_test(void) {
 
 void calculate_value_reduction_test(void) {
   float value;
-  float reduction_factor = 360.0;
+  float factor = 360.0;
 
   value = -1000.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) != 0);
-  TEST_CHECK(value >= 0.0 && value <= reduction_factor);
+  TEST_CHECK(calculate_value_reduction(factor, &value) != 0);
+  TEST_CHECK(value >= 0.0 && value <= factor);
 
   value = +1000.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) != 0);
-  TEST_CHECK(value >= 0.0 && value <= reduction_factor);
+  TEST_CHECK(calculate_value_reduction(factor, &value) != 0);
+  TEST_CHECK(value >= 0.0 && value <= factor);
 
   value = 0.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) != 0);
+  TEST_CHECK(calculate_value_reduction(factor, &value) != 0);
   TEST_CHECK(value == 0.0);
 
   value = 180.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) != 0);
+  TEST_CHECK(calculate_value_reduction(factor, &value) != 0);
   TEST_CHECK(value == 180.0);
 
   value = 360.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) != 0);
-  TEST_CHECK(value == reduction_factor);
+  TEST_CHECK(calculate_value_reduction(factor, &value) != 0);
+  TEST_CHECK(value == factor);
 
   value = -1000000.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) == 0);
+  TEST_CHECK(calculate_value_reduction(factor, &value) == 0);
 
   value = +1000000.0;
-  TEST_CHECK(calculate_value_reduction(reduction_factor, &value) == 0);
+  TEST_CHECK(calculate_value_reduction(factor, &value) == 0);
 }
 
 void calculate_obliquity_ecliptic_test(void) {
@@ -261,9 +261,9 @@ void calculate_obliquity_ecliptic_test(void) {
 }
 
 void calculate_local_sidereal_time_test(void) {
-  int year = 2025;
-  int month = 2;
-  int day = 12;
+  int y = 2025;
+  int m = 2;
+  int d = 12;
 
   float hour = 19.0;
   float minute = 35.0;
@@ -271,33 +271,28 @@ void calculate_local_sidereal_time_test(void) {
 
   float local_longitude = 13.1;
 
-  float universal_time = hour + minute / 60.0 + second / 3600.0;
-  float local_sidereal_time_goal = 6.0;
-  float local_sidereal_time;
+  float UT = hour + minute / 60.0 + second / 3600.0;
+  float LST_ = 6.0;
+  float LST;
 
-  TEST_CHECK(calculate_local_sidereal_time(year, month, day, universal_time,
-                                           local_longitude,
-                                           &local_sidereal_time) != 0);
+  TEST_CHECK(
+      calculate_local_sidereal_time(y, m, d, UT, local_longitude, &LST) != 0);
 
-  TEST_CHECK(fabs(local_sidereal_time - local_sidereal_time_goal) < 0.01f);
+  TEST_CHECK(fabs(LST - LST_) < 0.01f);
 }
 
 void calculate_true_anomaly_test(void) {
-  float distance = 0.0;
-  float true_anomaly = 1.0;
+  float r = 0.0;
+  float v = 1.0;
 
-  const float mean_anomaly = 180.0;
-  const float eccentricity = 0.0;
-  const float semi_major_axis = 1.0;
+  const float M = 180.0;
+  const float e = 0.0;
+  const float a = 1.0;
 
-  TEST_CHECK(calculate_true_anomaly(mean_anomaly,    //
-                                    eccentricity,    //
-                                    semi_major_axis, //
-                                    &distance,       //
-                                    &true_anomaly) != 0);
+  TEST_CHECK(calculate_true_anomaly(M, e, a, &r, &v) != 0);
 
-  TEST_CHECK(distance == 1.0);
-  TEST_CHECK(true_anomaly == 180.0);
+  TEST_CHECK(r == 1.0);
+  TEST_CHECK(v == 180.0);
 
   float value;
   TEST_CHECK(calculate_true_anomaly(+361.0, +0.0, +1.0, &value, &value) == 0);
@@ -307,31 +302,21 @@ void calculate_true_anomaly_test(void) {
 }
 
 void calculate_position_in_space_test(void) {
-  float x_value = 0.0;
-  float y_value = 0.0;
-  float z_value = 0.0;
-  float ecliptic_longitude = 0.0;
-  float ecliptic_latitude = 0.0;
+  float x = 0.0;
+  float y = 0.0;
+  float z = 0.0;
+  float lonecl = 0.0;
+  float latecl = 0.0;
 
-  TEST_CHECK(calculate_position_in_space(1.0,                 //
-                                         2.0,                 //
-                                         3.0,                 //
-                                         4.0,                 //
-                                         5.0,                 //
-                                         &x_value,            //
-                                         &y_value,            //
-                                         &z_value,            //
-                                         &ecliptic_longitude, //
-                                         &ecliptic_latitude) != 0);
-  TEST_CHECK(x_value != 0.0);
-  TEST_CHECK(y_value != 0.0);
-  TEST_CHECK(z_value != 0.0);
-  TEST_CHECK(ecliptic_longitude != 0.0);
-  TEST_CHECK(ecliptic_latitude != 0.0);
+  TEST_CHECK(calculate_position_in_space(1.0, 2.0, 3.0, 4.0, 5.0, &x, &y, &z,
+                                         &lonecl, &latecl) != 0);
+  TEST_CHECK(x != 0.0);
+  TEST_CHECK(y != 0.0);
+  TEST_CHECK(z != 0.0);
+  TEST_CHECK(lonecl != 0.0);
+  TEST_CHECK(latecl != 0.0);
 
-  float distance = sqrt(x_value * x_value + //
-                        y_value * y_value + //
-                        z_value * z_value);
+  float distance = sqrt(x * x + y * y + z * z);
   TEST_CHECK(fabs(distance - 1.0) < 0.001);
 }
 
@@ -341,14 +326,8 @@ void calculate_pertubations_moon_test(void) {
   float value2 = 0.0;
   float value3 = 0.0;
 
-  TEST_CHECK(calculate_pertubations_moon(1.0,     //
-                                         2.0,     //
-                                         3.0,     //
-                                         4.0,     //
-                                         5.0,     //
-                                         &value1, //
-                                         &value2, //
-                                         &value3) != 0);
+  TEST_CHECK(calculate_pertubations_moon(1.0, 2.0, 3.0, 4.0, 5.0, &value1,
+                                         &value2, &value3) != 0);
 
   TEST_CHECK(value1 != 0);
   TEST_CHECK(value2 != 0);
@@ -364,14 +343,8 @@ void calculate_pertubations_planets_test(void) {
   float lonecl_u = 0.0;
   float latecl_u = 0.0;
 
-  TEST_CHECK(calculate_pertubations_planets(1.0,       //
-                                            2.0,       //
-                                            3.0,       //
-                                            &lonecl_j, //
-                                            &latecl_j, //
-                                            &lonecl_s, //
-                                            &latecl_s, //
-                                            &lonecl_u, //
+  TEST_CHECK(calculate_pertubations_planets(1.0, 2.0, 3.0, &lonecl_j, &latecl_j,
+                                            &lonecl_s, &latecl_s, &lonecl_u,
                                             &latecl_u) != 0);
 
   TEST_CHECK(lonecl_j != 0 || latecl_j != 0);

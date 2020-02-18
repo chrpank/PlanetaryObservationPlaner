@@ -6,151 +6,124 @@
 #include <string.h>
 
 /**
- * Calculate days from a date.
- * param[in] year The year.
- * param[in] month The month.
- * param[in] day The day.
- * param[in] ut The universal time.
- * param[in/out] days The days.
- * return not 0 if success, 0 otherwise.
+ * calculate days from a date
+ * param[in] year the year
+ * param[in] month the month
+ * param[in] day the day
+ * param[in] ut the universal time
+ * param[in/out] days the days
+ * return not 0 if success, 0 otherwise
  */
-int calculate_time_scale(const int year, const int month, const int day,
-                         const float ut, float *days);
+int calculate_time_scale(const int y, const int month, const int day,
+                         const float ut, float *d);
 
 /**
- * Calculate value reduction.
- * param[in/out] reduction_factor The reduction factor.
- * param[in/out] value The angle.
- * return not 0 if success, 0 otherwise.
+ * calculate value reduction
+ * param[in/out] factor the reduction factor
+ * param[in/out] value the angle
+ * return not 0 if success, 0 otherwise
  */
-int calculate_value_reduction(const float reduction_factor, float *value);
+int calculate_value_reduction(const float factor, float *value);
 
 /**
- * Calculate orbital elements.
- * param[in} celestial_object The celestial object.
- * param[in/out] longitude_ascending_node The longitude of the ascending node.
- * param[in/out] inclination_ecliptic The inclination to the ecliptic.
- * param[in/out] argument_perihelion The argument of perihelion.
- * param[in/out] semi_major_axis The semi-major axis.
- * param[in/out] eccentricity The eccentricity.
- * param[in/out] mean_anomaly The mean anomaly.
- * param[in} days The days.
- * return not 0 if success, 0 otherwise.
+ * calculate orbital elements
+ * param[in} o the celestial object
+ * param[in/out] N the longitude of the ascending node
+ * param[in/out] i the inclination to the ecliptic
+ * param[in/out] w the argument of perihelion
+ * param[in/out] a the semi-major axis
+ * param[in/out] e the eccentricity
+ * param[in/out] M the mean anomaly
+ * param[in} d the days
+ * return not 0 if success, 0 otherwise
  */
-int calculate_orbital_elements(const char *celestial_object,    //
-                               float *longitude_ascending_node, //
-                               float *inclination_ecliptic,     //
-                               float *argument_perihelion,      //
-                               float *semi_major_axis,          //
-                               float *eccentricity,             //
-                               float *mean_anomaly,             //
-                               const float days);
+int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
+                               float *a, float *e, float *M, const float d);
 
 /**
- * Calculate the obliquity of the ecliptic.
- * param[in/out] obliquity_ecliptic The obliquity of the ecliptic.
- * param[in} days The days.
- * return not 0 if success, 0 otherwise.
+ * calculate the obliquity of the ecliptic.
+ * param[in/out] ecl the obliquity of the ecliptic
+ * param[in} d the days
+ * return not 0 if success, 0 otherwise
  */
-int calculate_obliquity_ecliptic(float *obliquity_ecliptic, const float days);
+int calculate_obliquity_ecliptic(float *ecl, const float d);
 
 /**
- * Calculate the local sidereal time.
- * param[in] year The year.
- * param[in] month The month.
- * param[in] day The day.
- * param[in} universal_time The universal time.
- * param[in} local_longitude The local longitude.
- * param[in/out] local_sidereal_time The local sidereal time.
- * return not 0 if success, 0 otherwise.
+ * calculate the local sidereal time
+ * param[in] y the year
+ * param[in] m the month
+ * param[in] d the day
+ * param[in} UT the universal time
+ * param[in} local_longitude the local longitude
+ * param[in/out] LST the local sidereal time
+ * return not 0 if success, 0 otherwise
  */
-int calculate_local_sidereal_time(const int year,              //
-                                  const int month,             //
-                                  const int day,               //
-                                  const float universal_time,  //
-                                  const float local_longitude, //
-                                  float *local_sidereal_time);
+int calculate_local_sidereal_time(const int y, const int m, const int d,
+                                  const float UT, const float local_longitude,
+                                  float *LST);
 
 /**
- * Calculate true anomaly and distance.
- * param[in} mean_anomaly The mean anomaly.
- * param[in} eccentricity The eccentricity.
- * param[in} semi_major_axis The semi major axis.
- * param[in/out] distance The distance.
- * param[in/out] true_anomaly The true anomaly.
- * return not 0 if success, 0 otherwise.
+ * calculate true anomaly and distance
+ * param[in} M the mean anomaly
+ * param[in} e the eccentricity
+ * param[in} a the semi major axis
+ * param[in/out] r the distance
+ * param[in/out] v the true anomaly
+ * return not 0 if success, 0 otherwise
  */
-int calculate_true_anomaly(const float mean_anomaly,    //
-                           const float eccentricity,    //
-                           const float semi_major_axis, //
-                           float *distance,             //
-                           float *true_anomaly);
+int calculate_true_anomaly(const float M, const float e, const float a,
+                           float *r, float *v);
 
 /**
- * Calculate true position in space.
- * param[in} distance The distance.
- * param[in} longitude_ascending_node The longitude of the ascending node.
- * param[in} true_anomaly The true anomaly.
- * param[in] argument_perihelion The argument of the perihelion.
- * param[in] inclination_ecliptic The inclination of the ecliptic.
- * param[in/out] x_heliocentric The x position heliocentric geocentric for moon
- * param[in/out] y_heliocentric The y position heliocentric geocentric for moon
- * param[in/out] z_heliocentric The z position heliocentric geocentric for moon
- * param[in/out] ecliptic_longitude The ecliptic longitude.
- * param[in/out] ecliptic_latitude The ecliptic latitude.
- * return not 0 if success, 0 otherwise.
+ * calculate true position in space
+ * param[in} r the distance
+ * param[in} N the longitude of the ascending node
+ * param[in} v the true anomaly
+ * param[in] w the argument of the perihelion
+ * param[in] i the inclination of the ecliptic
+ * param[in/out] xh the x position heliocentric, geocentric for moon
+ * param[in/out] yh the y position heliocentric, geocentric for moon
+ * param[in/out] zh the z position heliocentric, geocentric for moon
+ * param[in/out] lonecl the ecliptic longitude
+ * param[in/out] latecl the ecliptic latitude
+ * return not 0 if success, 0 otherwise
  */
-int calculate_position_in_space(const float distance,                 //
-                                const float longitude_ascending_node, //
-                                const float true_anomaly,             //
-                                const float argument_perihelion,      //
-                                const float inclination_ecliptic,     //
-                                float *x_heliocentric,                //
-                                float *y_heliocentric,                //
-                                float *z_heliocentric,                //
-                                float *ecliptic_longitude,            //
-                                float *ecliptic_latitude);
+int calculate_position_in_space(const float r, const float N, const float v,
+                                const float w, const float i, float *xh,
+                                float *yh, float *zh, float *lonecl,
+                                float *latecl);
 
 /**
- * Calculate the pertubations of the moon.
- * param[in} Ms The Mean Anomaly of the Sun
- * param[in} Mm The Mean Anomaly of the Moon
- * param[in} Nm The Longitude of the Moon's node
- * param[in} ws The Argument of perihelion for the Sun
- * param[in} wm The Argument of perihelion for the Moon
- * param[in/out] lonecl The corrected ecliptic longitude.
- * param[in/out] latecl The corrected ecliptic latitude.
- * param[in/out} distance The corrected distance.
- * return not 0 if success, 0 otherwise.
+ * calculate the pertubations of the moon
+ * param[in} Ms the mean anomaly of the sun
+ * param[in} Mm the mean anomaly of the moon
+ * param[in} Nm the longitude of the moons node
+ * param[in} ws the argument of perihelion for the sun
+ * param[in} wm the argument of perihelion for the moon
+ * param[in/out] lonecl the corrected ecliptic longitude
+ * param[in/out] latecl the corrected ecliptic latitude
+ * param[in/out} r the corrected distance
+ * return not 0 if success, 0 otherwise
  */
-int calculate_pertubations_moon(const float Ms, //
-                                const float Mm, //
-                                const float Nm, //
-                                const float ws, //
-                                const float wm, //
-                                float *lonecl,  //
-                                float *latecl,  //
-                                float *distance);
+int calculate_pertubations_moon(const float Ms, const float Mm, const float Nm,
+                                const float ws, const float wm, float *lonecl,
+                                float *latecl, float *r);
 
 /**
- * Calculate the pertubations of jupiter saturn and uranus.
- * param[in} Mj The Mean anomaly of Jupiter.
- * param[in} Ms The Mean anomaly of Saturn.
- * param[in} Mu The Mean anomaly of Uranus.
- * param[in/out] lonecl_j The corrected longitude of jupiter.
- * param[in/out] latecl_j The corrected latitude of jupiter.
- * param[in/out] lonecl_s The corrected longitude of saturn.
- * param[in/out] latecl_s The corrected latitude of saturn.
- * param[in/out] lonecl_u The corrected longitude of uranus.
- * param[in/out] latecl_u The corrected latitude of uranus.
- * return not 0 if success, 0 otherwise.
+ * calculate the pertubations of jupiter saturn and uranus
+ * param[in} Mj the mean anomaly of jupiter
+ * param[in} Ms the mean anomaly of saturn
+ * param[in} Mu the mean anomaly of uranus
+ * param[in/out] lonecl_j the corrected longitude of jupiter
+ * param[in/out] latecl_j the corrected latitude of jupiter
+ * param[in/out] lonecl_s the corrected longitude of saturn
+ * param[in/out] latecl_s the corrected latitude of saturn
+ * param[in/out] lonecl_u the corrected longitude of uranus
+ * param[in/out] latecl_u the corrected latitude of uranus
+ * return not 0 if success, 0 otherwise
  */
-int calculate_pertubations_planets(const float Mj,  //
-                                   const float Ms,  //
-                                   const float Mu,  //
-                                   float *lonecl_j, //
-                                   float *latecl_j, //
-                                   float *lonecl_s, //
-                                   float *latecl_s, //
-                                   float *lonecl_u, //
+int calculate_pertubations_planets(const float Mj, const float Ms,
+                                   const float Mu, float *lonecl_j,
+                                   float *latecl_j, float *lonecl_s,
+                                   float *latecl_s, float *lonecl_u,
                                    float *latecl_u);
