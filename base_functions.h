@@ -110,3 +110,47 @@ int calculate_position_in_space(const float distance,                 //
                                 float *z_heliocentric,                //
                                 float *ecliptic_longitude,            //
                                 float *ecliptic_latitude);
+
+/**
+ * Calculate the pertubations of the moon.
+ * param[in} Ms The Mean Anomaly of the Sun
+ * param[in} Mm The Mean Anomaly of the Moon
+ * param[in} Nm The Longitude of the Moon's node
+ * param[in} ws The Argument of perihelion for the Sun
+ * param[in} wm The Argument of perihelion for the Moon
+ * param[in/out] lonecl The corrected ecliptic longitude.
+ * param[in/out] latecl The corrected ecliptic latitude.
+ * param[in/out} distance The corrected distance.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_pertubations_moon(const float Ms, //
+                                const float Mm, //
+                                const float Nm, //
+                                const float ws, //
+                                const float wm, //
+                                float *lonecl,  //
+                                float *latecl,  //
+                                float *distance);
+
+/**
+ * Calculate the pertubations of jupiter saturn and uranus.
+ * param[in} Mj The Mean anomaly of Jupiter.
+ * param[in} Ms The Mean anomaly of Saturn.
+ * param[in} Mu The Mean anomaly of Uranus.
+ * param[in/out] lonecl_j The corrected longitude of jupiter.
+ * param[in/out] latecl_j The corrected latitude of jupiter.
+ * param[in/out] lonecl_s The corrected longitude of saturn.
+ * param[in/out] latecl_s The corrected latitude of saturn.
+ * param[in/out] lonecl_u The corrected longitude of uranus.
+ * param[in/out] latecl_u The corrected latitude of uranus.
+ * return not 0 if success, 0 otherwise.
+ */
+int calculate_pertubations_planets(const float Mj,  //
+                                   const float Ms,  //
+                                   const float Mu,  //
+                                   float *lonecl_j, //
+                                   float *latecl_j, //
+                                   float *lonecl_s, //
+                                   float *latecl_s, //
+                                   float *lonecl_u, //
+                                   float *latecl_u);

@@ -335,6 +335,50 @@ void calculate_position_in_space_test(void) {
   TEST_CHECK(fabs(distance - 1.0) < 0.001);
 }
 
+void calculate_pertubations_moon_test(void) {
+
+  float value1 = 0.0;
+  float value2 = 0.0;
+  float value3 = 0.0;
+
+  TEST_CHECK(calculate_pertubations_moon(1.0,     //
+                                         2.0,     //
+                                         3.0,     //
+                                         4.0,     //
+                                         5.0,     //
+                                         &value1, //
+                                         &value2, //
+                                         &value3) != 0);
+
+  TEST_CHECK(value1 != 0);
+  TEST_CHECK(value2 != 0);
+  TEST_CHECK(value3 != 0);
+}
+
+void calculate_pertubations_planets_test(void) {
+
+  float lonecl_j = 0.0;
+  float latecl_j = 0.0;
+  float lonecl_s = 0.0;
+  float latecl_s = 0.0;
+  float lonecl_u = 0.0;
+  float latecl_u = 0.0;
+
+  TEST_CHECK(calculate_pertubations_planets(1.0,       //
+                                            2.0,       //
+                                            3.0,       //
+                                            &lonecl_j, //
+                                            &latecl_j, //
+                                            &lonecl_s, //
+                                            &latecl_s, //
+                                            &lonecl_u, //
+                                            &latecl_u) != 0);
+
+  TEST_CHECK(lonecl_j != 0 || latecl_j != 0);
+  TEST_CHECK(lonecl_s != 0 || latecl_s != 0);
+  TEST_CHECK(lonecl_u != 0 || latecl_u != 0);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
@@ -342,4 +386,6 @@ TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_local_sidereal_time_test},
              {NULL, calculate_true_anomaly_test},
              {NULL, calculate_position_in_space_test},
+             {NULL, calculate_pertubations_moon_test},
+             {NULL, calculate_pertubations_planets_test},
              {NULL, NULL}};
