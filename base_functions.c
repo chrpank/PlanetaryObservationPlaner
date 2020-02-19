@@ -330,3 +330,9 @@ int calculate_pertubations_planets(const float Mj, const float Ms,
 
   return 1;
 }
+
+float sind(const float x) { return sinf(degtorad * x); }
+
+float cosd(const float x) { return cosf(degtorad * x); }
+
+float atan2d(const float y, const float x) { return radtodeg * atan2f(y, x); }
