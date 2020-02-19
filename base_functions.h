@@ -5,8 +5,8 @@
 #include <math.h>
 #include <string.h>
 
-#define degtorad M_PI / 180.0
-#define radtodeg 180.0 / M_PI
+#define deg2rad M_PI / 180.0
+#define rad2deg 180.0 / M_PI
 
 /**
  * calculate days from a date

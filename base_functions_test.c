@@ -291,8 +291,8 @@ void calculate_true_anomaly_test(void) {
 
   TEST_CHECK(calculate_true_anomaly(M, e, a, &r, &v) != 0);
 
-  TEST_CHECK(r == 1.0);
-  TEST_CHECK(v == 180.0);
+  TEST_CHECK(fabs(r - 001.0) < 0.001);
+  TEST_CHECK(fabs(v - 180.0) < 0.001);
 
   float value;
   TEST_CHECK(calculate_true_anomaly(+361.0, +0.0, +1.0, &value, &value) == 0);
