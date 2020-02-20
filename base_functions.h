@@ -5,6 +5,9 @@
 #include <math.h>
 #include <string.h>
 
+#define deg2rad M_PI / 180.0
+#define rad2deg 180.0 / M_PI
+
 /**
  * calculate days from a date
  * param[in] year the year
@@ -127,3 +130,25 @@ int calculate_pertubations_planets(const float Mj, const float Ms,
                                    float *latecl_j, float *lonecl_s,
                                    float *latecl_s, float *lonecl_u,
                                    float *latecl_u);
+
+/**
+ * calculate sine with degree argument
+ * param[in} x the argument in degrees
+ * return the sine value
+ */
+float sind(const float x);
+
+/**
+ * calculate cosine with degree argument
+ * param[in} x the argument in degrees
+ * return the cosine value
+ */
+float cosd(const float x);
+
+/**
+ * calculate atan2
+ * param[in} y the argument
+ * param[in} x the argument
+ * return the atan2 in degrees
+ */
+float atan2d(const float y, const float x);

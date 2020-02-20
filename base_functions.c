@@ -211,16 +211,13 @@ int calculate_true_anomaly(const float M, const float e, const float a,
     return 0;
   }
 
-  float rad2deg = (180.0 / M_PI);
-  float deg2rad = 1.0 / rad2deg;
-  float E0 = M + e * rad2deg * sin(M * deg2rad) * (1.0 + e * cos(M * deg2rad));
+  float E0 = M + e * rad2deg * sind(M) * (1.0 + e * cosd(M));
 
   float found_solution = 0;
 
   float E = 0;
   for (int index = 0; index < 1000; index++) {
-    E = E0 - (E0 - e * rad2deg * sin(E0 * deg2rad) - M) /
-                 (1.0 - e * cos(E0 * deg2rad));
+    E = E0 - (E0 - e * rad2deg * sind(E0) - M) / (1.0 - e * cosd(E0));
     E0 = E;
     if (fabs(E0 - E) < 0.001) {
       found_solution = 1;
@@ -228,10 +225,10 @@ int calculate_true_anomaly(const float M, const float e, const float a,
     }
   }
 
-  float xv = a * (cos(E * deg2rad) - e);
-  float yv = a * (sqrt(1.0 - e * e) * sin(E * deg2rad));
+  float xv = a * (cosd(E) - e);
+  float yv = a * (sqrt(1.0 - e * e) * sind(E));
 
-  *v = rad2deg * atan2(yv, xv);
+  *v = atan2d(yv, xv);
 
   if (!calculate_value_reduction(360.0, v)) {
     return 0;
@@ -246,21 +243,13 @@ int calculate_position_in_space(const float r, const float N, const float v,
                                 const float w, const float i, float *xh,
                                 float *yh, float *zh, float *lonecl,
                                 float *latecl) {
-  float deg2rad = (M_PI / 180.0);
-
   // geocentric for moon
-  *xh = r * (cos(N * deg2rad) * cos((v + w) * deg2rad) -
-             sin(N * deg2rad) * sin((v + w) * deg2rad) * cos(i * deg2rad));
+  *xh = r * (cosd(N) * cosd(v + w) - sind(N) * sind(v + w) * cosd(i));
+  *yh = r * (sind(N) * cosd(v + w) + cosd(N) * sind(v + w) * cosd(i));
+  *zh = r * (sind(v + w) * sind(i));
 
-  // geocentric for moon
-  *yh = r * (sin(N * deg2rad) * cos((v + w) * deg2rad) +
-             cos(N * deg2rad) * sin((v + w) * deg2rad) * cos(i * deg2rad));
-
-  // geocentric for moon
-  *zh = r * (sin((v + w) * deg2rad) * sin(i * deg2rad));
-
-  *lonecl = atan2(*yh, *xh);
-  *latecl = atan2(*zh, sqrt((*xh) * (*xh) + (*yh) * (*yh)));
+  *lonecl = atan2d(*yh, *xh);
+  *latecl = atan2d(*zh, sqrt((*xh) * (*xh) + (*yh) * (*yh)));
 
   return 1;
 }
@@ -268,34 +257,32 @@ int calculate_position_in_space(const float r, const float N, const float v,
 int calculate_pertubations_moon(const float Ms, const float Mm, const float Nm,
                                 const float ws, const float wm, float *lonecl,
                                 float *latecl, float *r) {
-  float deg2rad = (M_PI / 180.0);
-
   float Ls = Ms + ws;      // mean Longitude of the sun  (Ns=0)
   float Lm = Mm + wm + Nm; // mean longitude of the moon
   float D = Lm - Ls;       // mean elongation of the moon
   float F = Lm - Nm;       // argument of latitude for the moon
 
-  *lonecl += -1.2740 * sin(deg2rad * (Mm - 2 * D))      //
-             + 0.658 * sin(deg2rad * (2 * D))           //
-             - 0.186 * sin(deg2rad * (Ms))              //
-             - 0.059 * sin(deg2rad * (2 * Mm - 2 * D))  //
-             - 0.057 * sin(deg2rad * (Mm - 2 * D + Ms)) //
-             + 0.053 * sin(deg2rad * (Mm + 2 * D))      //
-             + 0.046 * sin(deg2rad * (2 * D - Ms))      //
-             + 0.041 * sin(deg2rad * (Mm - Ms))         //
-             - 0.035 * sin(deg2rad * (D))               //
-             - 0.031 * sin(deg2rad * (Mm + Ms))         //
-             - 0.015 * sin(deg2rad * (2 * F - 2 * D))   //
-             + 0.011 * sin(deg2rad * (Mm - 4 * D));
+  *lonecl += -01.274 * sind(Mm - 2 * D)      //
+             + 0.658 * sind(2 * D)           //
+             - 0.186 * sind(Ms)              //
+             - 0.059 * sind(2 * Mm - 2 * D)  //
+             - 0.057 * sind(Mm - 2 * D + Ms) //
+             + 0.053 * sind(Mm + 2 * D)      //
+             + 0.046 * sind(2 * D - Ms)      //
+             + 0.041 * sind(Mm - Ms)         //
+             - 0.035 * sind(D)               //
+             - 0.031 * sind(Mm + Ms)         //
+             - 0.015 * sind(2 * F - 2 * D)   //
+             + 0.011 * sind(Mm - 4 * D);
 
-  *latecl += -0.1730 * sin(deg2rad * (F - 2 * D))      //
-             - 0.055 * sin(deg2rad * (Mm - F - 2 * D)) //
-             - 0.046 * sin(deg2rad * (Mm + F - 2 * D)) //
-             + 0.033 * sin(deg2rad * (F + 2 * D))      //
-             + 0.017 * sin(deg2rad * (2 * Mm + F));
+  *latecl += -00.173 * sind(F - 2 * D)      //
+             - 0.055 * sind(Mm - F - 2 * D) //
+             - 0.046 * sind(Mm + F - 2 * D) //
+             + 0.033 * sind(F + 2 * D)      //
+             + 0.017 * sind(2 * Mm + F);
 
-  *r += -0.580 * cos(deg2rad * (Mm - 2 * D)) //
-        - 0.46 * cos(deg2rad * (2 * D));     //
+  *r += -00.58 * cosd(Mm - 2 * D) //
+        - 0.46 * cosd(2 * D);     //
 
   return 1;
 }
@@ -305,28 +292,33 @@ int calculate_pertubations_planets(const float Mj, const float Ms,
                                    float *latecl_j, float *lonecl_s,
                                    float *latecl_s, float *lonecl_u,
                                    float *latecl_u) {
-  float deg2rad = (M_PI / 180.0);
 
-  *lonecl_j += -0.3320 * sin(deg2rad * (2 * Mj - 5 * Ms - 67.6)) //
-               - 0.056 * sin(deg2rad * (2 * Mj - 2 * Ms + 21))   //
-               + 0.042 * sin(deg2rad * (3 * Mj - 5 * Ms + 21))   //
-               - 0.036 * sin(deg2rad * (Mj - 2 * Ms))            //
-               + 0.022 * cos(deg2rad * (Mj - Ms))                //
-               + 0.023 * sin(deg2rad * (2 * Mj - 3 * Ms + 52))   //
-               - 0.016 * sin(deg2rad * (Mj - 5 * Ms - 69));
+  *lonecl_j += -00.332 * sind(2 * Mj - 5 * Ms - 67.6) //
+               - 0.056 * sind(2 * Mj - 2 * Ms + 21)   //
+               + 0.042 * sind(3 * Mj - 5 * Ms + 21)   //
+               - 0.036 * sind(Mj - 2 * Ms)            //
+               + 0.022 * cosd(Mj - Ms)                //
+               + 0.023 * sind(2 * Mj - 3 * Ms + 52)   //
+               - 0.016 * sind(Mj - 5 * Ms - 69);
 
-  *lonecl_s += +0.8120 * sin(deg2rad * (2 * Mj - 5 * Ms - 67.6)) //
-               - 0.229 * cos(deg2rad * (2 * Mj - 4 * Ms - 2))    //
-               + 0.119 * sin(deg2rad * (Mj - 2 * Ms - 3))        //
-               + 0.046 * sin(deg2rad * (2 * Mj - 6 * Ms - 69))   //
-               + 0.014 * sin(deg2rad * (Mj - 3 * Ms + 32));
+  *lonecl_s += +00.812 * sind(2 * Mj - 5 * Ms - 67.6) //
+               - 0.229 * cosd(2 * Mj - 4 * Ms - 2)    //
+               + 0.119 * sind(Mj - 2 * Ms - 3)        //
+               + 0.046 * sind(2 * Mj - 6 * Ms - 69)   //
+               + 0.014 * sind(Mj - 3 * Ms + 32);
 
-  *latecl_s += -0.0200 * cos(deg2rad * (2 * Mj - 4 * Ms - 2)) //
-               + 0.018 * sin(deg2rad * (2 * Mj - 6 * Ms - 49));
+  *latecl_s += -00.020 * cosd(2 * Mj - 4 * Ms - 2) //
+               + 0.018 * sind(2 * Mj - 6 * Ms - 49);
 
-  *lonecl_u += +0.0400 * sin(deg2rad * (Ms - 2 * Mu + 6))  //
-               + 0.035 * sin(deg2rad * (Ms - 3 * Mu + 33)) //
-               - 0.015 * sin(deg2rad * (Mj - Mu + 20));
+  *lonecl_u += +00.040 * sind(Ms - 2 * Mu + 6)  //
+               + 0.035 * sind(Ms - 3 * Mu + 33) //
+               - 0.015 * sind(Mj - Mu + 20);
 
   return 1;
 }
+
+float sind(const float x) { return sinf(deg2rad * x); }
+
+float cosd(const float x) { return cosf(deg2rad * x); }
+
+float atan2d(const float y, const float x) { return rad2deg * atan2f(y, x); }

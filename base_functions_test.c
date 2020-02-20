@@ -291,8 +291,8 @@ void calculate_true_anomaly_test(void) {
 
   TEST_CHECK(calculate_true_anomaly(M, e, a, &r, &v) != 0);
 
-  TEST_CHECK(r == 1.0);
-  TEST_CHECK(v == 180.0);
+  TEST_CHECK(fabs(r - 001.0) < 0.001);
+  TEST_CHECK(fabs(v - 180.0) < 0.001);
 
   float value;
   TEST_CHECK(calculate_true_anomaly(+361.0, +0.0, +1.0, &value, &value) == 0);
@@ -352,6 +352,30 @@ void calculate_pertubations_planets_test(void) {
   TEST_CHECK(lonecl_u != 0 || latecl_u != 0);
 }
 
+void calculate_sind_cosd_atan2d_test(void) {
+  TEST_CHECK(fabs(sind(000.0) - (+0.0)) < 0.001);
+  TEST_CHECK(fabs(sind(090.0) - (+1.0)) < 0.001);
+  TEST_CHECK(fabs(sind(180.0) - (+0.0)) < 0.001);
+  TEST_CHECK(fabs(sind(270.0) - (-1.0)) < 0.001);
+  TEST_CHECK(fabs(sind(360.0) - (+0.0)) < 0.001);
+
+  TEST_CHECK(fabs(cosd(000.0) - (+1.0)) < 0.001);
+  TEST_CHECK(fabs(cosd(090.0) - (+0.0)) < 0.001);
+  TEST_CHECK(fabs(cosd(180.0) - (-1.0)) < 0.001);
+  TEST_CHECK(fabs(cosd(270.0) - (+0.0)) < 0.001);
+  TEST_CHECK(fabs(cosd(360.0) - (+1.0)) < 0.001);
+
+  TEST_CHECK(fabs(atan2d(+0.0, +0.0) - (+000.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+0.0, +1.0) - (+000.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+0.0, -1.0) - (+180.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+1.0, +0.0) - (+090.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+1.0, +1.0) - (+045.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+1.0, -1.0) - (+135.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(-1.0, +0.0) - (-090.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(-1.0, +1.0) - (-045.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(-1.0, -1.0) - (-135.0)) < 0.001);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
@@ -361,4 +385,5 @@ TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_position_in_space_test},
              {NULL, calculate_pertubations_moon_test},
              {NULL, calculate_pertubations_planets_test},
+             {NULL, calculate_sind_cosd_atan2d_test},
              {NULL, NULL}};
