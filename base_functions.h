@@ -197,7 +197,7 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
                                             float *xg, float *yg, float *zg);
 
 /**
- * caculate equatorial coordinates
+ * calculate equatorial coordinates
  * param[in} xg geocentric x coordinate
  * param[in} yg geocentric y coordinate
  * param[in} zg geocentric z coordinate
@@ -207,6 +207,6 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
  * param[in/out} rg geocentric distance
  * return not 0 if success, 0 otherwise
  */
-int caculate_equatorial_coordinates(const float xg, const float yg,
-                                    const float zg, const float ecl, float *RA,
-                                    float *Dec, float *rg);
+int calculate_equatorial_coordinates(const float xg, const float yg,
+                                     const float zg, const float ecl, float *RA,
+                                     float *Dec, float *rg);

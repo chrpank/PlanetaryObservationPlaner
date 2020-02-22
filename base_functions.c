@@ -355,7 +355,7 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
   return 1;
 }
 
-int caculate_equatorial_coordinates(const float xg, const float yg,
+int calculate_equatorial_coordinates(const float xg, const float yg,
                                     const float zg, const float ecl, float *RA,
                                     float *Dec, float *rg) {
   float xe = xg;

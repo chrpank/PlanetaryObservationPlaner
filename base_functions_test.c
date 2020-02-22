@@ -316,7 +316,7 @@ void calculate_position_in_space_test(void) {
   TEST_CHECK(lonecl != 0.0);
   TEST_CHECK(latecl != 0.0);
 
-  float distance = sqrt(x * x + y * y + z * z);
+  float distance = sqrtf(x * x + y * y + z * z);
   TEST_CHECK(fabs(distance - 1.0) < 0.001);
 }
 
@@ -401,6 +401,20 @@ void calculate_geocentric_coordinates_test(void) {
   TEST_CHECK(zg != 0.0);
 }
 
+void calculate_equatorial_coordinates_test(void) {
+
+  float RA = 0;
+  float Dec = 0;
+  float rg = 0;
+
+  TEST_CHECK(calculate_equatorial_coordinates(2.0, 3.0, 4.0, 5.0, //
+                                             &RA, &Dec, &rg) != 0);
+
+  TEST_CHECK(RA != 0.0 && Dec != 0.0 && rg != 0.0);
+
+  TEST_CHECK(fabsf(rg - sqrtf(2.0 * 2.0 + 3.0 * 3.0 + 4.0 * 4.0)) < 0.001);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
@@ -412,4 +426,5 @@ TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_pertubations_planets_test},
              {NULL, calculate_sind_cosd_atan2d_test},
              {NULL, calculate_geocentric_coordinates_test},
+             {NULL, calculate_equatorial_coordinates_test},
              {NULL, NULL}};
