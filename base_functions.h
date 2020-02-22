@@ -164,3 +164,34 @@ float cosd(const float x);
  * return the atan2 in degrees
  */
 float atan2d(const float y, const float x);
+
+/**
+ * calculate geocentric coordinates of the moon
+ * param[in} lonecl the ecliptic longitude
+ * param[in} latecl the ecliptic latitude
+ * param[in} r the distance
+ * param[in} xg geocentric x coordinate
+ * param[in} yg geocentric y coordinate
+ * param[in} zg geocentric z coordinate
+ * return not 0 if success, 0 otherwise
+ */
+int calculate_geocentric_coordinates_moon(const float lonecl,
+                                          const float latecl, const float r,
+                                          float *xg, float *yg, float *zg);
+
+/**
+ * calculate geocentric coordinates of the planet
+ * param[in} lonecl the ecliptic longitude
+ * param[in} latecl the ecliptic latitude
+ * param[in} r the distance
+ * param[in} lonsun the the ecliptic longitude sun
+ * param[in} rs the distance sun
+ * param[in} xg geocentric x coordinate
+ * param[in} yg geocentric y coordinate
+ * param[in} zg geocentric z coordinate
+ * return not 0 if success, 0 otherwise
+ */
+int calculate_geocentric_coordinates_planet(const float lonecl,
+                                            const float latecl, const float r,
+                                            const float lonsun, const float rs,
+                                            float *xg, float *yg, float *zg);
