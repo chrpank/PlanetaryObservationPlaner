@@ -337,10 +337,10 @@ int calculate_geocentric_coordinates_moon(const float lonecl,
   return 1;
 }
 
-int calculate_geocentric_coordinates_planets(const float lonecl,
-                                             const float latecl, const float r,
-                                             const float lonsun, const float rs,
-                                             float *xg, float *yg, float *zg) {
+int calculate_geocentric_coordinates_planet(const float lonecl,
+                                            const float latecl, const float r,
+                                            const float lonsun, const float rs,
+                                            float *xg, float *yg, float *zg) {
   float xh = r * cosd(lonecl) * cosd(latecl);
   float yh = r * sind(lonecl) * cosd(latecl);
   float zh = r * sind(latecl);

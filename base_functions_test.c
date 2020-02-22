@@ -376,6 +376,31 @@ void calculate_sind_cosd_atan2d_test(void) {
   TEST_CHECK(fabs(atan2d(-1.0, -1.0) - (-135.0)) < 0.001);
 }
 
+void calculate_geocentric_coordinates_test(void) {
+
+  float xg = 0;
+  float yg = 0;
+  float zg = 0;
+
+  TEST_CHECK(calculate_geocentric_coordinates_moon(1.0, 2.0, 3.0, //
+                                                   &xg, &yg, &zg) != 0);
+
+  TEST_CHECK(xg != 0.0);
+  TEST_CHECK(yg != 0.0);
+  TEST_CHECK(zg != 0.0);
+
+  xg = 0;
+  yg = 0;
+  zg = 0;
+
+  TEST_CHECK(calculate_geocentric_coordinates_planet(1.0, 2.0, 3.0, 4.0, 5.0,
+                                                     &xg, &yg, &zg) != 0);
+
+  TEST_CHECK(xg != 0.0);
+  TEST_CHECK(yg != 0.0);
+  TEST_CHECK(zg != 0.0);
+}
+
 TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_orbital_elements_test},
              {NULL, calculate_value_reduction_test},
@@ -386,4 +411,5 @@ TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_pertubations_moon_test},
              {NULL, calculate_pertubations_planets_test},
              {NULL, calculate_sind_cosd_atan2d_test},
+             {NULL, calculate_geocentric_coordinates_test},
              {NULL, NULL}};
