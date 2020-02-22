@@ -322,3 +322,35 @@ float sind(const float x) { return sinf(deg2rad * x); }
 float cosd(const float x) { return cosf(deg2rad * x); }
 
 float atan2d(const float y, const float x) { return rad2deg * atan2f(y, x); }
+
+int calculate_geocentric_coordinates_moon(const float lonecl,
+                                          const float latecl, const float r,
+                                          float *xg, float *yg, float *zg) {
+  float xh = r * cosd(lonecl) * cosd(latecl);
+  float yh = r * sind(lonecl) * cosd(latecl);
+  float zh = r * sind(latecl);
+
+  *xg = xh;
+  *yg = yh;
+  *zg = zh;
+
+  return 1;
+}
+
+int calculate_geocentric_coordinates_planet(const float lonecl,
+                                            const float latecl, const float r,
+                                            const float lonsun, const float rs,
+                                            float *xg, float *yg, float *zg) {
+  float xh = r * cosd(lonecl) * cosd(latecl);
+  float yh = r * sind(lonecl) * cosd(latecl);
+  float zh = r * sind(latecl);
+
+  float xs = rs * cosd(lonsun);
+  float ys = rs * sind(lonsun);
+
+  *xg = xh + xs;
+  *yg = yh + ys;
+  *zg = zh;
+
+  return 1;
+}
