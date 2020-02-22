@@ -170,9 +170,9 @@ float atan2d(const float y, const float x);
  * param[in} lonecl the ecliptic longitude
  * param[in} latecl the ecliptic latitude
  * param[in} r the distance
- * param[in} xg geocentric x coordinate
- * param[in} yg geocentric y coordinate
- * param[in} zg geocentric z coordinate
+ * param[in/out} xg geocentric x coordinate
+ * param[in/out} yg geocentric y coordinate
+ * param[in/out} zg geocentric z coordinate
  * return not 0 if success, 0 otherwise
  */
 int calculate_geocentric_coordinates_moon(const float lonecl,
@@ -186,12 +186,27 @@ int calculate_geocentric_coordinates_moon(const float lonecl,
  * param[in} r the distance
  * param[in} lonsun the the ecliptic longitude sun
  * param[in} rs the distance sun
- * param[in} xg geocentric x coordinate
- * param[in} yg geocentric y coordinate
- * param[in} zg geocentric z coordinate
+ * param[in/out} xg geocentric x coordinate
+ * param[in/out} yg geocentric y coordinate
+ * param[in/out} zg geocentric z coordinate
  * return not 0 if success, 0 otherwise
  */
 int calculate_geocentric_coordinates_planet(const float lonecl,
                                             const float latecl, const float r,
                                             const float lonsun, const float rs,
                                             float *xg, float *yg, float *zg);
+
+/**
+ * caculate equatorial coordinates
+ * param[in} xg geocentric x coordinate
+ * param[in} yg geocentric y coordinate
+ * param[in} zg geocentric z coordinate
+ * param[in} ecl obliquity of the ecliptic
+ * param[in/out} RA right ascension
+ * param[in/out} Dec declination
+ * param[in/out} rg geocentric distance
+ * return not 0 if success, 0 otherwise
+ */
+int caculate_equatorial_coordinates(const float xg, const float yg,
+                                    const float zg, const float ecl, float *RA,
+                                    float *Dec, float *rg);

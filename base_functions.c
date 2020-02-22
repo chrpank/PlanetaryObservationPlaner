@@ -226,7 +226,7 @@ int calculate_true_anomaly(const float M, const float e, const float a,
   }
 
   float xv = a * (cosd(E) - e);
-  float yv = a * (sqrt(1.0 - e * e) * sind(E));
+  float yv = a * (sqrtf(1.0 - e * e) * sind(E));
 
   *v = atan2d(yv, xv);
 
@@ -234,7 +234,7 @@ int calculate_true_anomaly(const float M, const float e, const float a,
     return 0;
   }
 
-  *r = sqrt(xv * xv + yv * yv);
+  *r = sqrtf(xv * xv + yv * yv);
 
   return found_solution;
 }
@@ -249,7 +249,7 @@ int calculate_position_in_space(const float r, const float N, const float v,
   *zh = r * (sind(v + w) * sind(i));
 
   *lonecl = atan2d(*yh, *xh);
-  *latecl = atan2d(*zh, sqrt((*xh) * (*xh) + (*yh) * (*yh)));
+  *latecl = atan2d(*zh, sqrtf((*xh) * (*xh) + (*yh) * (*yh)));
 
   return 1;
 }
@@ -351,6 +351,20 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
   *xg = xh + xs;
   *yg = yh + ys;
   *zg = zh;
+
+  return 1;
+}
+
+int caculate_equatorial_coordinates(const float xg, const float yg,
+                                    const float zg, const float ecl, float *RA,
+                                    float *Dec, float *rg) {
+  float xe = xg;
+  float ye = yg * cosd(ecl) - zg * sind(ecl);
+  float ze = yg * sind(ecl) + zg * cosd(ecl);
+
+  *RA = atan2d(ye, xe);
+  *Dec = atan2d(ze, sqrtf(xe * xe + ye * ye));
+  *rg = sqrtf(xe * xe + ye * ye + ze * ze);
 
   return 1;
 }
