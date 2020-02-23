@@ -219,7 +219,7 @@ int calculate_true_anomaly(const float M, const float e, const float a,
   for (int index = 0; index < 1000; index++) {
     E = E0 - (E0 - e * rad2deg * sind(E0) - M) / (1.0 - e * cosd(E0));
     E0 = E;
-    if (fabs(E0 - E) < 0.001) {
+    if (fabsf(E0 - E) < eps) {
       found_solution = 1;
       break;
     }
@@ -323,6 +323,8 @@ float cosd(const float x) { return cosf(deg2rad * x); }
 
 float atan2d(const float y, const float x) { return rad2deg * atan2f(y, x); }
 
+float asind(const float x) { return rad2deg * asinf(x); }
+
 int calculate_geocentric_coordinates_moon(const float lonecl,
                                           const float latecl, const float r,
                                           float *xg, float *yg, float *zg) {
@@ -356,8 +358,8 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
 }
 
 int calculate_equatorial_coordinates(const float xg, const float yg,
-                                    const float zg, const float ecl, float *RA,
-                                    float *Dec, float *rg) {
+                                     const float zg, const float ecl, float *RA,
+                                     float *Dec, float *rg) {
   float xe = xg;
   float ye = yg * cosd(ecl) - zg * sind(ecl);
   float ze = yg * sind(ecl) + zg * cosd(ecl);
@@ -365,6 +367,29 @@ int calculate_equatorial_coordinates(const float xg, const float yg,
   *RA = atan2d(ye, xe);
   *Dec = atan2d(ze, sqrtf(xe * xe + ye * ye));
   *rg = sqrtf(xe * xe + ye * ye + ze * ze);
+
+  return 1;
+}
+
+int calculate_azimuthal_coordinates(const float RA, const float Dec,
+                                    const float LST, const float lat, float *az,
+                                    float *alt) {
+  float HA = hou2deg * LST - RA;
+
+  float x = cosd(HA) * cosd(Dec);
+  float y = sind(HA) * cosd(Dec);
+  float z = sind(Dec);
+
+  float xhor = x * sind(lat) - z * cosd(lat);
+  float yhor = y;
+  float zhor = x * cosd(lat) + z * sind(lat);
+
+  *az = atan2d(yhor, xhor) + 180.0;
+  *alt = asind(zhor);
+
+  if (fabsf(*alt - atan2d(zhor, sqrtf(xhor * xhor + yhor * yhor))) > eps) {
+    return 0;
+  }
 
   return 1;
 }

@@ -291,8 +291,8 @@ void calculate_true_anomaly_test(void) {
 
   TEST_CHECK(calculate_true_anomaly(M, e, a, &r, &v) != 0);
 
-  TEST_CHECK(fabs(r - 001.0) < 0.001);
-  TEST_CHECK(fabs(v - 180.0) < 0.001);
+  TEST_CHECK(fabs(r - 001.0) < eps);
+  TEST_CHECK(fabs(v - 180.0) < eps);
 
   float value;
   TEST_CHECK(calculate_true_anomaly(+361.0, +0.0, +1.0, &value, &value) == 0);
@@ -317,7 +317,7 @@ void calculate_position_in_space_test(void) {
   TEST_CHECK(latecl != 0.0);
 
   float distance = sqrtf(x * x + y * y + z * z);
-  TEST_CHECK(fabs(distance - 1.0) < 0.001);
+  TEST_CHECK(fabs(distance - 1.0) < eps);
 }
 
 void calculate_pertubations_moon_test(void) {
@@ -353,27 +353,27 @@ void calculate_pertubations_planets_test(void) {
 }
 
 void calculate_sind_cosd_atan2d_test(void) {
-  TEST_CHECK(fabs(sind(000.0) - (+0.0)) < 0.001);
-  TEST_CHECK(fabs(sind(090.0) - (+1.0)) < 0.001);
-  TEST_CHECK(fabs(sind(180.0) - (+0.0)) < 0.001);
-  TEST_CHECK(fabs(sind(270.0) - (-1.0)) < 0.001);
-  TEST_CHECK(fabs(sind(360.0) - (+0.0)) < 0.001);
+  TEST_CHECK(fabs(sind(000.0) - (+0.0)) < eps);
+  TEST_CHECK(fabs(sind(090.0) - (+1.0)) < eps);
+  TEST_CHECK(fabs(sind(180.0) - (+0.0)) < eps);
+  TEST_CHECK(fabs(sind(270.0) - (-1.0)) < eps);
+  TEST_CHECK(fabs(sind(360.0) - (+0.0)) < eps);
 
-  TEST_CHECK(fabs(cosd(000.0) - (+1.0)) < 0.001);
-  TEST_CHECK(fabs(cosd(090.0) - (+0.0)) < 0.001);
-  TEST_CHECK(fabs(cosd(180.0) - (-1.0)) < 0.001);
-  TEST_CHECK(fabs(cosd(270.0) - (+0.0)) < 0.001);
-  TEST_CHECK(fabs(cosd(360.0) - (+1.0)) < 0.001);
+  TEST_CHECK(fabs(cosd(000.0) - (+1.0)) < eps);
+  TEST_CHECK(fabs(cosd(090.0) - (+0.0)) < eps);
+  TEST_CHECK(fabs(cosd(180.0) - (-1.0)) < eps);
+  TEST_CHECK(fabs(cosd(270.0) - (+0.0)) < eps);
+  TEST_CHECK(fabs(cosd(360.0) - (+1.0)) < eps);
 
-  TEST_CHECK(fabs(atan2d(+0.0, +0.0) - (+000.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(+0.0, +1.0) - (+000.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(+0.0, -1.0) - (+180.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(+1.0, +0.0) - (+090.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(+1.0, +1.0) - (+045.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(+1.0, -1.0) - (+135.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(-1.0, +0.0) - (-090.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(-1.0, +1.0) - (-045.0)) < 0.001);
-  TEST_CHECK(fabs(atan2d(-1.0, -1.0) - (-135.0)) < 0.001);
+  TEST_CHECK(fabs(atan2d(+0.0, +0.0) - (+000.0)) < eps);
+  TEST_CHECK(fabs(atan2d(+0.0, +1.0) - (+000.0)) < eps);
+  TEST_CHECK(fabs(atan2d(+0.0, -1.0) - (+180.0)) < eps);
+  TEST_CHECK(fabs(atan2d(+1.0, +0.0) - (+090.0)) < eps);
+  TEST_CHECK(fabs(atan2d(+1.0, +1.0) - (+045.0)) < eps);
+  TEST_CHECK(fabs(atan2d(+1.0, -1.0) - (+135.0)) < eps);
+  TEST_CHECK(fabs(atan2d(-1.0, +0.0) - (-090.0)) < eps);
+  TEST_CHECK(fabs(atan2d(-1.0, +1.0) - (-045.0)) < eps);
+  TEST_CHECK(fabs(atan2d(-1.0, -1.0) - (-135.0)) < eps);
 }
 
 void calculate_geocentric_coordinates_test(void) {
@@ -408,11 +408,22 @@ void calculate_equatorial_coordinates_test(void) {
   float rg = 0;
 
   TEST_CHECK(calculate_equatorial_coordinates(2.0, 3.0, 4.0, 5.0, //
-                                             &RA, &Dec, &rg) != 0);
+                                              &RA, &Dec, &rg) != 0);
 
   TEST_CHECK(RA != 0.0 && Dec != 0.0 && rg != 0.0);
 
-  TEST_CHECK(fabsf(rg - sqrtf(2.0 * 2.0 + 3.0 * 3.0 + 4.0 * 4.0)) < 0.001);
+  TEST_CHECK(fabsf(rg - sqrtf(2.0 * 2.0 + 3.0 * 3.0 + 4.0 * 4.0)) < eps);
+}
+
+void calculate_azimuthal_coordinates_test(void) {
+
+  float az = 0.0;
+  float alt = 0.0;
+
+  TEST_CHECK(calculate_azimuthal_coordinates(1.0, 2.0, 3.0, 4.0, //
+                                             &az, &alt) != 0);
+
+  TEST_CHECK(az != 0.0 && alt != 0.0);
 }
 
 TEST_LIST = {{NULL, calculate_time_scale_test},
@@ -427,4 +438,5 @@ TEST_LIST = {{NULL, calculate_time_scale_test},
              {NULL, calculate_sind_cosd_atan2d_test},
              {NULL, calculate_geocentric_coordinates_test},
              {NULL, calculate_equatorial_coordinates_test},
+             {NULL, calculate_azimuthal_coordinates_test},
              {NULL, NULL}};
