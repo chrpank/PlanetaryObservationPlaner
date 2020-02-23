@@ -171,6 +171,13 @@ float cosd(const float x);
 float atan2d(const float y, const float x);
 
 /**
+ * calculate asin
+ * param[in} x the argument
+ * return the asin in degrees
+ */
+float asind(const float x);
+
+/**
  * calculate geocentric coordinates of the moon
  * param[in} lonecl the ecliptic longitude
  * param[in} latecl the ecliptic latitude
