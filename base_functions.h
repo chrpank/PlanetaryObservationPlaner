@@ -21,6 +21,11 @@
 #define hou2deg 15.0
 
 /**
+ * numerical error epsilon
+ */
+#define eps 0.001
+
+/**
  * calculate days from a date
  * param[in] year the year
  * param[in] month the month
@@ -210,3 +215,17 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
 int calculate_equatorial_coordinates(const float xg, const float yg,
                                      const float zg, const float ecl, float *RA,
                                      float *Dec, float *rg);
+
+/**
+ * calculate azimuthal coordinates
+ * param[in} RA right ascension
+ * param[in} Dec declination
+ * param[in} LST local siderial time
+ * param[in} lat the local latitude
+ * param[in/out} az  local azimuth
+ * param[in/out} alt local altitude
+ * return not 0 if success, 0 otherwise
+ */
+int calculate_azimuthal_coordinates(const float RA, const float Dec,
+                                    const float LST, const float lat, float *az,
+                                    float *alt);
