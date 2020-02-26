@@ -13,7 +13,7 @@
  * param[in/out] az the azimuth
  * param[in/out] alt the altitude
  */
-int azimuthal_coordinates_for_date(const char *object, const int year,
-                                   const int month, const int day,
-                                   const float ut, const float lat, float *az,
-                                   float *alt);
+int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
+                                             const int month, const int day,
+                                             const float ut, const float lat,
+                                             float *az, float *alt);
