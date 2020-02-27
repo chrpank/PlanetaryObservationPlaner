@@ -17,16 +17,24 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
 
   float d;
   if (!calculate_time_scale(year, month, day, ut, &d)) {
-    printf("the function calculate_time_scale failed");
+    printf("error: the function calculate_time_scale failed");
     success = 0;
   }
 
   /****************************************************************************/
   // calculate_orbital_elements
 
-  float N, i, w, a, e, M;
-  if (!calculate_orbital_elements(object, &N, &i, &w, &a, &e, &M, d)) {
-    printf("the function calculate_orbital_elements failed");
+  float N_obj, i_obj, w_obj, a_obj, e_obj, M_obj;
+  if (!calculate_orbital_elements(object, &N_obj, &i_obj, &w_obj, &a_obj,
+                                  &e_obj, &M_obj, d)) {
+    printf("error: the function calculate_orbital_elements failed");
+    success = 0;
+  }
+
+  float N_sun, i_sun, w_sun, a_sun, e_sun, M_sun;
+  if (!calculate_orbital_elements("sun", &N_sun, &i_sun, &w_sun, &a_sun, &e_sun,
+                                  &M_sun, d)) {
+    printf("error: the function calculate_orbital_elements failed");
     success = 0;
   }
 
@@ -35,7 +43,7 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
 
   float ecl;
   if (!calculate_obliquity_ecliptic(&ecl, d)) {
-    printf("the function calculate_obliquity_ecliptic failed");
+    printf("error: the function calculate_obliquity_ecliptic failed");
     success = 0;
   }
 
@@ -44,26 +52,41 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
 
   float LST;
   if (!calculate_local_sidereal_time(year, month, day, ut, lat, &LST)) {
-    printf("the function calculate_local_sidereal_time failed");
+    printf("error: the function calculate_local_sidereal_time failed");
     success = 0;
   }
 
   /****************************************************************************/
   // calculate_true_anomaly
 
-  float r, v;
-  if (!calculate_true_anomaly(M, e, a, &r, &v)) {
-    printf("the function calculate_true_anomaly failed");
+  float r_obj, v_obj;
+  if (!calculate_true_anomaly(M_obj, e_obj, a_obj, &r_obj, &v_obj)) {
+    printf("error: the function calculate_true_anomaly failed");
+    success = 0;
+  }
+
+  float r_sun, v_sun;
+  if (!calculate_true_anomaly(M_sun, e_sun, a_sun, &r_sun, &v_sun)) {
+    printf("error: the function calculate_true_anomaly failed");
     success = 0;
   }
 
   /****************************************************************************/
   // calculate_position_in_space
 
-  float xh, yh, zh, lonecl, latecl;
-  if (!calculate_position_in_space(r, N, v, w, i, &xh, &yh, &zh, &lonecl,
-                                   &latecl)) {
-    printf("the function calculate_position_in_space failed");
+  float xh_obj, yh_obj, zh_obj, lonecl_obj, latecl_obj;
+  if (!calculate_position_in_space(r_obj, N_obj, v_obj, w_obj, i_obj, &xh_obj,
+                                   &yh_obj, &zh_obj, &lonecl_obj,
+                                   &latecl_obj)) {
+    printf("error: the function calculate_position_in_space failed");
+    success = 0;
+  }
+
+  float xh_sun, yh_sun, zh_sun, lonecl_sun, latecl_sun;
+  if (!calculate_position_in_space(r_sun, N_sun, v_sun, w_sun, i_sun, &xh_sun,
+                                   &yh_sun, &zh_sun, &lonecl_sun,
+                                   &latecl_sun)) {
+    printf("error: the function calculate_position_in_space failed");
     success = 0;
   }
 
@@ -71,15 +94,9 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   // calculate_pertubations_moon
 
   if (!strcmp(object, "moon")) {
-    float N_sun, i_sun, w_sun, a_sun, e_sun, M_sun;
-    if (!calculate_orbital_elements("sun", &N_sun, &i_sun, &w_sun, &a_sun,
-                                    &e_sun, &M_sun, d)) {
-      printf("the function calculate_orbital_elements failed");
-      success = 0;
-    }
-    if (!calculate_pertubations_moon(M_sun, M, N, w_sun, w, &lonecl, &latecl,
-                                     &r)) {
-      printf("the function calculate_pertubations_moon failed");
+    if (!calculate_pertubations_moon(M_sun, M_obj, N_obj, w_sun, w_obj,
+                                     &lonecl_obj, &latecl_obj, &r_obj)) {
+      printf("error: the function calculate_pertubations_moon failed");
       success = 0;
     }
   }
@@ -88,61 +105,96 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   // calculate_pertubations_planets
 
   if (!strcmp(object, "jupiter")) {
-    float N_sat, i_sat, w_sat, a_sat, e_sat, M_sat, dummy;
-    if (!calculate_orbital_elements("saturn", &N_sat, &i_sat, &w_sat, &a_sat,
-                                    &e_sat, &M_sat, d)) {
-      printf("the function calculate_orbital_elements failed");
+    float M_sat, dummy;
+    if (!calculate_orbital_elements("saturn", &dummy, &dummy, &dummy, &dummy,
+                                    &dummy, &M_sat, d)) {
+      printf("error: the function calculate_orbital_elements failed");
       success = 0;
     }
 
-    if (!calculate_pertubations_planets(M, M_sat, dummy, &lonecl, &latecl,
-                                        &dummy, &dummy, &dummy, &dummy)) {
-      printf("the function calculate_pertubations_planets failed");
+    if (!calculate_pertubations_planets(M_obj, M_sat, dummy, &lonecl_obj,
+                                        &latecl_obj, &dummy, &dummy, &dummy,
+                                        &dummy)) {
+      printf("error: the function calculate_pertubations_planets failed");
       success = 0;
     }
   }
 
   if (!strcmp(object, "saturn")) {
-    float N_jup, i_jup, w_jup, a_jup, e_jup, M_jup, dummy;
-    if (!calculate_orbital_elements("jupiter", &N_jup, &i_jup, &w_jup, &a_jup,
-                                    &e_jup, &M_jup, d)) {
-      printf("the function calculate_orbital_elements failed");
+    float M_jup, dummy;
+    if (!calculate_orbital_elements("jupiter", &dummy, &dummy, &dummy, &dummy,
+                                    &dummy, &M_jup, d)) {
+      printf("error: the function calculate_orbital_elements failed");
       success = 0;
     }
 
-    if (!calculate_pertubations_planets(M_jup, M, dummy, &dummy, &dummy,
-                                        &lonecl, &latecl, &dummy, &dummy)) {
-      printf("the function calculate_pertubations_planets failed");
+    if (!calculate_pertubations_planets(M_jup, M_obj, dummy, &dummy, &dummy,
+                                        &lonecl_obj, &latecl_obj, &dummy,
+                                        &dummy)) {
+      printf("error: the function calculate_pertubations_planets failed");
       success = 0;
     }
   }
 
   if (!strcmp(object, "uranus")) {
-    float N_sat, i_sat, w_sat, a_sat, e_sat, M_sat, dummy;
-    if (!calculate_orbital_elements("saturn", &N_sat, &i_sat, &w_sat, &a_sat,
-                                    &e_sat, &M_sat, d)) {
-      printf("the function calculate_orbital_elements failed");
+    float M_sat, dummy;
+    if (!calculate_orbital_elements("saturn", &dummy, &dummy, &dummy, &dummy,
+                                    &dummy, &M_sat, d)) {
+      printf("error: the function calculate_orbital_elements failed");
       success = 0;
     }
 
-    if (!calculate_pertubations_planets(dummy, M_sat, M, &dummy, &dummy, &dummy,
-                                        &dummy, &lonecl, &latecl)) {
-      printf("the function calculate_pertubations_planets failed");
+    float M_jup;
+    if (!calculate_orbital_elements("jupiter", &dummy, &dummy, &dummy, &dummy,
+                                    &dummy, &M_jup, d)) {
+      printf("error: the function calculate_orbital_elements failed");
+      success = 0;
+    }
+
+    if (!calculate_pertubations_planets(M_jup, M_sat, M_obj, &dummy, &dummy,
+                                        &dummy, &dummy, &lonecl_obj,
+                                        &latecl_obj)) {
+      printf("error: the function calculate_pertubations_planets failed");
       success = 0;
     }
   }
 
   /****************************************************************************/
-  // calculate_geocentric_coordinates_moon
+  // calculate_geocentric_coordinates_moon and planets
 
-  /****************************************************************************/
-  // calculate_geocentric_coordinates_planet
+  float xg, yg, zg;
+  if (!strcmp(object, "moon")) {
+    if (!calculate_geocentric_coordinates_moon(lonecl_obj, latecl_obj, r_obj,
+                                               &xg, &yg, &zg)) {
+      printf(
+          "error: the function calculate_geocentric_coordinates_moon failed");
+      success = 0;
+    }
+  } else {
+    if (!calculate_geocentric_coordinates_planet(
+            lonecl_obj, latecl_obj, r_obj, lonecl_sun, r_sun, &xg, &yg, &zg)) {
+      printf(
+          "error: the function calculate_geocentric_coordinates_planet failed");
+      success = 0;
+    }
+  }
 
   /****************************************************************************/
   // calculate_equatorial_coordinates
 
+  float RA, Dec, rg;
+  if (!calculate_equatorial_coordinates(xg, yg, zg, ecl, &RA, &Dec, &rg)) {
+    printf("error: the function calculate_equatorial_coordinates failed");
+    success = 0;
+  }
+
   /****************************************************************************/
   // calculate_azimuthal_coordinates
+
+  if (!calculate_azimuthal_coordinates(RA, Dec, LST, lat, az, alt)) {
+    printf("error: the function calculate_azimuthal_coordinates failed");
+    success = 0;
+  }
 
   return success;
 }

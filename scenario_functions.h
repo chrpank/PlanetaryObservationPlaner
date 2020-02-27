@@ -3,7 +3,7 @@
  */
 
 /**
- * scenario azimuthal coordinates sun
+ * scenario calculate azimuthal coordinates
  * param[in] object the object
  * param[in] year the year
  * param[in] month the month
