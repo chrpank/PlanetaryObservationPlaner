@@ -1,0 +1,28 @@
+
+
+keine Kommandozeilenparameter =>
+breichne für alle Objekte den nächsten Beobachtungszeitpunkt
+
+nur das Objekt, -o jupiter
+berechne für dieses Objekt den nächsten Beobachtungszeitpunkt
+
+nur das Jahr, -j 2020
+berechne für alle Objekte die Zeitpunkte in diesem Jahr
+
+nur der Monat, -m 2
+berechne für alle Objekte die Zeitpunkte in diesem Monat im aktuellen Jahr
+
+Jahr und Monant, -j 2020 -m 2
+berechne für alle Objekte die Zeitpunkte in Monat und Jahr
+
+
+Sonnenhöhe z.B konstant auf nautische Dämmerung
+Deklination konstant auf 140
+minimale Höhe konstant 30
+sonst -h, -d, 
+
+-o
+-j
+-m
+-h
+-d
