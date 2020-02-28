@@ -15,5 +15,6 @@
  */
 int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                              const int month, const int day,
-                                             const float ut, const float lat,
-                                             float *az, float *alt);
+                                             const float ut, const float lon,
+                                             const float lat, float *az,
+                                             float *alt);
