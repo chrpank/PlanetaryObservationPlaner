@@ -1,0 +1,34 @@
+
+
+keine Kommandozeilenparameter => show help
+
+nur das Objekt, -o jupiter
+berechne für dieses Objekt den nächsten Beobachtungszeitpunkt
+
+nur das Jahr, -y 2020
+berechne für alle Objekte die Zeitpunkte in diesem Jahr
+
+nur der Monat, -m 2
+berechne für alle Objekte die Zeitpunkte in diesem Monat im aktuellen Jahr
+
+Jahr und Monant, -y 2020 -m 2
+berechne für alle Objekte die Zeitpunkte in Monat und Jahr
+
+
+Sonnenhöhe z.B konstant auf z.B. nautische Dämmerung
+Azimuth konstant auf 140°
+minimale Höhe konstant 30°
+sonst -a, -h
+
+-o --object
+-y --year
+-m --month
+-h --hight
+-a --azimuth
+
+--setlat, einmalige Konfiguration
+--setlon, einmalige Konfiguration
+
+Konfiguration der Länge und Breite
+auch über die Komandozeile, einmalig ins config-file schreiben
+Standard const im Programm 50°NB 10°ÖL
