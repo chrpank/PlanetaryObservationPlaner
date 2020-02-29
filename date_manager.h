@@ -57,10 +57,10 @@ int print_date(const date date);
 
 /**
  * set date to system date
- * param[in] date the date data type
+ * param[in/out] date the date data type
  * return not 0 if success, 0 otherwise
  */
-int set_date_to_system_date(date *date);
+int set_system_date(date *date);
 
 /**
  * check if year is leap year

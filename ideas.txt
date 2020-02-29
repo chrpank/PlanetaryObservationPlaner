@@ -32,3 +32,6 @@ sonst -a, -h
 Konfiguration der Länge und Breite
 auch über die Komandozeile, einmalig ins config-file schreiben
 Standard const im Programm 50°NB 10°ÖL
+
+
+Noch die Korrektur topozentrische alt and az einbauen
