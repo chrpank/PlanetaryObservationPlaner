@@ -18,8 +18,32 @@ typedef struct {
   float alt;
 } obsdata;
 
+int test_azimuthal_coordinates(const char *object, const obsdata data[]) {
+  int num_data = 11;
+
+  float azi, alt;
+  float lon = 13.0;
+  float lat = 52.0;
+
+  for (int index = 0; index < num_data; index++) {
+    TEST_CHECK(scenario_calculate_azimuthal_coordinates(
+                   object, data[index].year, data[index].month, data[index].day,
+                   data[index].hour + data[index].minute / 60.0 +
+                       data[index].second / 3600.0,
+                   lon, lat, &azi, &alt) != 0);
+
+    if (fabsf(data[index].azi - azi) > 1.0 ||
+        fabsf(data[index].alt - alt) > 1.0) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
 void scenario_calculate_azimuthal_coordinates_sun_test(void) {
-  /*	Sun, lon 13.0 lat 52.0
+  /*
+  Sun, lon 13.0 lat 52.0
   -----------------------------------------
           Date         |Horiz.coordinates |
                        |(Azimuth/Altitude)|
@@ -52,28 +76,7 @@ void scenario_calculate_azimuthal_coordinates_sun_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 092.735, -12.401},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 223.236, +52.617}};
 
-  int num_data = 11;
-
-  float azi, alt;
-  float lon = 13.0;
-  float lat = 52.0;
-
-  int success = 1;
-
-  for (int index = 0; index < num_data; index++) {
-    TEST_CHECK(scenario_calculate_azimuthal_coordinates(
-                   "sun", data[index].year, data[index].month, data[index].day,
-                   data[index].hour + data[index].minute / 60.0 +
-                       data[index].second / 3600.0,
-                   lon, lat, &azi, &alt) != 0);
-
-    if (fabsf(data[index].azi - azi) > 1.0 ||
-        fabsf(data[index].alt - alt) > 1.0) {
-      success = 0;
-    }
-  }
-
-  TEST_CHECK(success == 1);
+  TEST_CHECK(test_azimuthal_coordinates("sun", data) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_moon_test(void) {
@@ -111,31 +114,126 @@ void scenario_calculate_azimuthal_coordinates_moon_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 307.245, -36.467},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 118.184, +14.034}};
 
-  int num_data = 11;
-
-  float azi, alt;
-  float lon = 13.0;
-  float lat = 52.0;
-
-  int success = 1;
-
-  for (int index = 0; index < num_data; index++) {
-    TEST_CHECK(scenario_calculate_azimuthal_coordinates(
-                   "moon", data[index].year, data[index].month, data[index].day,
-                   data[index].hour + data[index].minute / 60.0 +
-                       data[index].second / 3600.0,
-                   lon, lat, &azi, &alt) != 0);
-
-    if (fabsf(data[index].azi - azi) > 1.0 ||
-        fabsf(data[index].alt - alt) > 1.0) {
-      success = 0;
-    }
-  }
-
-  TEST_CHECK(success == 1);
+  TEST_CHECK(test_azimuthal_coordinates("moon", data) == 1);
 }
 
-TEST_LIST = {
-    {"scenario sun", scenario_calculate_azimuthal_coordinates_sun_test},
-    {"scenario moon", scenario_calculate_azimuthal_coordinates_moon_test},
-    {NULL, NULL}};
+void scenario_calculate_azimuthal_coordinates_mercury_test(void) {
+  /*
+  Mercury, lon 13.0 lat 52.0
+  -----------------------------------------
+          Date         |Horiz.coordinates |
+                       |(Azimuth/Altitude)|
+                       |                  |
+  ---------------------|------------------|
+    h  m  s            |    °       °     |
+  00 00 00  28.02.2010 | 031.002 -49.016  |
+  08 30 00  24.11.2012 | 156.622 +19.881  |
+  17 00 00  21.08.2015 | 251.612 +17.387  |
+  01 30 00  18.05.2018 | 055.069 -10.429  |
+  10 00 00  11.02.2021 | 165.666 +24.680  |
+  18 30 00  08.11.2023 | 266.600 -24.308  |
+  03 00 00  05.08.2026 | 066.954 +07.989  |
+  11 30 00  01.05.2029 | 164.373 +58.970  |
+  20 00 00  26.01.2032 | 292.789 -43.429  |
+  04 30 00  23.10.2034 | 099.970 +03.147  |
+  13 00 00  19.07.2037 | 179.764 +51.707  |
+  */
+
+  obsdata data[] = {
+      {00.0, 00.0, 00.0, /**/ 28, /***/ 2, 2010, 031.002, -49.016},
+      {08.0, 30.0, 00.0, /**/ 24, /**/ 11, 2012, 156.622, +19.881},
+      {17.0, 00.0, 00.0, /**/ 21, /***/ 8, 2015, 251.612, +17.387},
+      {01.0, 30.0, 00.0, /**/ 18, /***/ 5, 2018, 055.069, -10.429},
+      {10.0, 00.0, 00.0, /**/ 11, /***/ 2, 2021, 165.666, +24.680},
+      {18.0, 30.0, 00.0, /***/ 8, /**/ 11, 2023, 266.600, -24.308},
+      {03.0, 00.0, 00.0, /***/ 5, /***/ 8, 2026, 066.954, +07.989},
+      {11.0, 30.0, 00.0, /***/ 1, /***/ 5, 2029, 164.373, +58.970},
+      {20.0, 00.0, 00.0, /**/ 26, /***/ 1, 2032, 292.789, -43.429},
+      {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 099.970, +03.147},
+      {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 179.764, +51.707}};
+
+  TEST_CHECK(test_azimuthal_coordinates("mercury", data) == 1);
+}
+
+void scenario_calculate_azimuthal_coordinates_venus_test(void) {
+  /*
+  Venus, lon 13.0 lat 52.0
+  -----------------------------------------
+          Date         |Horiz.coordinates |
+                       |(Azimuth/Altitude)|
+                       |                  |
+  ---------------------|------------------|
+    h  m  s            |    °       °     |
+  00 00 00  28.02.2010 | 358.324 -42.984  |
+  08 30 00  24.11.2012 | 172.233 +26.932  |
+  17 00 00  21.08.2015 | 281.358 +00.839  |
+  01 30 00  18.05.2018 | 002.937 -13.002  |
+  10 00 00  11.02.2021 | 169.543 +19.426  |
+  18 30 00  08.11.2023 | 332.407 -33.740  |
+  03 00 00  05.08.2026 | 016.745 -36.478  |
+  11 30 00  01.05.2029 | 173.586 +55.684  |
+  20 00 00  26.01.2032 | 330.249 -57.850  |
+  04 30 00  23.10.2034 | 099.738 -13.590  |
+  13 00 00  19.07.2037 | 171.751 +51.348  |
+  */
+
+  obsdata data[] = {
+      {00.0, 00.0, 00.0, /**/ 28, /***/ 2, 2010, 358.324, -42.984},
+      {08.0, 30.0, 00.0, /**/ 24, /**/ 11, 2012, 172.233, +26.932},
+      {17.0, 00.0, 00.0, /**/ 21, /***/ 8, 2015, 281.358, +00.839},
+      {01.0, 30.0, 00.0, /**/ 18, /***/ 5, 2018, 002.937, -13.002},
+      {10.0, 00.0, 00.0, /**/ 11, /***/ 2, 2021, 169.543, +19.426},
+      {18.0, 30.0, 00.0, /***/ 8, /**/ 11, 2023, 332.407, -33.740},
+      {03.0, 00.0, 00.0, /***/ 5, /***/ 8, 2026, 016.745, -36.478},
+      {11.0, 30.0, 00.0, /***/ 1, /***/ 5, 2029, 173.586, +55.684},
+      {20.0, 00.0, 00.0, /**/ 26, /***/ 1, 2032, 330.249, -57.850},
+      {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 099.738, -13.590},
+      {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 171.751, +51.348}};
+
+  TEST_CHECK(test_azimuthal_coordinates("venus", data) == 1);
+}
+
+void scenario_calculate_azimuthal_coordinates_mars_test(void) {
+  /*
+  Mars
+  -----------------------------------------
+          Date         |Horiz.coordinates |
+                       |(Azimuth/Altitude)|
+                       |                  |
+  ---------------------|------------------|
+    h  m  s            |    °       °     |
+  00 00 00  28.02.2010 | 249.559 +44.926  |
+  08 30 00  24.11.2012 | 118.953 -08.718  |
+  17 00 00  21.08.2015 | 294.806 +05.435  |
+  01 30 00  18.05.2018 | 149.792 +10.869  |
+  10 00 00  11.02.2021 | 070.260 +08.309  |
+  18 30 00  08.11.2023 | 275.980 -26.981  |
+  03 00 00  05.08.2026 | 087.143 +28.201  |
+  11 30 00  01.05.2029 | 053.570 -20.645  |
+  20 00 00  26.01.2032 | 264.514 -00.112  |
+  04 30 00  23.10.2034 | 102.943 +07.313  |
+  13 00 00  19.07.2037 | 296.565 -07.671  |
+  */
+
+  obsdata data[] = {
+      {00.0, 00.0, 00.0, /**/ 28, /***/ 2, 2010, 249.559, +44.926},
+      {08.0, 30.0, 00.0, /**/ 24, /**/ 11, 2012, 118.953, -08.718},
+      {17.0, 00.0, 00.0, /**/ 21, /***/ 8, 2015, 294.806, +05.435},
+      {01.0, 30.0, 00.0, /**/ 18, /***/ 5, 2018, 149.792, +10.869},
+      {10.0, 00.0, 00.0, /**/ 11, /***/ 2, 2021, 070.260, +08.309},
+      {18.0, 30.0, 00.0, /***/ 8, /**/ 11, 2023, 275.980, -26.981},
+      {03.0, 00.0, 00.0, /***/ 5, /***/ 8, 2026, 087.143, +28.201},
+      {11.0, 30.0, 00.0, /***/ 1, /***/ 5, 2029, 053.570, -20.645},
+      {20.0, 00.0, 00.0, /**/ 26, /***/ 1, 2032, 264.514, -00.112},
+      {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 102.943, +07.313},
+      {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 296.565, -07.671}};
+
+  TEST_CHECK(test_azimuthal_coordinates("mars", data) == 1);
+}
+
+TEST_LIST = {{NULL, scenario_calculate_azimuthal_coordinates_sun_test},
+             {NULL, scenario_calculate_azimuthal_coordinates_moon_test},
+             {NULL, scenario_calculate_azimuthal_coordinates_mercury_test},
+             {NULL, scenario_calculate_azimuthal_coordinates_venus_test},
+             {NULL, scenario_calculate_azimuthal_coordinates_mars_test},
+             {NULL, NULL}};
