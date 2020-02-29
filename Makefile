@@ -1,6 +1,9 @@
 
 default: test_example
 
+date_manager.o: date_manager.c date_manager.h
+	gcc -c date_manager.c -o date_manager.o
+
 scenario_functions.o: scenario_functions.c scenario_functions.h
 	gcc -c scenario_functions.c -o scenario_functions.o
 
