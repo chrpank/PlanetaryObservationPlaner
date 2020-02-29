@@ -18,14 +18,13 @@ typedef struct {
   float alt;
 } obsdata;
 
-int test_azimuthal_coordinates(const char *object, const obsdata data[]) {
-  int num_data = 11;
-
+int test_azimuthal_coordinates(const char *object, const obsdata data[],
+                               const int data_size) {
   float azi, alt;
   float lon = 13.0;
   float lat = 52.0;
 
-  for (int index = 0; index < num_data; index++) {
+  for (int index = 0; index < data_size; index++) {
     TEST_CHECK(scenario_calculate_azimuthal_coordinates(
                    object, data[index].year, data[index].month, data[index].day,
                    data[index].hour + data[index].minute / 60.0 +
@@ -76,7 +75,7 @@ void scenario_calculate_azimuthal_coordinates_sun_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 092.735, -12.401},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 223.236, +52.617}};
 
-  TEST_CHECK(test_azimuthal_coordinates("sun", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("sun", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_moon_test(void) {
@@ -114,7 +113,7 @@ void scenario_calculate_azimuthal_coordinates_moon_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 307.245, -36.467},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 118.184, +14.034}};
 
-  TEST_CHECK(test_azimuthal_coordinates("moon", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("moon", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_mercury_test(void) {
@@ -152,7 +151,7 @@ void scenario_calculate_azimuthal_coordinates_mercury_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 099.970, +03.147},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 179.764, +51.707}};
 
-  TEST_CHECK(test_azimuthal_coordinates("mercury", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("mercury", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_venus_test(void) {
@@ -190,7 +189,7 @@ void scenario_calculate_azimuthal_coordinates_venus_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 099.738, -13.590},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 171.751, +51.348}};
 
-  TEST_CHECK(test_azimuthal_coordinates("venus", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("venus", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_mars_test(void) {
@@ -228,7 +227,7 @@ void scenario_calculate_azimuthal_coordinates_mars_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 102.943, +07.313},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 296.565, -07.671}};
 
-  TEST_CHECK(test_azimuthal_coordinates("mars", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("mars", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_jupiter_test(void) {
@@ -266,7 +265,7 @@ void scenario_calculate_azimuthal_coordinates_jupiter_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 283.190, -08.852},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 243.875, +46.724}};
 
-  TEST_CHECK(test_azimuthal_coordinates("jupiter", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("jupiter", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_saturn_test(void) {
@@ -304,7 +303,7 @@ void scenario_calculate_azimuthal_coordinates_saturn_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 154.571, +55.202},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 167.469, +49.852}};
 
-  TEST_CHECK(test_azimuthal_coordinates("saturn", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("saturn", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_uranus_test(void) {
@@ -342,7 +341,7 @@ void scenario_calculate_azimuthal_coordinates_uranus_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 199.993, +60.189},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 233.924, +50.684}};
 
-  TEST_CHECK(test_azimuthal_coordinates("uranus", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("uranus", data, 11) == 1);
 }
 
 void scenario_calculate_azimuthal_coordinates_neptune_test(void) {
@@ -380,7 +379,7 @@ void scenario_calculate_azimuthal_coordinates_neptune_test(void) {
       {04.0, 30.0, 00.0, /**/ 23, /**/ 10, 2034, 275.901, +03.836},
       {13.0, 00.0, 00.0, /**/ 19, /***/ 7, 2037, 298.225, -08.890}};
 
-  TEST_CHECK(test_azimuthal_coordinates("neptune", data) == 1);
+  TEST_CHECK(test_azimuthal_coordinates("neptune", data, 11) == 1);
 }
 
 TEST_LIST = {{NULL, scenario_calculate_azimuthal_coordinates_sun_test},
