@@ -51,9 +51,8 @@ int step_backward(date *date, const float step);
 /**
  * print the date
  * param[in] date the date data type
- * return not 0 if success, 0 otherwise
  */
-int print_date(const date date);
+void print_date(const date date);
 
 /**
  * set date from system

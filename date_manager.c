@@ -9,10 +9,14 @@
 
 int is_date_valid(const date date) {
   if (date.year <= 1900 || date.year >= 2100) {
+    printf("error is_date_valid: the year is invalid\n");
+    print_date(date);
     return 0;
   }
 
   if (date.month < 1 || date.month > 12) {
+    printf("error is_date_valid: the month is invalid\n");
+    print_date(date);
     return 0;
   }
 
@@ -22,10 +26,14 @@ int is_date_valid(const date date) {
   }
 
   if (date.day < 1 || date.day > max_days[date.month - 1]) {
+    printf("error is_date_valid: the day is invalid\n");
+    print_date(date);
     return 0;
   }
 
   if (date.ut < 0.0 || date.ut > 24.0) {
+    printf("error is_date_valid: the ut is invalid\n");
+    print_date(date);
     return 0;
   }
 
@@ -40,7 +48,7 @@ int set_date(const int year, const int month, const int day, const float ut,
   (*date).ut = ut;
 
   if (is_date_valid((*date)) == 0) {
-    printf("error set_date: the function is_date_valid failed");
+    printf("error set_date: the function is_date_valid failed\n");
     return 0;
   }
 
@@ -51,7 +59,7 @@ int step_forward(date *date, const float step) { return 0; }
 
 int step_backward(date *date, const float step) { return 0; }
 
-int print_date(const date date) { return 0; }
+void print_date(const date date) { printf("| %d | %d | %d | "); }
 
 int set_system_date(date *date, const int utdiff) {
   time_t t = time(NULL);
@@ -63,12 +71,12 @@ int set_system_date(date *date, const int utdiff) {
   (*date).ut = tm.tm_hour + tm.tm_min / 60.0 + tm.tm_sec / 3600.0;
 
   if (step_backward(date, (float)utdiff) == 0) {
-    printf("error set_system_date: the function step_backward failed");
+    printf("error set_system_date: the function step_backward failed\n");
     return 0;
   }
 
   if (is_date_valid((*date)) == 0) {
-    printf("error set_system_date: the function is_date_valid failed");
+    printf("error set_system_date: the function is_date_valid failed\n");
     return 0;
   }
 
