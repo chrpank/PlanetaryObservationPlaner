@@ -26,12 +26,17 @@ sonst -a, -h
 -h --hight
 -a --azimuth
 
---setlat, einmalige Konfiguration
---setlon, einmalige Konfiguration
-
 Konfiguration der Länge und Breite
 auch über die Komandozeile, einmalig ins config-file schreiben
 Standard const im Programm 50°NB 10°ÖL
-
+Kofiguration über die Kommandozeile
+set-lat, einmalige Konfiguration des Breitengrades
+set-lon, einmalige Konfiguration des Längengrades
+set-utd, einmalige Konfiguration der Differenz zu UT
+config-file
+pop.cfg
+lat=50, the local latitude
+lon=10, the local longitude
+utd=1, the difference to universal time
 
 Noch die Korrektur topozentrische alt and az einbauen
