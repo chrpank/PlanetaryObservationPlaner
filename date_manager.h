@@ -56,11 +56,12 @@ int step_backward(date *date, const float step);
 int print_date(const date date);
 
 /**
- * set date to system date
+ * set date from system
  * param[in/out] date the date data type
+ * param[in] utdiff, the ut difference in hours
  * return not 0 if success, 0 otherwise
  */
-int set_system_date(date *date);
+int set_system_date(date *date, const int utdiff);
 
 /**
  * check if year is leap year
