@@ -1,5 +1,8 @@
+todos:
+Noch die Korrektur topozentrische alt and az einbauen
+Fehlermedlungen auch die Funktion angeben
 
-
+Ideen:
 keine Kommandozeilenparameter => show help
 
 nur das Objekt, -o jupiter

@@ -29,6 +29,7 @@ test_example: test_example.o
 	gcc test_example.o -o test_example
 
 clean:
+	-rm -f date_manager.o
 	-rm -f scenario_functions.o
 	-rm -f scenario_functions_test.o
 	-rm -f scenario_functions_test

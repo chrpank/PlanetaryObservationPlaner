@@ -40,7 +40,7 @@ int set_date(const int year, const int month, const int day, const float ut,
   (*date).ut = ut;
 
   if (is_date_valid((*date)) == 0) {
-    printf("error: the function is_date_valid failed");
+    printf("error set_date: the function is_date_valid failed");
     return 0;
   }
 
@@ -63,16 +63,21 @@ int set_system_date(date *date, const int utdiff) {
   (*date).ut = tm.tm_hour + tm.tm_min / 60.0 + tm.tm_sec / 3600.0;
 
   if (step_backward(date, (float)utdiff) == 0) {
-    printf("error: the function step_backward failed");
+    printf("error set_system_date: the function step_backward failed");
     return 0;
   }
 
   if (is_date_valid((*date)) == 0) {
-    printf("error: the function is_date_valid failed");
+    printf("error set_system_date: the function is_date_valid failed");
     return 0;
   }
 
   return 1;
 }
 
-int is_leap_year(const date date) { return 0; }
+int is_leap_year(const date date) {
+  if ((date.year % 4 == 0 && date.year % 100 != 0) || date.year % 400 == 0) {
+    return 1;
+  }
+  return 0;
+}
