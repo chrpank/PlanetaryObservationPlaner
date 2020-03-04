@@ -4,6 +4,7 @@
 
 #include "date_manager.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -55,11 +56,98 @@ int set_date(const int year, const int month, const int day, const float ut,
   return 1;
 }
 
-int step_forward(date *date, const float step) { return 0; }
+int step_forward(date *date, const float step) {
+  if (step > 12.0 || step < 0) {
+    printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    return 0;
+  }
 
-int step_backward(date *date, const float step) { return 0; }
+  float ut = (*date).ut;
+  ut += step;
+  if (ut <= 24.0) {
+    (*date).ut += step;
+    return 1;
+  }
 
-void print_date(const date date) { printf("| %d | %d | %d | "); }
+  (*date).ut -= 24.0;
+
+  int day = (*date).day;
+  day++;
+
+  int max_days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  if (is_leap_year(*date)) {
+    max_days[1] = 29;
+  }
+
+  if (day <= max_days[(*date).month - 1]) {
+    (*date).day = day;
+    return 1;
+  }
+
+  (*date).day = 1;
+
+  int month = (*date).month;
+  month++;
+  if (month < 12) {
+    (*date).month = month;
+    return 1;
+  }
+
+  (*date).month = 1;
+  (*date).year++;
+
+  return 1;
+}
+
+int step_backward(date *date, const float step) {
+  if (step > 12.0 || step < 0) {
+    printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    return 0;
+  }
+
+  float ut = (*date).ut;
+  ut -= step;
+  if (ut >= 0.0) {
+    (*date).ut -= step;
+    return 1;
+  }
+
+  (*date).ut += 24.0;
+
+  int day = (*date).day;
+  day--;
+
+  int max_days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  if (is_leap_year(*date)) {
+    max_days[1] = 29;
+  }
+
+  if (day > 0) {
+    (*date).day = day;
+    return 1;
+  }
+
+  int month = (*date).month;
+  month--;
+  if (month > 0) {
+    (*date).month = month;
+    (*date).day = max_days[month - 1];
+    return 1;
+  }
+
+  (*date).month = 12;
+  (*date).year--;
+
+  return 1;
+}
+
+void print_date(const date date) {
+  int hour = (int)floor(date.ut);
+  int min = (int)floor((date.ut - hour) * 60.0);
+
+  printf("%2.0f.%2.0f.%2.0f  %2.0f:%2.0f", (float)date.day, (float)date.month,
+         (float)date.year, (float)hour, (float)min);
+}
 
 int set_system_date(date *date, const int utdiff) {
   time_t t = time(NULL);
