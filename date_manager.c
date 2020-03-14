@@ -66,6 +66,9 @@ int step_forward(date *date, const float step) {
   ut += step;
   if (ut <= 24.0) {
     (*date).ut += step;
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
@@ -81,6 +84,9 @@ int step_forward(date *date, const float step) {
 
   if (day <= max_days[(*date).month - 1]) {
     (*date).day = day;
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
@@ -90,11 +96,18 @@ int step_forward(date *date, const float step) {
   month++;
   if (month < 12) {
     (*date).month = month;
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
   (*date).month = 1;
   (*date).year++;
+
+  if (is_date_valid(*date) == 0) {
+    printf("error step_forward: date invalid\n");
+  }
 
   return 1;
 }
@@ -109,6 +122,9 @@ int step_backward(date *date, const float step) {
   ut -= step;
   if (ut >= 0.0) {
     (*date).ut -= step;
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
@@ -124,6 +140,9 @@ int step_backward(date *date, const float step) {
 
   if (day > 0) {
     (*date).day = day;
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
@@ -132,11 +151,19 @@ int step_backward(date *date, const float step) {
   if (month > 0) {
     (*date).month = month;
     (*date).day = max_days[month - 1];
+    if (is_date_valid(*date) == 0) {
+      printf("error step_forward: date invalid\n");
+    }
     return 1;
   }
 
   (*date).month = 12;
   (*date).year--;
+
+  if (is_date_valid(*date) == 0) {
+    printf("error step_forward: date invalid\n");
+    return 0;
+  }
 
   return 1;
 }
