@@ -36,6 +36,8 @@ test_example: test_example.o
 
 clean:
 	-rm -f date_manager.o
+	-rm -f date_manager_test.o
+	-rm -f date_manager_test
 	-rm -f scenario_functions.o
 	-rm -f scenario_functions_test.o
 	-rm -f scenario_functions_test
