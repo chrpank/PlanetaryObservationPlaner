@@ -21,7 +21,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   float d;
   if (calculate_time_scale(year, month, day, ut, &d) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_time_scale failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_time_scale failed");
     }
     success = 0;
   }
@@ -33,7 +34,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   if (calculate_orbital_elements(object, &N_obj, &i_obj, &w_obj, &a_obj, &e_obj,
                                  &M_obj, d) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_orbital_elements failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_orbital_elements failed");
     }
     success = 0;
   }
@@ -42,7 +44,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   if (calculate_orbital_elements("sun", &N_sun, &i_sun, &w_sun, &a_sun, &e_sun,
                                  &M_sun, d) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_orbital_elements failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_orbital_elements failed");
     }
     success = 0;
   }
@@ -53,7 +56,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   float ecl;
   if (calculate_obliquity_ecliptic(&ecl, d) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_obliquity_ecliptic failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_obliquity_ecliptic failed");
     }
     success = 0;
   }
@@ -64,7 +68,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   float LST;
   if (calculate_local_sidereal_time(year, month, day, ut, lon, &LST) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_local_sidereal_time failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_local_sidereal_time failed");
     }
     success = 0;
   }
@@ -75,7 +80,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   float r_obj, v_obj;
   if (calculate_true_anomaly(M_obj, e_obj, a_obj, &r_obj, &v_obj) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_true_anomaly failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_true_anomaly failed");
     }
     success = 0;
   }
@@ -83,7 +89,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   float r_sun, v_sun;
   if (calculate_true_anomaly(M_sun, e_sun, a_sun, &r_sun, &v_sun) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_true_anomaly failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_true_anomaly failed");
     }
     success = 0;
   }
@@ -96,7 +103,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                   &yh_obj, &zh_obj, &lonecl_obj,
                                   &latecl_obj) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_position_in_space failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_position_in_space failed");
     }
     success = 0;
   }
@@ -106,7 +114,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                   &yh_sun, &zh_sun, &lonecl_sun,
                                   &latecl_sun) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_position_in_space failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_position_in_space failed");
     }
     success = 0;
   }
@@ -118,7 +127,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_pertubations_moon(M_sun, M_obj, N_obj, w_sun, w_obj,
                                     &lonecl_obj, &latecl_obj, &r_obj) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_pertubations_moon failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_pertubations_moon failed");
       }
       success = 0;
     }
@@ -132,7 +142,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_orbital_elements("saturn", &dummy, &dummy, &dummy, &dummy,
                                    &dummy, &M_sat, d) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_orbital_elements failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_orbital_elements failed");
       }
       success = 0;
     }
@@ -141,7 +152,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                        &latecl_obj, &dummy, &dummy, &dummy,
                                        &dummy) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_pertubations_planets failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_pertubations_planets failed");
       }
       success = 0;
     }
@@ -152,7 +164,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_orbital_elements("jupiter", &dummy, &dummy, &dummy, &dummy,
                                    &dummy, &M_jup, d) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_orbital_elements failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_orbital_elements failed");
       }
       success = 0;
     }
@@ -161,7 +174,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                        &lonecl_obj, &latecl_obj, &dummy,
                                        &dummy) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_pertubations_planets failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_pertubations_planets failed");
       }
       success = 0;
     }
@@ -172,7 +186,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_orbital_elements("saturn", &dummy, &dummy, &dummy, &dummy,
                                    &dummy, &M_sat, d) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_orbital_elements failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_orbital_elements failed");
       }
       success = 0;
     }
@@ -181,7 +196,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_orbital_elements("jupiter", &dummy, &dummy, &dummy, &dummy,
                                    &dummy, &M_jup, d) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_orbital_elements failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_orbital_elements failed");
       }
       success = 0;
     }
@@ -190,7 +206,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                        &dummy, &dummy, &lonecl_obj,
                                        &latecl_obj) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_pertubations_planets failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_pertubations_planets failed");
       }
       success = 0;
     }
@@ -204,8 +221,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
     if (calculate_geocentric_coordinates_moon(lonecl_obj, latecl_obj, r_obj,
                                               &xg_obj, &yg_obj, &zg_obj) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf(
-            "error: the function calculate_geocentric_coordinates_moon failed");
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_geocentric_coordinates_moon failed");
       }
       success = 0;
     }
@@ -214,7 +231,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                                 lonecl_sun, r_sun, &xg_obj,
                                                 &yg_obj, &zg_obj) == 0) {
       if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-        printf("error: the function calculate_geocentric_coordinates_planet "
+        printf("error scenario_calculate_azimuthal_coordinates: the function "
+               "calculate_geocentric_coordinates_planet "
                "failed");
       }
       success = 0;
@@ -228,7 +246,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   if (calculate_equatorial_coordinates(xg_obj, yg_obj, zg_obj, ecl, &RA_obj,
                                        &Dec_obj, &rg_obj) == 0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_equatorial_coordinates failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_equatorial_coordinates failed");
     }
     success = 0;
   }
@@ -239,7 +258,8 @@ int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
   if (calculate_azimuthal_coordinates(RA_obj, Dec_obj, LST, lat, az, alt) ==
       0) {
     if (DEBUG_MODE_SCENARIO_FUNCTIONS) {
-      printf("error: the function calculate_azimuthal_coordinates failed");
+      printf("error scenario_calculate_azimuthal_coordinates: the function "
+             "calculate_azimuthal_coordinates failed");
     }
     success = 0;
   }
