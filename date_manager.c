@@ -8,16 +8,22 @@
 #include <stdio.h>
 #include <time.h>
 
+static const int DEBUG_MODE_DATE_MANAGER = 0;
+
 int is_date_valid(const date date) {
   if (date.year <= 1900 || date.year >= 2100) {
-    printf("error is_date_valid: the year is invalid\n");
-    print_date(date);
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error is_date_valid: the year is invalid\n");
+      print_date(date);
+    }
     return 0;
   }
 
   if (date.month < 1 || date.month > 12) {
-    printf("error is_date_valid: the month is invalid\n");
-    print_date(date);
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error is_date_valid: the month is invalid\n");
+      print_date(date);
+    }
     return 0;
   }
 
@@ -27,14 +33,18 @@ int is_date_valid(const date date) {
   }
 
   if (date.day < 1 || date.day > max_days[date.month - 1]) {
-    printf("error is_date_valid: the day is invalid\n");
-    print_date(date);
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error is_date_valid: the day is invalid\n");
+      print_date(date);
+    }
     return 0;
   }
 
   if (date.ut < 0.0 || date.ut > 24.0) {
-    printf("error is_date_valid: the ut is invalid\n");
-    print_date(date);
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error is_date_valid: the ut is invalid\n");
+      print_date(date);
+    }
     return 0;
   }
 
@@ -49,7 +59,9 @@ int set_date(const int year, const int month, const int day, const float ut,
   (*date).ut = ut;
 
   if (is_date_valid((*date)) == 0) {
-    printf("error set_date: the function is_date_valid failed\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error set_date: the function is_date_valid failed\n");
+    }
     return 0;
   }
 
@@ -58,7 +70,9 @@ int set_date(const int year, const int month, const int day, const float ut,
 
 int step_forward(date *date, const float step) {
   if (step > 12.0 || step < 0) {
-    printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    }
     return 0;
   }
 
@@ -67,7 +81,9 @@ int step_forward(date *date, const float step) {
   if (ut <= 24.0) {
     (*date).ut += step;
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -85,7 +101,9 @@ int step_forward(date *date, const float step) {
   if (day <= max_days[(*date).month - 1]) {
     (*date).day = day;
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -97,7 +115,9 @@ int step_forward(date *date, const float step) {
   if (month < 12) {
     (*date).month = month;
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -106,7 +126,9 @@ int step_forward(date *date, const float step) {
   (*date).year++;
 
   if (is_date_valid(*date) == 0) {
-    printf("error step_forward: date invalid\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_forward: date invalid\n");
+    }
   }
 
   return 1;
@@ -114,7 +136,9 @@ int step_forward(date *date, const float step) {
 
 int step_backward(date *date, const float step) {
   if (step > 12.0 || step < 0) {
-    printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_forward: timestep is not in the range 0-12 hours\n");
+    }
     return 0;
   }
 
@@ -123,7 +147,9 @@ int step_backward(date *date, const float step) {
   if (ut >= 0.0) {
     (*date).ut -= step;
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -141,7 +167,9 @@ int step_backward(date *date, const float step) {
   if (day > 0) {
     (*date).day = day;
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -152,7 +180,9 @@ int step_backward(date *date, const float step) {
     (*date).month = month;
     (*date).day = max_days[month - 1];
     if (is_date_valid(*date) == 0) {
-      printf("error step_forward: date invalid\n");
+      if (DEBUG_MODE_DATE_MANAGER) {
+        printf("error step_forward: date invalid\n");
+      }
     }
     return 1;
   }
@@ -161,7 +191,9 @@ int step_backward(date *date, const float step) {
   (*date).year--;
 
   if (is_date_valid(*date) == 0) {
-    printf("error step_forward: date invalid\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_forward: date invalid\n");
+    }
     return 0;
   }
 
@@ -186,12 +218,16 @@ int set_system_date(date *date, const int utdiff) {
   (*date).ut = tm.tm_hour + tm.tm_min / 60.0 + tm.tm_sec / 3600.0;
 
   if (step_backward(date, (float)utdiff) == 0) {
-    printf("error set_system_date: the function step_backward failed\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error set_system_date: the function step_backward failed\n");
+    }
     return 0;
   }
 
   if (is_date_valid((*date)) == 0) {
-    printf("error set_system_date: the function is_date_valid failed\n");
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error set_system_date: the function is_date_valid failed\n");
+    }
     return 0;
   }
 
