@@ -3,6 +3,7 @@
  */
 
 #include "date_manager.h"
+#include "base_functions.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -76,19 +77,29 @@ int step_forward(date *date, const float step) {
     return 0;
   }
 
+  if (is_date_valid(*date) == 0) {
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_forward: date invalid\n");
+    }
+    return 0;
+  }
+
   float ut = (*date).ut;
   ut += step;
   if (ut <= 24.0) {
-    (*date).ut += step;
+    (*date).ut = ut;
     if (is_date_valid(*date) == 0) {
       if (DEBUG_MODE_DATE_MANAGER) {
         printf("error step_forward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
 
-  (*date).ut -= 24.0;
+  ut += 24.0;
+  calculate_value_reduction(24.0, &ut);
+  (*date).ut = ut;
 
   int day = (*date).day;
   day++;
@@ -104,6 +115,7 @@ int step_forward(date *date, const float step) {
       if (DEBUG_MODE_DATE_MANAGER) {
         printf("error step_forward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
@@ -118,6 +130,7 @@ int step_forward(date *date, const float step) {
       if (DEBUG_MODE_DATE_MANAGER) {
         printf("error step_forward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
@@ -129,6 +142,7 @@ int step_forward(date *date, const float step) {
     if (DEBUG_MODE_DATE_MANAGER) {
       printf("error step_forward: date invalid\n");
     }
+    return 0;
   }
 
   return 1;

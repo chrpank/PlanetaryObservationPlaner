@@ -92,4 +92,149 @@ void is_date_valid_test(void) {
   TEST_CHECK(is_date_valid(date) == 0);
 }
 
-TEST_LIST = {{NULL, template_test}, {NULL, is_date_valid_test}, {NULL, NULL}};
+void set_date_test(void) {
+  date date;
+  date.year = 0;
+  date.month = 0;
+  date.day = 0;
+  date.ut = 0.0;
+
+  TEST_CHECK(set_date(2000, 1, 1, 1.0, &date) != 0);
+  TEST_CHECK(date.year != 0);
+  TEST_CHECK(date.month != 0);
+  TEST_CHECK(date.day != 0);
+  TEST_CHECK(date.ut != 0.0);
+
+  date.year = 0;
+  date.month = 0;
+  date.day = 0;
+  date.ut = 0.0;
+
+  TEST_CHECK(set_date(2500, 13, 33, 25.0, &date) == 0);
+  TEST_CHECK(date.year != 0);
+  TEST_CHECK(date.month != 0);
+  TEST_CHECK(date.day != 0);
+  TEST_CHECK(date.ut != 0.0);
+}
+
+void step_forward_test(void) {
+  date date;
+
+  /**
+   * ut change
+   */
+  date.year = 2000;
+  date.month = 1;
+  date.day = 1;
+  date.ut = 2.0;
+
+  TEST_CHECK(step_forward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 1);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 3.0);
+
+  /**
+   * ut and day change
+   */
+  date.year = 2000;
+  date.month = 1;
+  date.day = 1;
+  date.ut = 23.0;
+
+  TEST_CHECK(step_forward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 1);
+  TEST_CHECK(date.day == 2);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * ut, day and month change
+   */
+  date.year = 2000;
+  date.month = 1;
+  date.day = 31;
+  date.ut = 23.0;
+
+  TEST_CHECK(step_forward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 2);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * ut, day, month and year change
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 31;
+  date.ut = 23.0;
+
+  TEST_CHECK(step_forward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 2001);
+  TEST_CHECK(date.month == 1);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * case 24.0 ut
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 31;
+  date.ut = 24.0;
+
+  TEST_CHECK(step_forward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2001);
+  TEST_CHECK(date.month == 1);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * leap year case 1
+   */
+  date.year = 2020;
+  date.month = 2;
+  date.day = 28;
+  date.ut = 24.0;
+
+  TEST_CHECK(step_forward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2020);
+  TEST_CHECK(date.month == 2);
+  TEST_CHECK(date.day == 29);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * leap year case 2
+   */
+  date.year = 2020;
+  date.month = 2;
+  date.day = 29;
+  date.ut = 24.0;
+
+  TEST_CHECK(step_forward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2020);
+  TEST_CHECK(date.month == 3);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * invalid date
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 31;
+  date.ut = 25.0;
+
+  TEST_CHECK(step_forward(&date, 1.0) == 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 12);
+  TEST_CHECK(date.day == 31);
+  TEST_CHECK(date.ut == 25.0);
+}
+
+TEST_LIST = {{NULL, template_test},
+             {NULL, is_date_valid_test},
+             {NULL, set_date_test},
+             {NULL, step_forward_test},
+             {NULL, NULL}};
