@@ -151,7 +151,14 @@ int step_forward(date *date, const float step) {
 int step_backward(date *date, const float step) {
   if (step > 12.0 || step < 0) {
     if (DEBUG_MODE_DATE_MANAGER) {
-      printf("error step_forward: timestep is not in the range 0-12 hours\n");
+      printf("error step_backward: timestep is not in the range 0-12 hours\n");
+    }
+    return 0;
+  }
+
+  if (is_date_valid(*date) == 0) {
+    if (DEBUG_MODE_DATE_MANAGER) {
+      printf("error step_backward: date invalid\n");
     }
     return 0;
   }
@@ -159,16 +166,18 @@ int step_backward(date *date, const float step) {
   float ut = (*date).ut;
   ut -= step;
   if (ut >= 0.0) {
-    (*date).ut -= step;
+    (*date).ut = ut;
     if (is_date_valid(*date) == 0) {
       if (DEBUG_MODE_DATE_MANAGER) {
-        printf("error step_forward: date invalid\n");
+        printf("error step_backward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
 
-  (*date).ut += 24.0;
+  ut += 24;
+  (*date).ut = ut;
 
   int day = (*date).day;
   day--;
@@ -182,8 +191,9 @@ int step_backward(date *date, const float step) {
     (*date).day = day;
     if (is_date_valid(*date) == 0) {
       if (DEBUG_MODE_DATE_MANAGER) {
-        printf("error step_forward: date invalid\n");
+        printf("error step_backward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
@@ -195,18 +205,20 @@ int step_backward(date *date, const float step) {
     (*date).day = max_days[month - 1];
     if (is_date_valid(*date) == 0) {
       if (DEBUG_MODE_DATE_MANAGER) {
-        printf("error step_forward: date invalid\n");
+        printf("error step_backward: date invalid\n");
       }
+      return 0;
     }
     return 1;
   }
 
+  (*date).day = 31;
   (*date).month = 12;
   (*date).year--;
 
   if (is_date_valid(*date) == 0) {
     if (DEBUG_MODE_DATE_MANAGER) {
-      printf("error step_forward: date invalid\n");
+      printf("error step_backward: date invalid\n");
     }
     return 0;
   }
@@ -218,8 +230,8 @@ void print_date(const date date) {
   int hour = (int)floor(date.ut);
   int min = (int)floor((date.ut - hour) * 60.0);
 
-  printf("%2.0f.%2.0f.%2.0f  %2.0f:%2.0f", (float)date.day, (float)date.month,
-         (float)date.year, (float)hour, (float)min);
+  printf("%2.0f.%2.0f.%2.0f  %2.0f:%2.0f \n", (float)date.day,
+         (float)date.month, (float)date.year, (float)hour, (float)min);
 }
 
 int set_system_date(date *date, const int utdiff) {

@@ -5,9 +5,9 @@
 #include "date_manager.h"
 #include <acutest.h>
 
-void template_test(void) { TEST_CHECK(1 == 1); }
+void test_template(void) { TEST_CHECK(1 == 1); }
 
-void is_date_valid_test(void) {
+void test_is_date_valid(void) {
 
   int valid_year = 2020;
   int valid_month = 3;
@@ -92,7 +92,7 @@ void is_date_valid_test(void) {
   TEST_CHECK(is_date_valid(date) == 0);
 }
 
-void set_date_test(void) {
+void test_set_date(void) {
   date date;
   date.year = 0;
   date.month = 0;
@@ -117,7 +117,7 @@ void set_date_test(void) {
   TEST_CHECK(date.ut != 0.0);
 }
 
-void step_forward_test(void) {
+void test_step_forward(void) {
   date date;
 
   /**
@@ -233,8 +233,111 @@ void step_forward_test(void) {
   TEST_CHECK(date.ut == 25.0);
 }
 
-TEST_LIST = {{NULL, template_test},
-             {NULL, is_date_valid_test},
-             {NULL, set_date_test},
-             {NULL, step_forward_test},
+void test_step_backward(void) {
+  date date;
+
+  /**
+   * ut change
+   */
+  date.year = 2000;
+  date.month = 1;
+  date.day = 1;
+  date.ut = 2.0;
+
+  TEST_CHECK(step_backward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 1);
+  TEST_CHECK(date.day == 1);
+  TEST_CHECK(date.ut == 1.0);
+
+  /**
+   * ut and day change
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 1;
+  date.ut = 1.0;
+
+  TEST_CHECK(step_backward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 11);
+  TEST_CHECK(date.day == 30);
+  TEST_CHECK(date.ut == 23.0);
+
+  /**
+   * ut, day and month change
+   */
+  date.year = 2000;
+  date.month = 11;
+  date.day = 30;
+  date.ut = 1.0;
+
+  TEST_CHECK(step_backward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 11);
+  TEST_CHECK(date.day == 29);
+  TEST_CHECK(date.ut == 23.0);
+
+  /**
+   * ut, day, month and year change
+   */
+  date.year = 2000;
+  date.month = 1;
+  date.day = 1;
+  date.ut = 1.0;
+
+  TEST_CHECK(step_backward(&date, 2.0) != 0);
+  TEST_CHECK(date.year == 1999);
+  TEST_CHECK(date.month == 12);
+  TEST_CHECK(date.day == 31);
+  TEST_CHECK(date.ut == 23.0);
+
+  /**
+   * case 0.0 ut
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 31;
+  date.ut = 0.0;
+
+  TEST_CHECK(step_backward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 12);
+  TEST_CHECK(date.day == 30);
+  TEST_CHECK(date.ut == 23.0);
+
+  /**
+   * leap year case 1
+   */
+  date.year = 2020;
+  date.month = 2;
+  date.day = 29;
+  date.ut = 0.0;
+
+  TEST_CHECK(step_backward(&date, 1.0) != 0);
+  TEST_CHECK(date.year == 2020);
+  TEST_CHECK(date.month == 2);
+  TEST_CHECK(date.day == 28);
+  TEST_CHECK(date.ut == 23.0);
+
+  /**
+   * invalid date
+   */
+  date.year = 2000;
+  date.month = 12;
+  date.day = 31;
+  date.ut = 25.0;
+
+  TEST_CHECK(step_backward(&date, 1.0) == 0);
+  TEST_CHECK(date.year == 2000);
+  TEST_CHECK(date.month == 12);
+  TEST_CHECK(date.day == 31);
+  TEST_CHECK(date.ut == 25.0);
+}
+
+TEST_LIST = {{"test_template.......", test_template},
+             {"test_is_date_valid..", test_is_date_valid},
+             {"test_set_date.......", test_set_date},
+             {"test_step_forward...", test_step_forward},
+             {"test_step_backward..", test_step_backward},
              {NULL, NULL}};
