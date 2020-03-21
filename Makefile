@@ -38,6 +38,7 @@ test_example: test_example.o
 	gcc test_example.o -o test_example
 
 clean:
+	-rm -f configuration_manager.o
 	-rm -f date_manager.o
 	-rm -f date_manager_test.o
 	-rm -f date_manager_test

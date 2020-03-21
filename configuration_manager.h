@@ -9,6 +9,12 @@
 int create_configuration_file();
 
 /**
+ * validate configuration file
+ * return not 0 if file is valid, 0 otherwise
+ */
+int validate_configuration_file();
+
+/**
  * set local latitude
  * param[in] latitide the local latitide
  * return not 0 if success, 0 otherwise
