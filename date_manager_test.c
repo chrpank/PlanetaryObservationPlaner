@@ -335,9 +335,37 @@ void test_step_backward(void) {
   TEST_CHECK(date.ut == 25.0);
 }
 
-TEST_LIST = {{"test_template.......", test_template},
-             {"test_is_date_valid..", test_is_date_valid},
-             {"test_set_date.......", test_set_date},
-             {"test_step_forward...", test_step_forward},
-             {"test_step_backward..", test_step_backward},
+void test_set_system_date(void) {
+  date date;
+
+  int day = date.day;
+  int year = date.year;
+  int month = date.month;
+  float ut = date.ut;
+
+  TEST_CHECK(set_system_date(&date, 1) != 0);
+
+  TEST_CHECK(date.day != day);
+  TEST_CHECK(date.year != year);
+  TEST_CHECK(date.month != month);
+  TEST_CHECK(date.ut != ut);
+}
+
+void test_is_leap_year(void) {
+  date date;
+
+  date.year = 2019; // is not a lear year
+  TEST_CHECK(is_leap_year(date) == 0);
+
+  date.year = 2020; // is a lear year
+  TEST_CHECK(is_leap_year(date) != 0);
+}
+
+TEST_LIST = {{"test_template.........", test_template},
+             {"test_is_date_valid....", test_is_date_valid},
+             {"test_set_date.........", test_set_date},
+             {"test_step_forward.....", test_step_forward},
+             {"test_step_backward....", test_step_backward},
+             {"test_set_system_date..", test_set_system_date},
+             {"test_is_leap_year.....", test_is_leap_year},
              {NULL, NULL}};
