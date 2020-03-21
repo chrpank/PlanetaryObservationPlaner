@@ -1,6 +1,9 @@
 
 default: test_example
 
+configuration_manager.o: configuration_manager.c configuration_manager.h
+	gcc -c configuration_manager.c -o configuration_manager.o
+
 date_manager.o: date_manager.c date_manager.h
 	gcc -c date_manager.c -o date_manager.o
 	
