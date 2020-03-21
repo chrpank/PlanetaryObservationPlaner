@@ -15,6 +15,12 @@ int create_configuration_file();
 int validate_configuration_file();
 
 /**
+ * check if configuration file exist
+ * return not 0 if file exist, 0 otherwise
+ */
+int check_if_configuration_file_exist();
+
+/**
  * set local latitude
  * param[in] latitide the local latitide
  * return not 0 if success, 0 otherwise
