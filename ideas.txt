@@ -1,4 +1,5 @@
 todos:
+fuege Debugmodus zu Funktionsausgaben hinzu
 Noch die Korrektur topozentrische alt and az einbauen
 Fehlermedlungen auch die Funktion angeben
 

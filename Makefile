@@ -3,6 +3,12 @@ default: test_example
 
 date_manager.o: date_manager.c date_manager.h
 	gcc -c date_manager.c -o date_manager.o
+	
+date_manager_test.o: date_manager_test.c
+	gcc -I./../libs/acutest/include -c date_manager_test.c -o date_manager_test.o
+
+date_manager_test: date_manager_test.o date_manager.o base_functions.o
+	gcc date_manager_test.o date_manager.o base_functions.o -o date_manager_test
 
 scenario_functions.o: scenario_functions.c scenario_functions.h
 	gcc -c scenario_functions.c -o scenario_functions.o
@@ -30,6 +36,8 @@ test_example: test_example.o
 
 clean:
 	-rm -f date_manager.o
+	-rm -f date_manager_test.o
+	-rm -f date_manager_test
 	-rm -f scenario_functions.o
 	-rm -f scenario_functions_test.o
 	-rm -f scenario_functions_test
