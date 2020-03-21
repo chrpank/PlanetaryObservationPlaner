@@ -12,17 +12,57 @@ int create_configuration_file() {
   FILE *file;
   file = fopen(CONFIG_FILE_PATH, "w");
 
-  if (file != NULL) {
-    fprintf(file, "lat=50, local latitude\n");
-    fprintf(file, "lon=10, local longitude\n");
-    fprintf(file, "utd=00, difference to universal time\n");
-    fclose(file);
+  if (file == NULL) {
+    printf("error in create_configuration_file: file could not be created\n");
+    return 0;
   }
+
+  fprintf(file, "lat=50,lon=010,utd=00\n");
+  fclose(file);
 
   return 1;
 }
 
-int validate_configuration_file() { return 0; }
+int validate_configuration_file(int *file_is_valid) {
+  FILE *file;
+  file = fopen(CONFIG_FILE_PATH, "r");
+
+  if (file == NULL) {
+    printf("error create_configuration_file: file could not be created\n");
+    return 0;
+  }
+
+  char buffer[100];
+  fscanf(file, "%[^\n]", buffer);
+  fclose(file);
+
+  int _file_is_valid = 1;
+
+  if (buffer[0] != 'l' || //
+      buffer[1] != 'a' || //
+      buffer[2] != 't' || //
+      buffer[3] != '=') {
+    _file_is_valid = 0;
+  }
+
+  if (buffer[7] != 'l' || //
+      buffer[8] != 'o' || //
+      buffer[9] != 'n' || //
+      buffer[10] != '=') {
+    _file_is_valid = 0;
+  }
+
+  if (buffer[15] != 'u' || //
+      buffer[16] != 't' || //
+      buffer[17] != 'd' || //
+      buffer[18] != '=') {
+    _file_is_valid = 0;
+  }
+
+  (*file_is_valid) = _file_is_valid;
+
+  return 1;
+}
 
 int check_if_configuration_file_exist() { return 0; }
 
