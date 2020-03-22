@@ -17,7 +17,7 @@ int create_configuration_file() {
     return 0;
   }
 
-  fprintf(file, "lat=50,lon=010,utd=00");
+  fprintf(file, "lat=50.000,lon=010.000,utd=00");
   fclose(file);
 
   return 1;
@@ -41,26 +41,30 @@ int validate_configuration_file(int *file_is_valid) {
   if (buffer[0] != 'l' || //
       buffer[1] != 'a' || //
       buffer[2] != 't' || //
-      buffer[3] != '=') {
+      buffer[3] != '=' || //
+      buffer[6] != '.' || //
+      buffer[10] != ',') {
     _file_is_valid = 0;
   }
 
-  if (buffer[7] != 'l' || //
-      buffer[8] != 'o' || //
-      buffer[9] != 'n' || //
-      buffer[10] != '=') {
+  if (buffer[11] != 'l' || //
+      buffer[12] != 'o' || //
+      buffer[13] != 'n' || //
+      buffer[14] != '=' || //
+      buffer[18] != '.' || //
+      buffer[22] != ',') {
     _file_is_valid = 0;
   }
 
-  if (buffer[15] != 'u' || //
-      buffer[16] != 't' || //
-      buffer[17] != 'd' || //
-      buffer[18] != '=') {
+  if (buffer[23] != 'u' || //
+      buffer[24] != 't' || //
+      buffer[25] != 'd' || //
+      buffer[26] != '=') {
     _file_is_valid = 0;
   }
 
-  int buffer_positions[] = {4, 5, 11, 12, 13, 19, 20};
-  int buffer_positions_count = 7;
+  int buffer_positions[] = {4, 5, 7, 8, 9, 15, 16, 17, 19, 20, 21, 27, 28};
+  int buffer_positions_count = 13;
 
   char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
   int numbers_count = 10;
