@@ -7,6 +7,8 @@
 
 #include "configuration_manager.h"
 
+static const int DEBUG_MODE_CONFIGURATION_MANAGER = 1;
+
 const char *CONFIG_FILE_PATH = "pop.cfg";
 
 int create_configuration_file() {
@@ -14,7 +16,9 @@ int create_configuration_file() {
   file = fopen(CONFIG_FILE_PATH, "w");
 
   if (file == NULL) {
-    printf("error in create_configuration_file: file could not be created\n");
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error in create_configuration_file: file could not be created\n");
+    }
     return 0;
   }
 
@@ -48,7 +52,9 @@ int validate_configuration_file(int *file_is_valid) {
   file = fopen(CONFIG_FILE_PATH, "r");
 
   if (file == NULL) {
-    printf("error validate_configuration_file: cannot open file\n");
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: cannot open file\n");
+    }
     return 0;
   }
 
@@ -70,6 +76,10 @@ int validate_configuration_file(int *file_is_valid) {
       buffer[2] != 't' || //
       buffer[3] != '=') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude praefix "
+             "format\n");
+    }
   }
 
   /**
@@ -78,6 +88,10 @@ int validate_configuration_file(int *file_is_valid) {
   if (buffer[4] != '+' && //
       buffer[4] != '-') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude sign "
+             "format\n");
+    }
   }
 
   /**
@@ -85,14 +99,26 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (is_number_char(buffer[5]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^2 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[6]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^1 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[7]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^0 "
+             "format\n");
+    }
   }
 
   /**
@@ -100,6 +126,10 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (buffer[8] != '.') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude point "
+             "format\n");
+    }
   }
 
   /**
@@ -107,14 +137,26 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (is_number_char(buffer[9]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^-1 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[10]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^-2 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[11]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude 10^-3 "
+             "format\n");
+    }
   }
 
   /**
@@ -122,6 +164,10 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (buffer[12] != ',') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected latitude comma "
+             "format\n");
+    }
   }
 
   /*******************************
@@ -136,6 +182,10 @@ int validate_configuration_file(int *file_is_valid) {
       buffer[15] != 'n' || //
       buffer[16] != '=') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude praefix "
+             "format\n");
+    }
   }
 
   /**
@@ -144,6 +194,10 @@ int validate_configuration_file(int *file_is_valid) {
   if (buffer[17] != '+' && //
       buffer[17] != '-') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude sign "
+             "format\n");
+    }
   }
 
   /**
@@ -151,14 +205,26 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (is_number_char(buffer[18]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^2 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[19]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^1 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[20]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^0 "
+             "format\n");
+    }
   }
 
   /**
@@ -166,6 +232,10 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (buffer[21] != '.') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude point "
+             "format\n");
+    }
   }
 
   /**
@@ -173,14 +243,26 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (is_number_char(buffer[22]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^-1 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[23]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^-2 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[24]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude 10^-3 "
+             "format\n");
+    }
   }
 
   /**
@@ -188,17 +270,28 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (buffer[25] != ',') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected longitude comma "
+             "format\n");
+    }
   }
 
   /*************************
    ******* check utd *******
    *************************/
 
+  /**
+   * utd praefix
+   */
   if (buffer[26] != 'u' || //
       buffer[27] != 't' || //
       buffer[28] != 'd' || //
       buffer[29] != '=') {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected utd praefix "
+             "format\n");
+    }
   }
 
   /**
@@ -206,10 +299,18 @@ int validate_configuration_file(int *file_is_valid) {
    */
   if (is_number_char(buffer[30]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected utd 10^1 "
+             "format\n");
+    }
   }
 
   if (is_number_char(buffer[31]) == 0) {
     _file_is_valid = 0;
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error validate_configuration_file: unexpected utd 10^0 "
+             "format\n");
+    }
   }
 
   (*file_is_valid) = _file_is_valid;
