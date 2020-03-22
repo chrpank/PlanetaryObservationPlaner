@@ -17,7 +17,7 @@ int create_configuration_file() {
     return 0;
   }
 
-  fprintf(file, "lat=50,lon=010,utd=00\n");
+  fprintf(file, "lat=50,lon=010,utd=00");
   fclose(file);
 
   return 1;
@@ -57,6 +57,29 @@ int validate_configuration_file(int *file_is_valid) {
       buffer[17] != 'd' || //
       buffer[18] != '=') {
     _file_is_valid = 0;
+  }
+
+  int buffer_positions[] = {4, 5, 11, 12, 13, 19, 20};
+  int buffer_positions_count = 7;
+
+  char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  int numbers_count = 10;
+  int number_matched = 0;
+
+  for (int buffer_index = 0; buffer_index < buffer_positions_count;
+       buffer_index++) {
+    number_matched = 0;
+    for (int numbers_index = 0; numbers_index < numbers_count;
+         numbers_index++) {
+      if (buffer[buffer_positions[buffer_index]] == numbers[numbers_index]) {
+        number_matched = 1;
+        break;
+      }
+    }
+    if (number_matched == 0) {
+      _file_is_valid = 0;
+      break;
+    }
   }
 
   (*file_is_valid) = _file_is_valid;
