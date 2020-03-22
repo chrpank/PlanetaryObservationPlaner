@@ -6,7 +6,7 @@
 
 #include "base_functions.h"
 
-static const int DEBUG_MODE_SCENARIO_FUNCTIONS = 0;
+static const int DEBUG_MODE_SCENARIO_FUNCTIONS = 1;
 
 int scenario_calculate_azimuthal_coordinates(const char *object, const int year,
                                              const int month, const int day,

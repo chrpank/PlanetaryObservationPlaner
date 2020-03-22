@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <time.h>
 
-static const int DEBUG_MODE_DATE_MANAGER = 0;
+static const int DEBUG_MODE_DATE_MANAGER = 1;
 
 int is_date_valid(const date date) {
   if (date.year <= 1900 || date.year >= 2100) {
