@@ -2,6 +2,7 @@
  * Christian Pankratz 2020.
  */
 
+#include <math.h>
 #include <stdio.h>
 
 #include "configuration_manager.h"
@@ -17,10 +18,29 @@ int create_configuration_file() {
     return 0;
   }
 
-  fprintf(file, "lat=50.000,lon=010.000,utd=00");
+  fprintf(file, "lat=+050.000,lon=+010.000,utd=00");
   fclose(file);
 
   return 1;
+}
+
+/**
+ * helper function to check number in char
+ */
+int is_number_char(const char number) {
+  char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  int numbers_count = 10;
+
+  int number_matched = 0;
+
+  for (int i = 0; i < numbers_count; i++) {
+    if (number == numbers[i]) {
+      number_matched = 1;
+      break;
+    }
+  }
+
+  return number_matched;
 }
 
 int validate_configuration_file(int *file_is_valid) {
@@ -28,7 +48,7 @@ int validate_configuration_file(int *file_is_valid) {
   file = fopen(CONFIG_FILE_PATH, "r");
 
   if (file == NULL) {
-    printf("error create_configuration_file: file could not be created\n");
+    printf("error validate_configuration_file: cannot open file\n");
     return 0;
   }
 
@@ -38,52 +58,158 @@ int validate_configuration_file(int *file_is_valid) {
 
   int _file_is_valid = 1;
 
+  /******************************
+   ******* check latitude *******
+   ******************************/
+
+  /**
+   * check latitude praefix
+   */
   if (buffer[0] != 'l' || //
       buffer[1] != 'a' || //
       buffer[2] != 't' || //
-      buffer[3] != '=' || //
-      buffer[6] != '.' || //
-      buffer[10] != ',') {
+      buffer[3] != '=') {
     _file_is_valid = 0;
   }
 
-  if (buffer[11] != 'l' || //
-      buffer[12] != 'o' || //
-      buffer[13] != 'n' || //
-      buffer[14] != '=' || //
-      buffer[18] != '.' || //
-      buffer[22] != ',') {
+  /**
+   * check latitude sign
+   */
+  if (buffer[4] != '+' && //
+      buffer[4] != '-') {
     _file_is_valid = 0;
   }
 
-  if (buffer[23] != 'u' || //
-      buffer[24] != 't' || //
-      buffer[25] != 'd' || //
-      buffer[26] != '=') {
+  /**
+   * check latitute 10^2, 10^1, 10^0
+   */
+  if (is_number_char(buffer[5]) == 0) {
     _file_is_valid = 0;
   }
 
-  int buffer_positions[] = {4, 5, 7, 8, 9, 15, 16, 17, 19, 20, 21, 27, 28};
-  int buffer_positions_count = 13;
+  if (is_number_char(buffer[6]) == 0) {
+    _file_is_valid = 0;
+  }
 
-  char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-  int numbers_count = 10;
-  int number_matched = 0;
+  if (is_number_char(buffer[7]) == 0) {
+    _file_is_valid = 0;
+  }
 
-  for (int buffer_index = 0; buffer_index < buffer_positions_count;
-       buffer_index++) {
-    number_matched = 0;
-    for (int numbers_index = 0; numbers_index < numbers_count;
-         numbers_index++) {
-      if (buffer[buffer_positions[buffer_index]] == numbers[numbers_index]) {
-        number_matched = 1;
-        break;
-      }
-    }
-    if (number_matched == 0) {
-      _file_is_valid = 0;
-      break;
-    }
+  /**
+   * check latitude point
+   */
+  if (buffer[8] != '.') {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check latitute 10^-1, 10^-2, 10^-3
+   */
+  if (is_number_char(buffer[9]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[10]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[11]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check latitude comma
+   */
+  if (buffer[12] != ',') {
+    _file_is_valid = 0;
+  }
+
+  /*******************************
+   ******* check longitude *******
+   *******************************/
+
+  /**
+   * check longitude praefix
+   */
+  if (buffer[13] != 'l' || //
+      buffer[14] != 'o' || //
+      buffer[15] != 'n' || //
+      buffer[16] != '=') {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check longitude sign
+   */
+  if (buffer[17] != '+' && //
+      buffer[17] != '-') {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check longitude 10^2, 10^1, 10^0
+   */
+  if (is_number_char(buffer[18]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[19]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[20]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check longitude point
+   */
+  if (buffer[21] != '.') {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check longitude 10^-1, 10^-2, 10^-3
+   */
+  if (is_number_char(buffer[22]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[23]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[24]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check longitude comma
+   */
+  if (buffer[25] != ',') {
+    _file_is_valid = 0;
+  }
+
+  /*************************
+   ******* check utd *******
+   *************************/
+
+  if (buffer[26] != 'u' || //
+      buffer[27] != 't' || //
+      buffer[28] != 'd' || //
+      buffer[29] != '=') {
+    _file_is_valid = 0;
+  }
+
+  /**
+   * check utd 10^1, 10^0
+   */
+  if (is_number_char(buffer[30]) == 0) {
+    _file_is_valid = 0;
+  }
+
+  if (is_number_char(buffer[31]) == 0) {
+    _file_is_valid = 0;
   }
 
   (*file_is_valid) = _file_is_valid;
