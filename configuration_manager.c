@@ -87,7 +87,19 @@ int validate_configuration_file(int *file_is_valid) {
   return 1;
 }
 
-int check_if_configuration_file_exist() { return 0; }
+int check_if_configuration_file_exist(int *file_exist) {
+  FILE *file;
+  file = fopen(CONFIG_FILE_PATH, "r");
+
+  if (file == NULL) {
+    (*file_exist) = 0;
+  } else {
+    (*file_exist) = 1;
+    fclose(file);
+  }
+
+  return 1;
+}
 
 int set_local_latitude(const float latitide) { return 0; }
 

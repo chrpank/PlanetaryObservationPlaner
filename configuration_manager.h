@@ -17,9 +17,10 @@ int validate_configuration_file(int *file_is_valid);
 
 /**
  * check if configuration file exist
+ * param[in/out] file_exist the file exist indicator
  * return not 0 if file exist, 0 otherwise
  */
-int check_if_configuration_file_exist();
+int check_if_configuration_file_exist(int *file_exist);
 
 /**
  * set local latitude
