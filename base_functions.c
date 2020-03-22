@@ -2,7 +2,30 @@
  * Christian Pankratz 2020.
  */
 
+#include <math.h>
+#include <string.h>
+
 #include "base_functions.h"
+
+/**
+ * convert degree to radian
+ */
+static const float deg2rad = M_PI / 180.0;
+
+/**
+ * convert radian to degree
+ */
+static const float rad2deg = 180.0 / M_PI;
+
+/**
+ * convert hours to degree
+ */
+static const float hou2deg = 15.0;
+
+/**
+ * numerical error epsilon
+ */
+static const float eps = 0.001;
 
 int calculate_time_scale(const int year, const int month, const int day,
                          const float ut, float *days) {

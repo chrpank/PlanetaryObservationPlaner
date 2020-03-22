@@ -2,29 +2,6 @@
  * Christian Pankratz 2020.
  */
 
-#include <math.h>
-#include <string.h>
-
-/**
- * convert degree to radian
- */
-#define deg2rad M_PI / 180.0
-
-/**
- * convert radian to degree
- */
-#define rad2deg 180.0 / M_PI
-
-/**
- * convert hours to degree
- */
-#define hou2deg 15.0
-
-/**
- * numerical error epsilon
- */
-#define eps 0.001
-
 /**
  * calculate days from a date
  * param[in] year the year
