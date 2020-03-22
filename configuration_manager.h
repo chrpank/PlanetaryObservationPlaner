@@ -3,6 +3,24 @@
  */
 
 /**
+ * configuration data type
+ * local_latitude the local latitude
+ * local_longitude the local longitude
+ * ut_difference the difference to universal time
+ * object_azimuth the objects goal azimuth
+ * object_altitude the objects minimum goal altitude
+ * sun_altitude the sun maximum goal altitude
+ */
+typedef struct {
+  float local_latitude;
+  float local_longitude;
+  int ut_difference;
+  float object_azimuth;
+  float object_altitude;
+  float sun_altitude;
+} config;
+
+/**
  * create configuration file
  * return not 0 if success, 0 otherwise
  */
