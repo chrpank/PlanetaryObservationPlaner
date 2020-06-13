@@ -11,6 +11,8 @@ static const int DEBUG_MODE_CONFIGURATION_MANAGER = 1;
 
 const char *CONFIG_FILE_PATH = "pop.cfg";
 
+static const int BUFFER_SIZE = 100;
+
 const char *STD_CONFIG = "lat=+050.000,lon=+010.000,utd=00";
 
 static const int POS_LAT_SIGN = 4;
@@ -79,7 +81,7 @@ int validate_configuration_file(int *file_is_valid) {
     return 0;
   }
 
-  char buffer[100];
+  char buffer[BUFFER_SIZE];
   fscanf(file, "%[^\n]", buffer);
   fclose(file);
 
@@ -263,6 +265,56 @@ int check_if_configuration_file_exist(int *file_exist) {
     (*file_exist) = 1;
     fclose(file);
   }
+
+  return 1;
+}
+
+/**
+ * helper function to write config-value
+ */
+int write_configuration_value(const int postion, const char value) {
+  FILE *file;
+  file = fopen(CONFIG_FILE_PATH, "r");
+
+  if (file == NULL) {
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error in write_configuration_value: file could not be created\n");
+    }
+    return 0;
+  }
+
+  char buffer[BUFFER_SIZE];
+  fscanf(file, "%[^\n]", buffer);
+  fclose(file);
+
+  buffer[postion] = value;
+
+  file = fopen(CONFIG_FILE_PATH, "w");
+  fprintf(file, buffer);
+  fclose(file);
+
+  return 1;
+}
+
+/**
+ * helper function to read config-value
+ */
+int read_configuration_value(const int postion, char *value) {
+  FILE *file;
+  file = fopen(CONFIG_FILE_PATH, "r");
+
+  if (file == NULL) {
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error in write_configuration_value: file could not be created\n");
+    }
+    return 0;
+  }
+
+  char buffer[BUFFER_SIZE];
+  fscanf(file, "%[^\n]", buffer);
+  fclose(file);
+
+  *value = buffer[postion];
 
   return 1;
 }
