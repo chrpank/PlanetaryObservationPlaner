@@ -11,6 +11,27 @@ static const int DEBUG_MODE_CONFIGURATION_MANAGER = 1;
 
 const char *CONFIG_FILE_PATH = "pop.cfg";
 
+const char *STD_CONFIG = "lat=+050.000,lon=+010.000,utd=00";
+
+static const int POS_LAT_SIGN = 4;
+static const int POS_LAT_10_1 = 5;  // 10^+2
+static const int POS_LAT_10_2 = 6;  // 10^+1
+static const int POS_LAT_10_3 = 7;  // 10^+0
+static const int POS_LAT_10_4 = 9;  // 10^-1
+static const int POS_LAT_10_5 = 10; // 10^-2
+static const int POS_LAT_10_6 = 11; // 10^-3
+
+static const int POS_LON_SIGN = 17;
+static const int POS_LON_10_1 = 18; // 10^+2
+static const int POS_LON_10_2 = 19; // 10^+1
+static const int POS_LON_10_3 = 20; // 10^+0
+static const int POS_LON_10_4 = 22; // 10^-1
+static const int POS_LON_10_5 = 23; // 10^-2
+static const int POS_LON_10_6 = 24; // 10^-3
+
+static const int POS_UTD_10_1 = 30; // 10^+1
+static const int POS_UTD_10_2 = 31; // 10^+0
+
 int create_configuration_file() {
   FILE *file;
   file = fopen(CONFIG_FILE_PATH, "w");
@@ -22,7 +43,7 @@ int create_configuration_file() {
     return 0;
   }
 
-  fprintf(file, "lat=+050.000,lon=+010.000,utd=00");
+  fprintf(file, STD_CONFIG);
   fclose(file);
 
   return 1;
@@ -71,8 +92,8 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check latitude sign
    */
-  if (buffer[4] != '+' && //
-      buffer[4] != '-') {
+  if (buffer[POS_LAT_SIGN] != '+' && //
+      buffer[POS_LAT_SIGN] != '-') {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude sign "
@@ -83,7 +104,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check latitute 10^2, 10^1, 10^0
    */
-  if (is_number_char(buffer[5]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_1]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^2 "
@@ -91,7 +112,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[6]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_2]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^1 "
@@ -99,7 +120,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[7]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_3]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^0 "
@@ -110,7 +131,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check latitute 10^-1, 10^-2, 10^-3
    */
-  if (is_number_char(buffer[9]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_4]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^-1 "
@@ -118,7 +139,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[10]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_5]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^-2 "
@@ -126,7 +147,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[11]) == 0) {
+  if (is_number_char(buffer[POS_LAT_10_6]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected latitude 10^-3 "
@@ -141,7 +162,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check longitude sign
    */
-  if (buffer[17] != '+' && //
+  if (buffer[POS_LON_SIGN] != '+' && //
       buffer[17] != '-') {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
@@ -153,7 +174,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check longitude 10^2, 10^1, 10^0
    */
-  if (is_number_char(buffer[18]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_1]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^2 "
@@ -161,7 +182,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[19]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_2]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^1 "
@@ -169,7 +190,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[20]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_3]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^0 "
@@ -180,7 +201,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check longitude 10^-1, 10^-2, 10^-3
    */
-  if (is_number_char(buffer[22]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_4]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^-1 "
@@ -188,7 +209,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[23]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_5]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^-2 "
@@ -196,7 +217,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[24]) == 0) {
+  if (is_number_char(buffer[POS_LON_10_6]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected longitude 10^-3 "
@@ -211,7 +232,7 @@ int validate_configuration_file(int *file_is_valid) {
   /**
    * check utd 10^1, 10^0
    */
-  if (is_number_char(buffer[30]) == 0) {
+  if (is_number_char(buffer[POS_UTD_10_1]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected utd 10^1 "
@@ -219,7 +240,7 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  if (is_number_char(buffer[31]) == 0) {
+  if (is_number_char(buffer[POS_UTD_10_2]) == 0) {
     _file_is_valid = 0;
     if (DEBUG_MODE_CONFIGURATION_MANAGER) {
       printf("error validate_configuration_file: unexpected utd 10^0 "
