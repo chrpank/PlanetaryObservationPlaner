@@ -51,6 +51,16 @@ int create_configuration_file() {
   return 1;
 }
 
+int delete_configuration_file() {
+  if (remove(CONFIG_FILE_PATH) == 0)
+    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
+      printf("error in create_configuration_file: file could not be created\n");
+      return 0;
+    }
+
+  return 1;
+}
+
 /**
  * helper function to check number in char
  */

@@ -27,6 +27,12 @@ typedef struct {
 int create_configuration_file();
 
 /**
+ * delete configuration file
+ * return not 0 if success, 0 otherwise
+ */
+int delete_configuration_file();
+
+/**
  * validate configuration file
  * param[in/out] file_is_valid the file validation indicator
  * return not 0 if success, 0 otherwise
