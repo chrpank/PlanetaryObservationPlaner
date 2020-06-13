@@ -69,20 +69,6 @@ int validate_configuration_file(int *file_is_valid) {
    ******************************/
 
   /**
-   * check latitude praefix
-   */
-  if (buffer[0] != 'l' || //
-      buffer[1] != 'a' || //
-      buffer[2] != 't' || //
-      buffer[3] != '=') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected latitude praefix "
-             "format\n");
-    }
-  }
-
-  /**
    * check latitude sign
    */
   if (buffer[4] != '+' && //
@@ -122,17 +108,6 @@ int validate_configuration_file(int *file_is_valid) {
   }
 
   /**
-   * check latitude point
-   */
-  if (buffer[8] != '.') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected latitude point "
-             "format\n");
-    }
-  }
-
-  /**
    * check latitute 10^-1, 10^-2, 10^-3
    */
   if (is_number_char(buffer[9]) == 0) {
@@ -159,34 +134,9 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  /**
-   * check latitude comma
-   */
-  if (buffer[12] != ',') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected latitude comma "
-             "format\n");
-    }
-  }
-
   /*******************************
    ******* check longitude *******
    *******************************/
-
-  /**
-   * check longitude praefix
-   */
-  if (buffer[13] != 'l' || //
-      buffer[14] != 'o' || //
-      buffer[15] != 'n' || //
-      buffer[16] != '=') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected longitude praefix "
-             "format\n");
-    }
-  }
 
   /**
    * check longitude sign
@@ -228,17 +178,6 @@ int validate_configuration_file(int *file_is_valid) {
   }
 
   /**
-   * check longitude point
-   */
-  if (buffer[21] != '.') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected longitude point "
-             "format\n");
-    }
-  }
-
-  /**
    * check longitude 10^-1, 10^-2, 10^-3
    */
   if (is_number_char(buffer[22]) == 0) {
@@ -265,34 +204,9 @@ int validate_configuration_file(int *file_is_valid) {
     }
   }
 
-  /**
-   * check longitude comma
-   */
-  if (buffer[25] != ',') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected longitude comma "
-             "format\n");
-    }
-  }
-
   /*************************
    ******* check utd *******
    *************************/
-
-  /**
-   * utd praefix
-   */
-  if (buffer[26] != 'u' || //
-      buffer[27] != 't' || //
-      buffer[28] != 'd' || //
-      buffer[29] != '=') {
-    _file_is_valid = 0;
-    if (DEBUG_MODE_CONFIGURATION_MANAGER) {
-      printf("error validate_configuration_file: unexpected utd praefix "
-             "format\n");
-    }
-  }
 
   /**
    * check utd 10^1, 10^0
