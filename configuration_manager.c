@@ -80,6 +80,23 @@ int is_number_char(const char number) {
   return number_matched;
 }
 
+/**
+ * helper function to get char from number
+ */
+int calculate_number_char(int number, char *number_char) {
+  char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  int numbers_count = 10;
+
+  for (int i = 0; i < numbers_count; i++) {
+    if (number == i) {
+      *number_char = numbers[i];
+      return 1;
+    }
+  }
+
+  return 0;
+}
+
 int validate_configuration_file(int *file_is_valid) {
   FILE *file;
   file = fopen(CONFIG_FILE_PATH, "r");
@@ -329,7 +346,36 @@ int read_configuration_value(const int postion, char *value) {
   return 1;
 }
 
-int set_local_latitude(const float latitide) { return 0; }
+int set_local_latitude(const float latitide) {
+  float _latitude = latitide;
+  int buffer[6];
+  int number_of_digits = 6;
+
+  int exponent = 2;
+  for (int i = 0; i < number_of_digits; i++) {
+    buffer[i] = (int)floorf(_latitude / powf(10, (float)exponent));
+    _latitude -= (float)buffer[i];
+    exponent--;
+  }
+
+  char sign;
+  if (latitide >= 0) {
+    sign = '+';
+  } else {
+    sign = '-';
+  }
+  write_configuration_value(POS_LAT_SIGN, sign);
+
+  int positions[] = {POS_LAT_10_1, POS_LAT_10_2, POS_LAT_10_3,
+                     POS_LAT_10_4, POS_LAT_10_5, POS_LAT_10_6};
+  char _char;
+  for (int i = 0; i < number_of_digits; i++) {
+    calculate_number_char(buffer[i], &_char);
+    write_configuration_value(positions[i], _char);
+  }
+
+  return 1;
+}
 
 int set_local_longitude(const float longitude) { return 0; }
 
