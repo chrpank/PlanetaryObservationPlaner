@@ -1,6 +1,9 @@
 /**
- * Christian Pankratz 2020.
+ * Copyright 2020 Christian Pankratz.
  */
+
+#ifndef CONFIGURATION_MANAGER_H_
+#define CONFIGURATION_MANAGER_H_
 
 /**
  * configuration data type
@@ -11,13 +14,15 @@
  * object_altitude the objects minimum goal altitude
  * sun_altitude the sun maximum goal altitude
  */
-typedef struct {
-  float local_latitude;
-  float local_longitude;
-  int ut_difference;
-  float object_azimuth;
-  float object_altitude;
-  float sun_altitude;
+
+typedef struct
+{
+	float local_latitude;
+	float local_longitude;
+	int ut_difference;
+	float object_azimuth;
+	float object_altitude;
+	float sun_altitude;
 } config;
 
 /**
@@ -43,7 +48,7 @@ int delete_configuration_file();
  * param[in/out] file_exist the file exist indicator
  * return not 0 if file exist, 0 otherwise
  */
-int check_if_configuration_file_exist(int *file_exist);
+int check_if_configuration_file_exist(int* file_exist);
 
 /**
  * set local latitude
@@ -71,18 +76,21 @@ int set_local_ut_difference(const int ut_difference);
  * param[in/out] latitide the local latitide
  * return not 0 if success, 0 otherwise
  */
-int get_local_latitude(float *latitide);
+int get_local_latitude(float* latitide);
 
 /**
  * get local longitude
  * param[in/out] longitude the local longitude
  * return not 0 if success, 0 otherwise
  */
-int get_local_longitude(float *longitude);
+int get_local_longitude(float* longitude);
 
 /**
  * get local ut difference
  * param[in/out] ut_difference the local ut difference
  * return not 0 if success, 0 otherwise
  */
-int get_local_ut_difference(int *ut_difference);
+
+int get_local_ut_difference(int* ut_difference);
+
+#endif // CONFIGURATION_MANAGER_H_

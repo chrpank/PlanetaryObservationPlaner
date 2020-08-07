@@ -11,8 +11,7 @@
  * param[in/out] days the days
  * return not 0 if success, 0 otherwise
  */
-int calculate_time_scale(const int y, const int month, const int day,
-                         const float ut, float *d);
+int calculate_time_scale(const int y, const int month, const int day, const float ut, float* d);
 
 /**
  * calculate value reduction
@@ -20,7 +19,7 @@ int calculate_time_scale(const int y, const int month, const int day,
  * param[in/out] value the angle
  * return not 0 if success, 0 otherwise
  */
-int calculate_value_reduction(const float factor, float *value);
+int calculate_value_reduction(const float factor, float* value);
 
 /**
  * calculate orbital elements
@@ -34,8 +33,8 @@ int calculate_value_reduction(const float factor, float *value);
  * param[in} d the days
  * return not 0 if success, 0 otherwise
  */
-int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
-                               float *a, float *e, float *M, const float d);
+int calculate_orbital_elements(
+	const char* o, float* N, float* i, float* w, float* a, float* e, float* M, const float d);
 
 /**
  * calculate the obliquity of the ecliptic.
@@ -43,7 +42,7 @@ int calculate_orbital_elements(const char *o, float *N, float *i, float *w,
  * param[in} d the days
  * return not 0 if success, 0 otherwise
  */
-int calculate_obliquity_ecliptic(float *ecl, const float d);
+int calculate_obliquity_ecliptic(float* ecl, const float d);
 
 /**
  * calculate the local sidereal time
@@ -55,9 +54,8 @@ int calculate_obliquity_ecliptic(float *ecl, const float d);
  * param[in/out] LST the local sidereal time
  * return not 0 if success, 0 otherwise
  */
-int calculate_local_sidereal_time(const int y, const int m, const int d,
-                                  const float UT, const float local_longitude,
-                                  float *LST);
+int calculate_local_sidereal_time(
+	const int y, const int m, const int d, const float UT, const float local_longitude, float* LST);
 
 /**
  * calculate true anomaly and distance
@@ -68,8 +66,7 @@ int calculate_local_sidereal_time(const int y, const int m, const int d,
  * param[in/out] v the true anomaly
  * return not 0 if success, 0 otherwise
  */
-int calculate_true_anomaly(const float M, const float e, const float a,
-                           float *r, float *v);
+int calculate_true_anomaly(const float M, const float e, const float a, float* r, float* v);
 
 /**
  * calculate true position in space
@@ -85,10 +82,16 @@ int calculate_true_anomaly(const float M, const float e, const float a,
  * param[in/out] latecl the ecliptic latitude
  * return not 0 if success, 0 otherwise
  */
-int calculate_position_in_space(const float r, const float N, const float v,
-                                const float w, const float i, float *xh,
-                                float *yh, float *zh, float *lonecl,
-                                float *latecl);
+int calculate_position_in_space(const float r,
+								const float N,
+								const float v,
+								const float w,
+								const float i,
+								float* xh,
+								float* yh,
+								float* zh,
+								float* lonecl,
+								float* latecl);
 
 /**
  * calculate the pertubations of the moon
@@ -102,9 +105,14 @@ int calculate_position_in_space(const float r, const float N, const float v,
  * param[in/out} r the corrected distance
  * return not 0 if success, 0 otherwise
  */
-int calculate_pertubations_moon(const float Ms, const float Mm, const float Nm,
-                                const float ws, const float wm, float *lonecl,
-                                float *latecl, float *r);
+int calculate_pertubations_moon(const float Ms,
+								const float Mm,
+								const float Nm,
+								const float ws,
+								const float wm,
+								float* lonecl,
+								float* latecl,
+								float* r);
 
 /**
  * calculate the pertubations of jupiter saturn and uranus
@@ -119,11 +127,15 @@ int calculate_pertubations_moon(const float Ms, const float Mm, const float Nm,
  * param[in/out] latecl_u the corrected latitude of uranus
  * return not 0 if success, 0 otherwise
  */
-int calculate_pertubations_planets(const float Mj, const float Ms,
-                                   const float Mu, float *lonecl_j,
-                                   float *latecl_j, float *lonecl_s,
-                                   float *latecl_s, float *lonecl_u,
-                                   float *latecl_u);
+int calculate_pertubations_planets(const float Mj,
+								   const float Ms,
+								   const float Mu,
+								   float* lonecl_j,
+								   float* latecl_j,
+								   float* lonecl_s,
+								   float* latecl_s,
+								   float* lonecl_u,
+								   float* latecl_u);
 
 /**
  * calculate sine with degree argument
@@ -164,9 +176,8 @@ float asind(const float x);
  * param[in/out} zg geocentric z coordinate
  * return not 0 if success, 0 otherwise
  */
-int calculate_geocentric_coordinates_moon(const float lonecl,
-                                          const float latecl, const float r,
-                                          float *xg, float *yg, float *zg);
+int calculate_geocentric_coordinates_moon(
+	const float lonecl, const float latecl, const float r, float* xg, float* yg, float* zg);
 
 /**
  * calculate geocentric coordinates of the planet
@@ -181,9 +192,13 @@ int calculate_geocentric_coordinates_moon(const float lonecl,
  * return not 0 if success, 0 otherwise
  */
 int calculate_geocentric_coordinates_planet(const float lonecl,
-                                            const float latecl, const float r,
-                                            const float lonsun, const float rs,
-                                            float *xg, float *yg, float *zg);
+											const float latecl,
+											const float r,
+											const float lonsun,
+											const float rs,
+											float* xg,
+											float* yg,
+											float* zg);
 
 /**
  * calculate equatorial coordinates
@@ -196,9 +211,13 @@ int calculate_geocentric_coordinates_planet(const float lonecl,
  * param[in/out} rg geocentric distance
  * return not 0 if success, 0 otherwise
  */
-int calculate_equatorial_coordinates(const float xg, const float yg,
-                                     const float zg, const float ecl, float *RA,
-                                     float *Dec, float *rg);
+int calculate_equatorial_coordinates(const float xg,
+									 const float yg,
+									 const float zg,
+									 const float ecl,
+									 float* RA,
+									 float* Dec,
+									 float* rg);
 
 /**
  * calculate azimuthal coordinates
@@ -210,6 +229,5 @@ int calculate_equatorial_coordinates(const float xg, const float yg,
  * param[in/out} alt local altitude
  * return not 0 if success, 0 otherwise
  */
-int calculate_azimuthal_coordinates(const float RA, const float Dec,
-                                    const float LST, const float lat, float *az,
-                                    float *alt);
+int calculate_azimuthal_coordinates(
+	const float RA, const float Dec, const float LST, const float lat, float* az, float* alt);
