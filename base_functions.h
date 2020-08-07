@@ -3,6 +3,15 @@
  */
 
 /**
+ * useful variables
+ */
+
+/**
+ * numerical error epsilon
+ */
+static const float eps = 0.001;
+
+/**
  * calculate days from a date
  * param[in] year the year
  * param[in] month the month
