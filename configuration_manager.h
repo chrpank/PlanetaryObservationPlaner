@@ -44,13 +44,6 @@ int write_configuration_file();
 int delete_configuration_file();
 
 /**
- * check if configuration file exist
- * param[in/out] file_exist the file exist indicator
- * return not 0 if file exist, 0 otherwise
- */
-int check_if_configuration_file_exist(int* file_exist);
-
-/**
  * set local latitude
  * param[in] latitide the local latitide
  * return not 0 if success, 0 otherwise
@@ -69,7 +62,7 @@ int set_local_longitude(const float longitude);
  * param[in] ut_difference the local ut difference
  * return not 0 if success, 0 otherwise
  */
-int set_local_ut_difference(const int ut_difference);
+int set_local_ut_difference(const float ut_difference);
 
 /**
  * get local latitude
@@ -91,6 +84,6 @@ int get_local_longitude(float* longitude);
  * return not 0 if success, 0 otherwise
  */
 
-int get_local_ut_difference(int* ut_difference);
+int get_local_ut_difference(float* ut_difference);
 
 #endif // CONFIGURATION_MANAGER_H_

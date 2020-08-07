@@ -58,45 +58,96 @@ int load_configuration_file()
 
 int write_configuration_file()
 {
-	return 0;
+	FILE* file;
+	file = fopen(CONFIG_FILE_PATH, "w");
+
+	if(file == NULL)
+	{
+		printf("write_configuration_file: file open has failed");
+		return 0;
+	}
+
+	for(int index = 0; index < 3; index++)
+	{
+
+		if(index == index_lat)
+		{
+			fprintf(file, "%f\n", config_buffer[index_lat]);
+		}
+
+		if(index == index_lon)
+		{
+			fprintf(file, "%f\n", config_buffer[index_lon]);
+		}
+
+		if(index == index_utd)
+		{
+			fprintf(file, "%f\n", config_buffer[index_utd]);
+		}
+	}
+
+	fclose(file);
+	return 1;
 }
 
 int delete_configuration_file()
 {
-	return 0;
-}
+	FILE* file;
+	file = fopen(CONFIG_FILE_PATH, "r");
 
-int check_if_configuration_file_exist(int* file_exist)
-{
-	return 0;
+	if(file != NULL)
+	{
+		fclose(file);
+
+		if(remove(CONFIG_FILE_PATH) != 0)
+		{
+			printf("delete_configuration_file: unable to delete the file");
+
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
 int set_local_latitude(const float latitide)
 {
-	return 0;
+	config_buffer[index_lat] = latitide;
+
+	return 1;
 }
 
 int set_local_longitude(const float longitude)
 {
-	return 0;
+	config_buffer[index_lon] = longitude;
+
+	return 1;
 }
 
-int set_local_ut_difference(const int ut_difference)
+int set_local_ut_difference(const float ut_difference)
 {
-	return 0;
+	config_buffer[index_utd] = ut_difference;
+
+	return 1;
 }
 
 int get_local_latitude(float* latitide)
 {
-	return 0;
+	*latitide = config_buffer[index_lat];
+
+	return 1;
 }
 
 int get_local_longitude(float* longitude)
 {
-	return 0;
+	*longitude = config_buffer[index_lon];
+
+	return 1;
 }
 
-int get_local_ut_difference(int* ut_difference)
+int get_local_ut_difference(float* ut_difference)
 {
-	return 0;
+	*ut_difference = config_buffer[index_utd];
+
+	return 1;
 }
