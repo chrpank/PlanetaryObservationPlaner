@@ -4,9 +4,15 @@ default: test_example
 configuration_manager.o: configuration_manager.c configuration_manager.h
 	gcc -c configuration_manager.c -o configuration_manager.o
 
+configuration_manager_test.o: configuration_manager_test.c
+	gcc -I./../libs/acutest/include -c configuration_manager_test.c -o configuration_manager_test.o
+
+configuration_manager_test: configuration_manager_test.o configuration_manager.o
+	gcc configuration_manager_test.o configuration_manager.o -o configuration_manager_test
+
 date_manager.o: date_manager.c date_manager.h
 	gcc -c date_manager.c -o date_manager.o
-	
+
 date_manager_test.o: date_manager_test.c
 	gcc -I./../libs/acutest/include -c date_manager_test.c -o date_manager_test.o
 
@@ -39,6 +45,8 @@ test_example: test_example.o
 
 clean:
 	-rm -f configuration_manager.o
+	-rm -f configuration_manager_test.o
+	-rm -f configuration_manager_test
 	-rm -f date_manager.o
 	-rm -f date_manager_test.o
 	-rm -f date_manager_test
